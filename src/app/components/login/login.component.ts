@@ -1,33 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {AuthService} from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { first, Observable} from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent  {
+export class LoginComponent implements OnInit {
 
   hide = true;
-
+  loading = false;
   form : FormGroup;
 
- constructor(private fb : FormBuilder) {
+  requestData$! : Observable<any>;
+
+ constructor(private fb : FormBuilder, 
+  private authService: AuthService,
+  private _snackBar: MatSnackBar,
+  private router: Router) {
     this.form = this.fb.group({
       username: ["", Validators.required],
       password: ["", Validators.required]
     });
  }
 
- login() {
-   console.log(this.form);
-   const username = this.form.value.username;
-   const password = this.form.value.password;
+ ngOnInit(): void {}
 
-   if(username == 'admin' && password == 'admin123') {
-    //direct to dashboard
-   } else{
-    
+ login() {
+  this.authService.login(this.form.value.username, this.form.value.password).pipe(first()).subscribe(
+    data => {
+    this.loading = true;
+    this.router.navigate(['dashboard']);
+    console.log(data);
+  },
+  error => {
+    this._snackBar.open("Usuario o contraseña incorrectas",'',{
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
+    this.form.reset();
+    console.log(error);
   }
+  )
  }
 }
