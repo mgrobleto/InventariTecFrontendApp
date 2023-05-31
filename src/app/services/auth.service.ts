@@ -24,7 +24,7 @@ export class AuthService {
     return this.http.post<any>(this.api_url + `accounts/api/auth/`, {username, password}, httpOptions).pipe(
       map (user => {
         if (user && user.token){
-          const actualUser = localStorage.setItem('currentUser', JSON.stringify(user));
+          localStorage.setItem('currentUser', JSON.stringify(user));
           console.log("Ha iniciado sesion");
           this.isLoggedIn = true;
           console.log(this.isLoggedIn)

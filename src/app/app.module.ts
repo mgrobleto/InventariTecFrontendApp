@@ -7,7 +7,6 @@ import { LoginComponent } from './components/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule} from '@angular/common/http';
 import { SharedModule } from './components/shared/shared.module';
-import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
