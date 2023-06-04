@@ -3,6 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {map, tap, delay} from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers : new HttpHeaders({
@@ -15,7 +16,8 @@ const httpOptions = {
 })
 export class AuthService {
 
-  api_url : string = 'http://localhost:8000/';
+  //api_url : string = 'http://localhost:8000/';
+  api_url = environment.apiUrl;
   isLoggedIn = false;
 
   constructor(private http : HttpClient) {}
