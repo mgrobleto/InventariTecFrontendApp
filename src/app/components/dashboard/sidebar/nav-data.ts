@@ -28,35 +28,16 @@ export const navbarData : INavbarData[] = [
         routeLink: 'products',
         icon: 'fas fa-laptop',
         label: 'Productos',
-        items: [
-            {
-                routeLink: 'products/addNewProduct',
-                //icon: 'fas fa-laptop',
-                label: 'Agregar Producto',
-            },
-            {
-                routeLink: 'products/allProducts',
-                //icon: 'fas fa-laptop',
-                label: 'Ver Productos',
-            },
-        ]
     },
-     {
+    {
+        routeLink: 'manageCategories',
+        icon: 'fas fa-bookmark',
+        label: 'Gestionar Categorias',
+    },
+    {
         routeLink: 'equipment',
         icon: 'fas fa-toolbox',
         label: 'Equipamiento',
-        items: [
-            {
-                routeLink: 'equipment/addNewEquipment',
-                //icon: 'fas fa-laptop',
-                label: 'Agregar Equipamiento',
-            },
-            {
-                routeLink: 'equipment/allEquipment',
-                //icon: 'fas fa-laptop',
-                label: 'Ver Equipamiento',
-            },
-        ]
     },
     {
         routeLink: 'settings',

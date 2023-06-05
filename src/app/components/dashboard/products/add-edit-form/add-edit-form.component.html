@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar>
     <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
         <span>{{dialogData.action}} Producto </span>
         <span class="spacer"></span>
@@ -68,13 +68,11 @@
     </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"> <!-- [disabled]="!(productForm.valid && productForm.dirty)" -->
-        <mat-icon>save</mat-icon>
+<mat-dialog-actions align="end">
+    <button type="submit" class="btn btn-success" (click)="handleSubmit()"> <!-- [disabled]="!(productForm.valid && productForm.dirty)" -->
         {{action}}
     </button>
-    <button mat-raised-button color="warn" type="button" mat-dialog-close>
-       <mat-icon>close</mat-icon>
+    <button class="btn btn-danger" type="button" mat-dialog-close>
        Cancelar
     </button>
 </mat-dialog-actions>
