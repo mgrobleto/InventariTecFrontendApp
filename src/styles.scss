@@ -1,0 +1,71 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    border-radius: .5rem;
+    background-color: #fff;
+    margin: 1.25rem 0 1.25rem 0;
+    box-shadow: 0 .25rem .5rem #e6edef;
+
+    .card-head {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #edf1f7;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 1rem 1.5rem; 
+    }
+}
+
+.green-snackbar {
+    --mdc-snackbar-container-color: #4CAF50;
+    .mat-simple-snackbar-action {
+        color: white;
+      }
+}
+
+/* .green-snackbar button {
+    background-color: rgb(65, 252, 134);
+    color: white;
+    border: none;
+} */
+
+.red-snackbar {
+    max-width: max-content !important;
+    color: white;
+    --mdc-snackbar-container-color:  #dc3545;
+    border-color: #f5c6cb;
+  
+    .mat-simple-snackbar-action {
+      color: white;
+    }
+}
+
+.red-snackbar button {
+    background-color: #F44336;
+    color: white !important;
+    border: none;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

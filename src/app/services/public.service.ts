@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -7,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PublicService {
 
-  api_url = 'http://127.0.0.1:8000/';
+  api_url = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

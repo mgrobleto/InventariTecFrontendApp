@@ -1,0 +1,56 @@
+.header {
+    background: #29296a;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-title {
+    max-width: 600px;
+}
+
+.header button{
+    float: right;
+    color: #0e073e;
+    border: none;
+    max-width: 300px;
+}
+
+button .float-right {
+    float: right;
+}
+
+mat-card {
+    /* max-width: 500px; */
+    padding: 20px;
+    margin-bottom: 1rem;
+}
+
+mat-card-content {
+    justify-content: space-between;
+}
+
+mat-form-field {
+    padding: 1rem 1rem 1rem 0rem;
+}
+
+table {
+    width: 100%;
+}
+
+table td :hover {
+    background: #9FA8DA;
+}
+
+.add-product-section .add{
+    background-color: #9FA8DA;
+    color: white;
+}
+ 
+.add-product-section .total {
+    background-color: #9FA8DA;
+    color: white;
+    margin-left: 20px;
+}

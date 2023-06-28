@@ -1,0 +1,113 @@
+.header {
+    background: #1a1853;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* .filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+} */
+
+.header-title {
+    max-width: 600px;
+}
+
+.header button{
+    float: right;
+    color: #0e073e;
+    border: none;
+    max-width: 300px;
+}
+
+button .float-right {
+    float: right;
+}
+
+mat-card {
+    /* max-width: 500px; */
+    padding: 20px;
+    margin-bottom: 2rem;
+}
+
+.filter{
+    width: 100%;
+    font-size: 18px;
+}
+
+#id-input {
+    background-color: #E8EAF6;
+    box-shadow: 0 2px 0 black;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    width: auto;
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+  padding: 16px 20px 9px 40px;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    background-color: #E8EAF6;
+    transition: 0.3s;
+}
+
+.btn-primary {
+  box-shadow: 1px 2px 5px #847878;   
+  background-color: #0e90d0;
+  border: none;
+
+}
+
+.btn:hover {
+  background-color: #0d80bc;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+input {
+    background-color: #b5e8fa;
+    padding: 16px 32px;
+    border: none;
+    display: block;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-family: 'Roboto', sans-serif;
+    /*font-weight: 600; */
+    color: black;
+    -webkit-appearance: none;
+    transition: all 240ms ease-out;
+    width: 100%;
+    
+    &::placeholder {
+      color: #6d7f8f;
+    }
+    
+    &:focus {
+      outline: none;
+      color: #6d7f8f;
+      background-color: lighten(#e3edf7, 3%);
+    }
+};
+
+/* Styles for tab labels */
+.navbar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.mat-mdc-table {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

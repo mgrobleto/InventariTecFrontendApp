@@ -1,0 +1,68 @@
+<mat-card class="header">
+    <mat-card-header>
+        <h2>Gestión de Equipamiento de Mantenimiento </h2>
+    </mat-card-header>
+    <mat-card-content>
+        <button mat-raised-button class="float-right" (click)="handleAddAction()">
+            <mat-icon>add</mat-icon> Añadir nuevo equipamiento
+        </button>
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-form-field appearance="outline">
+        <mat-label>Buscar equipamiento</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input>
+    </mat-form-field>
+</mat-card>
+
+<hr>
+
+<div class="responsive-table">
+    <table mat-table [dataSource]="productDetails" class="mat-elevation-z8">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="ID">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+      
+        <!-- Weight Column -->
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+      
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Categoria">
+          <th mat-header-cell *matHeaderCellDef> Categoria </th>
+          <td mat-cell *matCellDef="let element"> {{element.id_equipment_category}} </td>
+        </ng-container>
+    
+        <!-- Edit Column -->
+        <ng-container matColumnDef="Editar">
+            <th mat-header-cell *matHeaderCellDef> Editar </th>
+            <td mat-cell *matCellDef="let element" class="action-link"> 
+                <button mat-icon-button color="primary" matTooltip="Editar" (click)="handleEditAction(element)">
+                    <mat-icon> edit </mat-icon>
+                </button>
+            </td>
+        </ng-container>
+    
+        <!-- Delete Column -->
+        <ng-container matColumnDef="Eliminar">
+            <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+            <td mat-cell *matCellDef="let element" class="action-link"> 
+                <button mat-icon-button color="warn" matTooltip="Delete" (click)="handleDeleteAction(element)">
+                    <mat-icon> delete </mat-icon>
+                </button>
+               <!--  <mat-slide-toggle (change)="onChange($event.checked, element.id)"
+                matTooltip="Activar o desactivar producto" [checked]="element.status">
+                </mat-slide-toggle> -->
+            </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>  
+</div>

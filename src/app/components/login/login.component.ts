@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../services/authService/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { first, Observable} from 'rxjs';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
@@ -28,7 +28,9 @@ export class LoginComponent implements OnInit {
     });
  }
 
- ngOnInit(): void {}
+ ngOnInit(): void {
+  this.logOut();
+ }
 
  login() {
   this.authService.login(this.form.value.username, this.form.value.password).pipe(first()).subscribe(
@@ -48,4 +50,9 @@ export class LoginComponent implements OnInit {
   }
   )
  }
+
+  logOut() {
+    this.authService.logout();
+  }
+
 }

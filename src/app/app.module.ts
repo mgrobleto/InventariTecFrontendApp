@@ -7,7 +7,8 @@ import { LoginComponent } from './components/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule} from '@angular/common/http';
 import { SharedModule } from './components/shared/shared.module';
-import { AuthGuard } from './guards/auth.guard';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { AuthGuard } from './guards/auth.guard';
     HttpClientModule,
     SharedModule,
   ],
-  providers: [],
+  providers: [
+   DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
