@@ -1,90 +1,204 @@
+
 <mat-card class="header">
     <mat-card-header>
         <h2>Gestión de Productos</h2>
     </mat-card-header>
     <mat-card-content>
-        <button mat-raised-button class="float-right" (click)="handleAddAction()">
+        <button mat-raised-button (click)="handleAddAction()">
             <mat-icon>add</mat-icon> Añadir Producto
         </button>
     </mat-card-content>
 </mat-card>
 
+<!-- <label for="input-group-1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Filtrar</label>
+<div class="relative mb-6 drop-shadow-lg rounded-full">
+    <div class="relative flex items-center w-full h-12 rounded-full focus-within:shadow-lg bg-white overflow-hidden">
+        <div class="grid place-items-center h-full w-12 text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
+
+        <input 
+        (keyup)="applyFilter($event)" #input 
+        type="text" 
+        id="input-group-1" 
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+        placeholder="Producto...">
+    </div>
+</div> -->
+
+<!-- <mat-form-field appearance="outline" class="filter" id="id-input">
+    <mat-icon matPrefix>search &nbsp;</mat-icon>
+    <mat-label>Filtrar</mat-label>
+    <input type="text" matInput (keyup)="applyFilter($event)" #input>
+</mat-form-field> -->
+
 <mat-card>
-    <mat-form-field appearance="outline">
-        <mat-label>Buscar producto</mat-label>
-        <input matInput (keyup)="applyFilter($event)" #input>
-    </mat-form-field>
+    <mat-tab-group>
+        <mat-tab label="Detalle productos">
+
+            <div class="responsive-table">
+
+                <nav class="navbar bg-body-tertiary">
+                    <form class="container-fluid">
+                      <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#657789" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </span>
+                        <input type="text" class="form-control" (keyup)="applyFilter($event)" #input placeholder="Filtrar productos..." aria-label="Username" aria-describedby="basic-addon1">
+                      </div>
+                    </form>
+                </nav>
+            
+                <table mat-table [dataSource]="productDetails" class="mat-elevation-z8">
+            
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="ID">
+                      <th mat-header-cell *matHeaderCellDef> ID </th>
+                      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                    </ng-container>
+                  
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="Nombre">
+                      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                      <td mat-cell *matCellDef="let element">  <b>{{element.name}}</b> </td>
+                    </ng-container>
+                  
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="Descripcion">
+                      <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+                      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                    </ng-container>
+            
+                       <!-- Symbol Column -->
+                    <ng-container matColumnDef="Tipo de moneda">
+                        <th mat-header-cell *matHeaderCellDef> Tipo de moneda </th>
+                        <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
+                      </ng-container>
+                
+                    <ng-container matColumnDef="Costo">
+                        <th mat-header-cell *matHeaderCellDef> Costo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="Precio Total">
+                        <th mat-header-cell *matHeaderCellDef> Precio Total </th>
+                        <td mat-cell *matCellDef="let element">  <b>{{element.price}}</b> </td>
+                    </ng-container>
+                
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="Categoria">
+                        <th mat-header-cell *matHeaderCellDef> Categoria </th>
+                        <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+                    </ng-container>
+                
+                    <!-- Edit Column -->
+                    <ng-container matColumnDef="Editar">
+                        <th mat-header-cell *matHeaderCellDef> Editar </th>
+                        <td mat-cell *matCellDef="let element" class="action-link"> 
+                            <button mat-icon-button color="primary" matTooltip="Editar" (click)="handleEditAction(element)">
+                                <mat-icon> edit </mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                
+                    <!-- Delete Column -->
+                    <ng-container matColumnDef="Eliminar">
+                        <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                        <td mat-cell *matCellDef="let element" class="action-link"> 
+                            <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="handleDeleteAction(element)">
+                                <mat-icon> delete </mat-icon>
+                            </button>
+                           <!--  <mat-slide-toggle (change)="onChange($event.checked, element.id)"
+                            matTooltip="Activar o desactivar producto" [checked]="element.status">
+                            </mat-slide-toggle> -->
+                        </td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            
+                     <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4"> No hay datos que coincidan con el filtro "{{input.value}}"</td>
+                    </tr>
+            
+                  </table>
+            
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                            [length]="100"
+                            showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                    </mat-paginator>  
+            </div>
+        </mat-tab>
+    
+        <mat-tab label="Stock">
+    
+            <div class="responsive-table">
+        
+                <nav class="navbar bg-body-tertiary">
+                    <form class="container-fluid ">
+                      <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#657789" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </span>
+                        <input type="text" class="form-control" (keyup)="applyStockFilter($event)" #input placeholder="Filtrar productos..." aria-label="Username" aria-describedby="basic-addon1">
+                      </div>
+                    </form>
+                </nav>
+            
+                <table mat-table [dataSource]="productStocks" class="mat-elevation-z8">
+            
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="ID">
+                      <th mat-header-cell *matHeaderCellDef> ID Producto</th>
+                      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                    </ng-container>
+                  
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="Nombre">
+                      <th mat-header-cell *matHeaderCellDef> Nombre Producto </th>
+                      <td mat-cell *matCellDef="let element"> <b>{{element.productName}}</b>  </td>
+                    </ng-container>
+            
+                     <!-- Symbol Column -->
+                     <ng-container matColumnDef="Stock">
+                        <th mat-header-cell *matHeaderCellDef> Stock </th>
+                        <td mat-cell *matCellDef="let element">  <b>{{element.stock}}</b> </td>
+                      </ng-container>
+                
+                    <!-- Edit Column -->
+                    <ng-container matColumnDef="Editar">
+                        <th mat-header-cell *matHeaderCellDef> Editar </th>
+                        <td mat-cell *matCellDef="let element" class="action-link"> 
+                            <button mat-icon-button color="primary" matTooltip="Editar" (click)="handleEditStockAction(element)">
+                                <mat-icon> edit </mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="productStockColumns;sticky:true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: productStockColumns;"></tr>
+            
+                     <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4"> No hay datos que coincidan con el filtro "{{input.value}}"</td>
+                    </tr>
+            
+                  </table>
+            
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                            [length]="100"
+                            showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                    </mat-paginator>  
+            </div>
+        </mat-tab>
+    </mat-tab-group>
 </mat-card>
 
-<hr>
+  
 
-<div class="responsive-table">
-    <table mat-table [dataSource]="productDetails" class="mat-elevation-z8">
-
-        <!-- Position Column -->
-        <ng-container matColumnDef="ID">
-          <th mat-header-cell *matHeaderCellDef> ID </th>
-          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-        </ng-container>
-      
-        <!-- Weight Column -->
-        <ng-container matColumnDef="Nombre">
-          <th mat-header-cell *matHeaderCellDef> Nombre </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
-      
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="Descripcion">
-          <th mat-header-cell *matHeaderCellDef> Descripcion </th>
-          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-        </ng-container>
-    
-        <ng-container matColumnDef="Stock">
-            <th mat-header-cell *matHeaderCellDef> Stock </th>
-            <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
-        </ng-container>
-    
-        <ng-container matColumnDef="Costo">
-            <th mat-header-cell *matHeaderCellDef> Costo </th>
-            <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
-        </ng-container>
-    
-        <ng-container matColumnDef="Precio Total">
-            <th mat-header-cell *matHeaderCellDef> Precio Total </th>
-            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-        </ng-container>
-    
-        <!-- Name Column -->
-        <ng-container matColumnDef="Categoria">
-            <th mat-header-cell *matHeaderCellDef> Categoria </th>
-            <td mat-cell *matCellDef="let element"> {{element.category}} </td>
-        </ng-container>
-    
-        <!-- Edit Column -->
-        <ng-container matColumnDef="Editar">
-            <th mat-header-cell *matHeaderCellDef> Editar </th>
-            <td mat-cell *matCellDef="let element" class="action-link"> 
-                <button mat-icon-button color="primary" matTooltip="Editar" (click)="handleEditAction(element)">
-                    <mat-icon> edit </mat-icon>
-                </button>
-            </td>
-        </ng-container>
-    
-        <!-- Delete Column -->
-        <ng-container matColumnDef="Eliminar">
-            <th mat-header-cell *matHeaderCellDef> Eliminar </th>
-            <td mat-cell *matCellDef="let element" class="action-link"> 
-                <button mat-icon-button color="warn" matTooltip="Delete" (click)="handleDeleteAction(element)">
-                    <mat-icon> delete </mat-icon>
-                </button>
-               <!--  <mat-slide-toggle (change)="onChange($event.checked, element.id)"
-                matTooltip="Activar o desactivar producto" [checked]="element.status">
-                </mat-slide-toggle> -->
-            </td>
-        </ng-container>
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>  
-</div>
 

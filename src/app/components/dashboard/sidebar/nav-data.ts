@@ -15,7 +15,7 @@ export const navbarData : INavbarData[] = [
             {
                 routeLink: 'invoice/createNewInvoice',
                 //icon: 'fas fa-laptop',
-                label: 'Facturar venta',
+                label: 'Facturar nueva venta',
             },
             {
                 routeLink: 'invoice/allInvoices',
@@ -30,18 +30,45 @@ export const navbarData : INavbarData[] = [
         label: 'Productos',
     },
     {
-        routeLink: 'manageCategories',
-        icon: 'fas fa-bookmark',
-        label: 'Gestionar Categorias',
-    },
-    {
         routeLink: 'equipment',
         icon: 'fas fa-toolbox',
         label: 'Equipamiento',
     },
     {
+        routeLink: 'customers',
+        icon: 'fas fa-user-tag',
+        label: 'Gestión de Clientes',
+    },
+    {
+        routeLink: 'manageCategories',
+        icon: 'fas fa-bookmark',
+        label: 'Gestionar Categorias',
+        items: [
+            {
+                routeLink: 'manageCategories/products',
+                //icon: 'fas fa-laptop',
+                label: 'Productos',
+            },
+            {
+                routeLink: 'manageCategories/equipment',
+                //icon: 'fas fa-laptop',
+                label: 'Equipos de mantenimiento',
+            },
+            {
+                routeLink: 'manageCategories/customers',
+                //icon: 'fas fa-laptop',
+                label: 'Tipos de Clientes',
+            },
+        ]
+    },
+    {
         routeLink: 'settings',
         icon: 'fas fa-cogs',
         label: 'Ajustes',
+    },
+    {
+        routeLink: 'logout',
+        icon: 'fas fa-sign-out-alt',
+        label: 'Cerrar sesión',
     },
 ];

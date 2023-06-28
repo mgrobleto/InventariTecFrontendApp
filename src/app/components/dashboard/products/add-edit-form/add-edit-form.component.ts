@@ -1,10 +1,11 @@
 import { Component, OnInit , Inject, EventEmitter} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ProductService } from 'src/app/services/product.service';
-import { CategoriesService } from 'src/app/services/categories.service';
+import { ProductService } from 'src/app/services/productService/product.service';
 import { CoreService } from 'src/app/components/shared/core.service';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
+import { CategoriesService } from 'src/app/services/categoryService/categories.service';
+import { BillService } from 'src/app/services/salesService/sales.service';
 
 @Component({
   selector: 'app-add-edit-form',
@@ -16,8 +17,9 @@ export class AddEditFormComponent implements OnInit {
   
   onAddProduct = new EventEmitter();
   onEditProduct = new EventEmitter();
-/*   onEmitStatusChange = new EventEmitter();
- */  productForm:any = FormGroup;
+
+  currencies:any;
+  productForm:any = FormGroup;
   dialogAction: any = 'Agregar';
   action: any = 'Agregar';
   responseMessage: any;
@@ -29,7 +31,8 @@ export class AddEditFormComponent implements OnInit {
     private _categoryService : CategoriesService,
     public _dialogRef : MatDialogRef<AddEditFormComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private _coreService: CoreService
+    private _coreService: CoreService,
+    private _billService : BillService,
   ) {
     /* this.productForm = this._fb.group({
       'name': '',
@@ -46,6 +49,7 @@ export class AddEditFormComponent implements OnInit {
     this.productForm = this._fb.group({
       name: [null,[Validators.required]],
       description: [null,[Validators.required]],
+      currency: [null,[Validators.required]],
       stock: [null,[Validators.required]],
       cost: [null,[Validators.required]],
       price: [null,[Validators.required]],
@@ -60,6 +64,7 @@ export class AddEditFormComponent implements OnInit {
     }
 
     this.getProductsCategories() ;
+    this.getCurrencyType();
   }
 
   getProductsCategories() {
@@ -74,9 +79,26 @@ export class AddEditFormComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSnackBar(this.responseMessage, GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
+  }
+
+  getCurrencyType() {
+    this._billService.getCurrencyType().subscribe(
+      (response: any) => {
+        console.log(response);
+        this.currencies = response;
+      }, (error : any) => {
+        console.log(error.error?.message);
+        if(error.message?.message){
+          this.responseMessage = error.error?.message;
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+      }
+      );
   }
 
   handleSubmit(){
@@ -92,11 +114,18 @@ export class AddEditFormComponent implements OnInit {
     var data = {
       name: formData.name,
       description : formData.description,
-      stock : formData.stock,
+      currency: formData.currency,
       cost : formData.cost,
       price : formData.price,
       category : formData.category
     }
+
+    var stockData = {
+      productName: formData.name,
+      stock : formData.stock,
+    }
+
+    console.log(data);
 
     this._productService.addProduct(data).subscribe(
       (response:any) => {
@@ -104,7 +133,7 @@ export class AddEditFormComponent implements OnInit {
         this._dialogRef.close();
         this.onAddProduct.emit();
         this.responseMessage = response.message;
-        this._coreService.openSnackBar(this.responseMessage, "con exito!");
+        this._coreService.openSuccessSnackBar("Producto agregado", "con éxito!");
       },
       (error) => {
         console.log(data);
@@ -113,7 +142,26 @@ export class AddEditFormComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSnackBar(this.responseMessage, GlobalConstants.error);
+        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
+      }
+    );
+
+    this._productService.addProductStock(stockData).subscribe(
+      (response:any) => {
+        console.log(data);
+        this._dialogRef.close();
+        this.onAddProduct.emit();
+        this.responseMessage = response.message;
+        this._coreService.openSuccessSnackBar("Producto agregado", "con éxito!");
+      },
+      (error) => {
+        console.log(data);
+        if(error.message?.message){
+          this.responseMessage = error.message?.message;
+        }else{
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }
@@ -135,7 +183,7 @@ export class AddEditFormComponent implements OnInit {
         this._dialogRef.close();
         this.onEditProduct.emit();
         this.responseMessage = response.message;
-        this._coreService.openSnackBar(this.responseMessage, "con exito");
+        this._coreService.openSuccessSnackBar("Producto actualizado", "con éxito");
       },
       (error) => {
         if(error.message?.message){
@@ -143,7 +191,7 @@ export class AddEditFormComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSnackBar(this.responseMessage, GlobalConstants.error);
+        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }

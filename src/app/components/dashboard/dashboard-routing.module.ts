@@ -2,14 +2,20 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from './home/home.component';
-import { InvoiceComponent } from './invoice/invoice.component';
 import {  ProductsComponent} from './products/products.component';
 import { SettingsComponent } from './settings/settings.component';
 import { EquipmentComponent } from './equipment/equipment.component';
 import { ManageCategoriesComponent } from './manage-categories/manage-categories.component';
+import { CustomersComponent } from './customers/customers.component';
+import { GlobalConstants } from 'src/app/components/shared/global-constants';
+
 
 const routes: Routes = [
-  {path: '', component:DashboardComponent, children:[
+  { path: '', component:DashboardComponent, children:[
+    {
+      path: '', 
+      component:HomeComponent
+    },
     {
       path: 'home', 
       component:HomeComponent
@@ -35,11 +41,23 @@ const routes: Routes = [
       //loadChildren: () => import('./equipment/equipment.module').then(m => m.EquipmentModule)
     },
     {
+      path: 'customers', 
+      component:CustomersComponent,
+      //loadChildren: () => import('./equipment/equipment.module').then(m => m.EquipmentModule)
+    },
+    {
       path: 'settings', 
       component:SettingsComponent,
       //loadChildren: () => import('./equipment/equipment.module').then(m => m.ProductsModule)
     },
-  ]}
+    {
+      path: 'logout', 
+      redirectTo:'login', 
+      pathMatch: 'full',
+      //loadChildren: () => import('./equipment/equipment.module').then(m => m.ProductsModule)
+    },
+  ]
+  }
 ];
 
 @NgModule({

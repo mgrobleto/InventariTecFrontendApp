@@ -9,11 +9,18 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { HomeComponent } from './home/home.component';
 import { SublevelMenuComponent } from './sidebar/sub-level.component';
 import { NgxUiLoaderConfig, NgxUiLoaderModule , SPINNER} from 'ngx-ui-loader';
-import { AddEditFormComponent } from './products/add-edit-form/add-edit-form.component';
 import { ProductsComponent } from './products/products.component';
 import { SettingsComponent } from './settings/settings.component';
-import { ManageCategoriesComponent } from './manage-categories/manage-categories.component';
 import { AddEditCategoryFormComponent } from './manage-categories/add-edit-category-form/add-edit-category-form.component';
+import { AddEditEquipmentFormComponent } from './equipment/add-edit-equipment-form/add-edit-equipment-form.component';
+import { AddEditFormComponent } from './products/add-edit-form/add-edit-form.component';
+import { ManageCategoriesComponent } from './manage-categories/manage-categories.component';
+import { EquipmentComponent } from './equipment/equipment.component';
+import { CustomersComponent } from './customers/customers.component';
+import { InvoiceComponent } from './invoice/invoice.component';
+import { CreateInvoiceComponent } from './invoice/create-invoice/create-invoice.component';
+import { IntlTelInputNgModule } from 'intl-tel-input-ng';
+import { AddEditStockComponent } from './products/add-edit-stock/add-edit-stock.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text:'Cargando...',
@@ -36,8 +43,12 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ProductsComponent,
     AddEditFormComponent,
     AddEditCategoryFormComponent,
+    AddEditEquipmentFormComponent,
     ManageCategoriesComponent,
-    SettingsComponent
+    EquipmentComponent,
+    SettingsComponent,
+    CustomersComponent,
+    AddEditStockComponent,
   ],
   imports: [
     CommonModule,

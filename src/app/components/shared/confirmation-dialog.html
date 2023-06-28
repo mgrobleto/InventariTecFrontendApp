@@ -1,5 +1,5 @@
 <mat-toolbar>
-	<mat-toolbar-row fxLayout="row">
+	<mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
 		<span>Confirmacion</span>
 		<span class="spacer"></span>
 		<button class="mat-dialog-close" mat-icon-button mat-dialog-close>
@@ -7,8 +7,9 @@
 		</button>
 	</mat-toolbar-row>
 </mat-toolbar>
+
 <mat-dialog-content class="mat-typography">
-	<h6>Esta seguro que quieres {{details.message}} ?</h6>
+	<h2>Está seguro de {{details.message}} ?</h2>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

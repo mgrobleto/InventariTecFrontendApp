@@ -30,6 +30,15 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
+                <mat-label>Tipo de moneda</mat-label>
+                <mat-select formControlName="currency">
+                    <mat-option *ngFor="let currency of currencies" [value]="currency.currency">
+                        {{currency.currency}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
                 <mat-label>Categoria</mat-label>
                 <mat-select formControlName="category">
                     <mat-option *ngFor="let category of productsCategories" [value]="category.name">

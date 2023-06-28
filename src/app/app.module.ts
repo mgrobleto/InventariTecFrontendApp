@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule} from '@angular/common/http';
 import { SharedModule } from './components/shared/shared.module';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
     SharedModule,
   ],
   providers: [
-   
+   DatePipe
   ],
   bootstrap: [AppComponent]
 })

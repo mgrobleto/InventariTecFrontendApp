@@ -5,10 +5,10 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CoreService } from '../../shared/core.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { CategoriesService } from 'src/app/services/categories.service';
 import { AddEditCategoryFormComponent } from './add-edit-category-form/add-edit-category-form.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
+import { CategoriesService } from 'src/app/services/categoryService/categories.service';
 
 @Component({
   selector: 'app-manage-categories',
@@ -62,7 +62,7 @@ export class ManageCategoriesComponent {
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSnackBar(this.responseMessage,GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
       );
   }
@@ -70,7 +70,7 @@ export class ManageCategoriesComponent {
   applyFilter(event: Event){
     const filterValue = (event.target as HTMLInputElement).value;
     //this.productDetails.filter((value:any) => value.productsCategories.category).breadcrumb[0].replace()
-    this.productDetails.filter = filterValue.trim().toLowerCase();
+    this.productsCategories.filter = filterValue.trim().toLowerCase();
   }
 
   handleAddAction() {
@@ -126,7 +126,7 @@ export class ManageCategoriesComponent {
           this.ngxService.stop();
           this.getProductsCategories();
           this.responseMessage = response?.message;
-          this._coreService.openSnackBar(this.responseMessage, "con exito");
+          this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
           console.log(response);
         },
         (error : HttpErrorResponse) => {
@@ -137,7 +137,7 @@ export class ManageCategoriesComponent {
           } else {
             this.responseMessage = GlobalConstants.genericError;
           }
-        this._coreService.openSnackBar(this.responseMessage,GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     );
   }

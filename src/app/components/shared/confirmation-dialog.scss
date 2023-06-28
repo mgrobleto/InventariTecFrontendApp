@@ -1,14 +1,16 @@
-.mat-h6 .mat-headline, .mat-typography{
-    font-size: 18px;
+/* .mat-h6 .mat-headline, .mat-typography{
+    font-size: 30px;
     font-weight: 400;
-}
+} */
 
 h6 {
-    font-size: 30px;
+    font-size: 35px;
 }
 
 .mat-toolbar {
-    margin: -24px;
+    margin: auto;
     margin-bottom: 10px;
     width: auto;
+    background: #29296a;
+    color: #FFFF;
 }

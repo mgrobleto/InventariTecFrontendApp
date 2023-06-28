@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CategoriesService } from 'src/app/services/categories.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CoreService } from 'src/app/components/shared/core.service';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
+import { CategoriesService } from 'src/app/services/categoryService/categories.service';
 
 @Component({
   selector: 'app-add-edit-form',
@@ -58,7 +58,7 @@ export class AddEditCategoryFormComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSnackBar(this.responseMessage, GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
   }
@@ -84,7 +84,7 @@ export class AddEditCategoryFormComponent implements OnInit {
         this._dialogRef.close();
         this.onAddCategory.emit();
         this.responseMessage = response.message;
-        this._coreService.openSnackBar(this.responseMessage, "con exito!");
+        this._coreService.openSuccessSnackBar(this.responseMessage, "con exito!");
       },
       (error) => {
         console.log(data);
@@ -93,7 +93,7 @@ export class AddEditCategoryFormComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSnackBar(this.responseMessage, GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }
@@ -111,7 +111,7 @@ export class AddEditCategoryFormComponent implements OnInit {
         this._dialogRef.close();
         this.onEditCategory.emit();
         this.responseMessage = response.message;
-        this._coreService.openSnackBar(this.responseMessage, "con exito");
+        this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
       },
       (error) => {
         if(error.message?.message){
@@ -119,7 +119,7 @@ export class AddEditCategoryFormComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSnackBar(this.responseMessage, GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }

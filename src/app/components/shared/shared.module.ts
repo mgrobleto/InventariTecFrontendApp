@@ -20,10 +20,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle'; 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DatePickerComponent } from './date-picker/date-picker.component';
+import {MatTooltipModule} from '@angular/material/tooltip'; 
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
     ConfirmationDialog,
+    DatePickerComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +50,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSortModule,
     MatSlideToggleModule,
     FlexLayoutModule,
+    MatTooltipModule,
+    MatTabsModule
   ],
   exports: [
     FormsModule,
@@ -67,6 +73,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatDialogModule,
     MatSlideToggleModule,
     FlexLayoutModule,
+    MatTooltipModule,
+    MatTabsModule,
   ]
 })
 export class SharedModule { }

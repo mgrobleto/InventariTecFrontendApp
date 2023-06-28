@@ -31,7 +31,27 @@ export class ProductService {
     return this.httpClient.delete(this.url + '/products/' + id);
   }
 
- /*  updateStatus(data:any) {
-
+  /* getProductsByCategory(id:any) {
+    return this.httpClient.get(this.url + '/products/' + id)
   } */
+
+  getProductById(id:any) {
+    return this.httpClient.get(this.url + '/products/' + id)
+  }
+
+  getProductStock() {
+    return this.httpClient.get<any>(this.url + '/productStock/');
+  }
+
+  addProductStock(data : any) {
+    return this.httpClient.post(this.url + '/productStock/', data, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
+
+  updateProductStockById(data:any) {
+    return this.httpClient.put(this.url + '/productStock/' + data.id + '/', data,{
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    })
+  }
 }

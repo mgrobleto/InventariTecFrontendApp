@@ -1,0 +1,33 @@
+.header {
+    background: #1a1853;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-title {
+    max-width: 600px;
+}
+
+.header button{
+    float: right;
+    color: #0e073e;
+    border: none;
+    max-width: 300px;
+}
+
+button .float-right {
+    float: right;
+}
+
+mat-card {
+    /* max-width: 500px; */
+    padding: 20px;
+    margin-bottom: 1rem;
+}
+
+table {
+    width: 100%;
+}

@@ -1,19 +1,24 @@
 .body {
     width: calc(100% - 5rem);
-    height: 100vh;
+    height: 150vh;
     margin-left: 5rem;
     z-index: 0;
     position: relative;
     top: 0;
     transition: all .5s ease;
     background: #f4f7fa;
-    padding: 3rem;
+    /* padding: 2rem; */
+    padding-left: 3rem;
+    padding-right: 2rem;
+    padding-top: 1rem;
 }
 
 .body-trimmed{
     /* 17.5625rem */
-    width: calc(100% - 16.5625rem);
-    margin-left: 16.5625rem;
+    width: calc(100% - 19.6rem);
+    margin-left: 19.6rem;
+   /*  padding-left: 2rem;
+    padding-right: 2rem; */
 }
 
 .body-md-screen {

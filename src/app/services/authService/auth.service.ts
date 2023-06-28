@@ -16,14 +16,13 @@ const httpOptions = {
 })
 export class AuthService {
 
-  //api_url : string = 'http://localhost:8000/';
   api_url = environment.apiUrl;
   isLoggedIn = false;
 
   constructor(private http : HttpClient) {}
 
   login (username : string, password : string) : Observable<boolean> {
-    return this.http.post<any>(this.api_url + `accounts/api/auth/`, {username, password}, httpOptions).pipe(
+    return this.http.post<any>(this.api_url + `/accounts/api/auth/`, {username, password}, httpOptions).pipe(
       map (user => {
         if (user && user.token){
           localStorage.setItem('currentUser', JSON.stringify(user));
@@ -39,15 +38,20 @@ export class AuthService {
     );
   }
 
-  // isLoggedIn(){
+  auth() {
+    return this.isLoggedIn;
+  }
+
+  //isLoggedIn(){
   //   const token = localStorage.getItem('token');
   //   console.log(token);
   //   if(token === null) return false;
   //   else return true;
   // }
 
-  logout() : void { 
+  logout(){ 
     localStorage.removeItem('currentUser');
     this.isLoggedIn = false;
+    console.log(this.isLoggedIn);
   }
 }

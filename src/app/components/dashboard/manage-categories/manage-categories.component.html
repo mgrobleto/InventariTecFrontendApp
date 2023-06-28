@@ -1,6 +1,6 @@
 <mat-card class="header">
     <mat-card-header>
-        <h2>Gestión de Categoria de Productos </h2>
+        <h2>Gestión de Categorías </h2>
     </mat-card-header>
     <mat-card-content>
         <button mat-raised-button class="float-right" (click)="handleAddAction()">
@@ -9,17 +9,20 @@
     </mat-card-content>
 </mat-card>
 
-<mat-card>
-    <mat-form-field appearance="outline">
-        <mat-label>Buscar productos</mat-label>
-        <input matInput (keyup)="applyFilter($event)" #input>
-    </mat-form-field>
-</mat-card>
-
 <hr>
 
-<div class="responsive-table">
-    <table mat-table [dataSource]="productsCategories" class="mat-elevation-z8">
+<div class="responsive-table mat-elevation-z8">
+    <nav class="navbar bg-body-tertiary">
+        <form class="container-fluid">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#657789" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" class="form-control" (keyup)="applyFilter($event)" #input placeholder="Filtrar productos..." aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+        </form>
+    </nav>
+    <table mat-table [dataSource]="productsCategories">
 
         <!-- Position Column -->
         <ng-container matColumnDef="ID">

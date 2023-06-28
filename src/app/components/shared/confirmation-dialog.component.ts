@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
     selector: 'confirmation-dialog',
     templateUrl: './confirmation-dialog.html',
+    styleUrls: ['./confirmation-dialog.scss'],
 })
 
 export class ConfirmationDialog implements OnInit {

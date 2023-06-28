@@ -2,7 +2,7 @@ import {HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ProductService } from 'src/app/services/product.service';
+import { ProductService } from 'src/app/services/productService/product.service';
 import { AddEditFormComponent } from '../add-edit-form/add-edit-form.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CoreService } from 'src/app/components/shared/core.service';
@@ -63,7 +63,7 @@ export class ListProductsComponent implements OnInit {
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSnackBar(this.responseMessage,GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
       );
   }
@@ -138,7 +138,7 @@ export class ListProductsComponent implements OnInit {
           this.ngxService.stop();
           this.getAllProducts();
           this.responseMessage = response?.message;
-          this._coreService.openSnackBar(this.responseMessage, "con exito");
+          this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
           console.log(response);
         },
         (error : HttpErrorResponse) => {
@@ -149,7 +149,7 @@ export class ListProductsComponent implements OnInit {
           } else {
             this.responseMessage = GlobalConstants.genericError;
           }
-        this._coreService.openSnackBar(this.responseMessage,GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     );
   }

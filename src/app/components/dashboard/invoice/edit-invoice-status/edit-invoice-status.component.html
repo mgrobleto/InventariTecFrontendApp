@@ -1,0 +1,33 @@
+<mat-toolbar>
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+        <span>{{dialogData.action}} estado venta </span>
+        <span class="spacer"></span>
+        <button class="mat-dialog-close" mat-icon-button mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content>
+    <form [formGroup]="billForm" (ngSubmit)="handleSubmit()">
+        <div fxLayout="column" fxLayoutAlign="space-evenly-center">
+            <mat-form-field appearance="outline">
+                <mat-label>Cambiar estado de venta</mat-label>
+                <mat-select formControlName="bill_state" required>
+                    <mat-option *ngFor="let status of billState" [value]="status.name">
+                        {{status.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button type="submit" class="btn btn-success" (click)="handleSubmit()"> <!-- [disabled]="!(productForm.valid && productForm.dirty)" -->
+        {{action}}
+    </button>
+    <button class="btn btn-danger" type="button" mat-dialog-close>
+       Cancelar
+    </button>
+</mat-dialog-actions>
