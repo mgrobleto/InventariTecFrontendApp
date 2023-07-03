@@ -24,10 +24,19 @@ mat-card {
     //justify-content: space-between;
     padding: 2rem;
     border-radius: 3rem;
-    max-height: 200px;
+    height: 200px;
 }
 
 .help-item:hover {
     transform: translate(-10px, 0);
     transition: 300ms;
+}
+
+.container, 
+.container-lg, 
+.container-md, 
+.container-sm, 
+.container-xl, 
+.container-xxl {
+  max-width: 1483px;
 }

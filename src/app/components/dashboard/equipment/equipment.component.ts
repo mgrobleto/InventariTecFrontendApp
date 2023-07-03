@@ -12,6 +12,7 @@ import { GlobalConstants } from '../../shared/global-constants';
 import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 import * as XLSX from 'xlsx';
 import { MatPaginator } from '@angular/material/paginator';
+import swal from'sweetalert2';
 
 @Component({
   selector: 'app-equipment',
@@ -168,7 +169,12 @@ export class EquipmentComponent {
           this.ngxService.stop();
           this.getEquipments();
           this.responseMessage = response?.message;
-          this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
+          swal.fire(
+            'El elemento ha sido eliminado correctamente',
+            this.responseMessage = response?.message,
+            'success'
+          )
+          //this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
           console.log(response);
         },
         (error : HttpErrorResponse) => {
@@ -179,7 +185,13 @@ export class EquipmentComponent {
           } else {
             this.responseMessage = GlobalConstants.genericError;
           }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Algo salió mal!',
+            footer: this.responseMessage
+          })
+        //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     );
   }

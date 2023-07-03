@@ -12,6 +12,7 @@ import { ConfirmationDialog } from 'src/app/components/shared/confirmation-dialo
 import { CategoriesService } from 'src/app/services/categoryService/categories.service';
 import * as XLSX from 'xlsx';
 import { MatPaginator } from '@angular/material/paginator';
+import swal from'sweetalert2';
 
 @Component({
   selector: 'app-products',
@@ -155,7 +156,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   handleDeleteAction(values:any) {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
-      message: 'eliminar el' + values.name +' producto',
+      message: 'eliminar el ' + values.name +' producto',
       confirmation: true
     }
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
@@ -172,7 +173,12 @@ export class ProductsComponent implements OnInit, AfterViewInit{
           this.ngxService.stop();
           this.getAllProducts();
           this.responseMessage = response?.message;
-          this._coreService.openSuccessSnackBar("Producto eliminado", "con exito");
+          swal.fire(
+            'El producto ha sido eliminado correctamente',
+            this.responseMessage = response?.message,
+            'success'
+          )
+          //this._coreService.openSuccessSnackBar("Producto eliminado", "con exito");
           console.log(response);
         },
         (error : HttpErrorResponse) => {
@@ -183,7 +189,13 @@ export class ProductsComponent implements OnInit, AfterViewInit{
           } else {
             this.responseMessage = GlobalConstants.genericError;
           }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Algo salió mal!',
+            footer: this.responseMessage
+          })
+        //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     );
   }
