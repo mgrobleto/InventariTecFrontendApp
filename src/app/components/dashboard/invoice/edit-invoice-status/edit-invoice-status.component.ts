@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CoreService } from 'src/app/services/snackBar/core.service';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
 import { BillService } from 'src/app/services/salesService/sales.service';
+import swal from'sweetalert2';
 
 @Component({
   selector: 'app-edit-invoice-status',
@@ -128,8 +129,13 @@ export class EditInvoiceStatusComponent implements OnInit {
       (response:any) => {
         this._dialogRef.close();
         this.onEditProduct.emit();
+        swal.fire(
+          'Estado de factura actualizado a: ' + data.bill_state,
+          'Número de Factura: '+ data.billNumber,
+          'success'
+        )
         this.responseMessage = response.message;
-        this._coreService.openSuccessSnackBar("Estado actualizado", "con éxito");
+        //this._coreService.openSuccessSnackBar("Estado actualizado", "con éxito");
       },
       (error) => {
         if(error.message?.message){
@@ -137,7 +143,13 @@ export class EditInvoiceStatusComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
+        swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal!',
+          footer: this.responseMessage
+        })
+        //this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }

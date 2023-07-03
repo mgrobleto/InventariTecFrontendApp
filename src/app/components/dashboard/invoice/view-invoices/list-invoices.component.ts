@@ -15,6 +15,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
+import swal from'sweetalert2';
 
 
 @Component({
@@ -282,8 +283,12 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       (response:any) => {
         this.ngxService.stop();
         this.getAllBills();
-        this.responseMessage = response?.message;
-        this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
+        swal.fire(
+          'Factura eliminada correctamente',
+          this.responseMessage = response?.message,
+          'success'
+        )
+        //this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
         console.log(response);
       },
       (error : HttpErrorResponse) => {
@@ -294,8 +299,14 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
-      this._coreService.openFailureSnackBar(this.responseMessage,GlobalConstants.error);
-    }
-  );
-}
+        swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal!',
+          footer: this.responseMessage
+        })
+      //this._coreService.openFailureSnackBar(this.responseMessage,GlobalConstants.error);
+      }
+    );
+  }
 }

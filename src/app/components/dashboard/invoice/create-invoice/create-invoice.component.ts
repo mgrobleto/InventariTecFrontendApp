@@ -57,6 +57,7 @@ export class CreateInvoiceComponent implements OnInit {
   invoiceForm:any = FormGroup;
   invoiceDetailForm:any = FormGroup;
   billDate:any;
+  currentMonth: any;
 
 
   constructor(
@@ -113,6 +114,12 @@ export class CreateInvoiceComponent implements OnInit {
     this.getMonth();
     this.getYear();
     this.getBillState();
+
+    const value = new Date().getMonth();
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    this.currentMonth = monthNames[value];
+    //this.getMonth();
+
 
     this.invoiceForm.controls['iva'].setValue(0.0);
     console.log(this.invoiceForm.controls['iva'].value);
@@ -174,9 +181,11 @@ export class CreateInvoiceComponent implements OnInit {
     this._billService.getMonth().subscribe(
       (resp : any) => {
         resp.forEach((element:any) => {
-          this.month = element.name;
+          if(element.name == this.currentMonth){
+            this.month = element.name;
+            this.invoiceForm.controls['id_month'].setValue(this.month);
+          }
         });
-        this.invoiceForm.controls['id_month'].setValue(this.month);
       }, (err : any) => {
         console.log(err);
         if(err.message?.message){
@@ -439,7 +448,13 @@ export class CreateInvoiceComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
+        swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal!',
+          footer: this.responseMessage
+        })
+        //this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
 
