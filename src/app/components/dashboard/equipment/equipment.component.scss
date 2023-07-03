@@ -1,5 +1,5 @@
 .header {
-    background: #1a1853;
+    background: #192653;
     color: #ffff;
     display: flex;
     flex-direction: row;
@@ -24,10 +24,133 @@ button .float-right {
 
 mat-card {
     /* max-width: 500px; */
+    background-color: #E8EAF6;
     padding: 20px;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
-table {
+.table-header {
+    background: #192653;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h2 {
+        margin-bottom: 0;
+    }
+}
+
+.filter{
     width: 100%;
+    font-size: 18px;
+}
+
+#id-input {
+    background-color: #E8EAF6;
+    box-shadow: 0 2px 0 black;
+}
+
+mat-table {
+    width: 100%;
+}
+
+th {
+    width: auto;
+}
+
+tr.mat-row {
+    height: 52px;
+  
+    td.mat-cell {
+      /* padding-left: 16px;
+      padding-right: 16px;
+      box-sizing: border-box; */
+      font-size: 2rem;
+    }
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+    padding: 20px 15px 20px 15px;
+}
+
+.mat-column-ID {
+    width: 20% !important;
+}
+
+.mat-column-Nombre {
+    width: 30% !important;
+}
+
+.mat-column-Categoria {
+    width: 23% !important;
+}
+
+.mat-column-Editar {
+    width: 20% !important;
+}
+
+.mat-column-Eliminar {
+    width: 20% !important;
+    padding-left: 54px;
+    padding-right: 95px;
+}
+
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    background-color: #e4e4e4;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    box-shadow: 1px 2px 5px #847878; 
+    border: none;
+    transition: background-color 0.5s ease;
+}
+
+.download {
+    margin: auto;
+    background-color: green;
+    border: none;
+}
+
+input {
+    background-color: #b5e8fa;
+    padding: 16px 32px;
+    border: none;
+    display: block;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-family: 'Roboto', sans-serif;
+    /*font-weight: 600; */
+    color: black;
+    -webkit-appearance: none;
+    transition: all 240ms ease-out;
+    width: 100%;
+    
+    &::placeholder {
+      color: #6d7f8f;
+    }
+    
+    &:focus {
+      outline: none;
+      color: #6d7f8f;
+      background-color: lighten(#e3edf7, 3%);
+    }
+};
+
+/* Styles for tab labels */
+.navbar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+mat-paginator {
+    background-color: #E8EAF6;
+}
+
+.mat-mdc-table {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }

@@ -44,12 +44,6 @@ body {
       }
 }
 
-/* .green-snackbar button {
-    background-color: rgb(65, 252, 134);
-    color: white;
-    border: none;
-} */
-
 .red-snackbar {
     max-width: max-content !important;
     color: white;
@@ -69,3 +63,5 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@media print { html, body { height: auto; overflow-y: visible !important; } }

@@ -7,6 +7,9 @@ import { GlobalConstants } from '../../shared/global-constants';
 import { CoreService } from '../../shared/core.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs';
+import { EquipmentService } from 'src/app/services/equipmentService/equipment.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/authService/auth.service';
 
 Chart.register(...registerables);
 
@@ -17,9 +20,15 @@ Chart.register(...registerables);
 })
 export class HomeComponent implements OnInit {
 
-  totalIncome:string="0";
-  totalSales:string="0";
-  totalProducts:string="0";
+  totalIncomes:any;
+  totalIncome:number = 0;
+  products:any[] = [];
+  equipments:any[] = [];
+  totalSalesByMonth:any[] = [];
+  billItems:any[] = [];
+  totalSales:any = 0;
+  totalProducts:any;
+  totalEquipments:any;
   billDate: any;
   billDetails:any;
   responseMessage: any;
@@ -27,18 +36,26 @@ export class HomeComponent implements OnInit {
   monthReturned: any;
   currentMonth: any;
   monthSelect: any = FormGroup;
+  userName: any;
+  barChart: any
 
   constructor(
+    private authService: AuthService,
     private _billService:BillService,
     private _productService:ProductService,
+    private _equipmentService:EquipmentService,
     private datePipe: DatePipe,
     private _coreService: CoreService,
     private _fb : FormBuilder,
+    public router : Router,
   ){}
 
   ngOnInit(): void {
 
     this.getMonth();
+    this.getTotalProducts();
+    this.getTotalEquipment();
+    this.userInfo();
 
     this.monthSelect = this._fb.group({
         id_month: [null,[Validators.required]],
@@ -46,9 +63,12 @@ export class HomeComponent implements OnInit {
 
     this.currentMonth = new Date().getMonth();
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    console.log(monthNames[this.currentMonth]);
+    //console.log(monthNames[this.currentMonth]);
     const value = monthNames[this.currentMonth];
+    console.log(value);
 
+    this.getTotalSales(value);
+    this.getTotalIncomeByMonth(value);
     
 
     if(this.monthSelect.controls['id_month'].value === null) {
@@ -56,6 +76,110 @@ export class HomeComponent implements OnInit {
       var initialValue = this.monthSelect.controls['id_month'].value;
       this.getMonthValues(initialValue);
     }
+  }
+
+  userInfo() {
+    this.authService.getUserInfo().subscribe(
+      (response: any) => {
+        this.userName = response.user;
+      }, 
+      (err) => {
+        if(err.message?.message){
+          this.responseMessage = err.message?.message;
+        }else{
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
+      }
+    )
+  }
+
+  redirectToProductsInventory(){
+    this.router.navigate(['dashboard/products/'])
+  }
+
+  redirectToeEquipmentInventory(){
+    this.router.navigate(['dashboard/equipment'])
+  }
+
+  getTotalProducts() {
+    this._productService.getAllProducts().subscribe(
+      (response : any) => {
+        this.products = response;
+        this.totalProducts = this.products.length;
+      }
+    )
+  }
+
+  getTotalEquipment() {
+    this._equipmentService.getAllEquipment().subscribe(
+      (response : any) => {
+        this.equipments = response;
+        this.totalEquipments = this.equipments.length;
+      }
+    )
+  }
+
+  getTotalSales(value : any) {
+
+    var amount:any;
+    //this.totalSales = this._billService.getAllBills().pipe(map( resp => resp.billItems.length))
+
+    this._billService.getAllBills().pipe( map ( (resp : any) => {
+      return resp.filter((month : any) => month.id_month === value)
+    })).subscribe(
+      (response : any) => {
+
+        response.forEach((items : any)=> {
+          this.billItems = items.billItems;
+          amount = this.billItems.length;
+          this.totalSales += amount;
+        })
+
+        console.log(this.billItems.length);
+
+        console.log(this.totalSales)
+        
+      },
+      (error) => {
+        if(error.message?.message){
+          this.responseMessage = error.message?.message;
+        }else{
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
+      }
+    )
+  }
+
+  getTotalIncomeByMonth(value : any) {
+    var amount:any;
+
+    this._billService.getAllBills().pipe( map ( (resp : any) => {
+      return resp.filter((month : any) => month.id_month === value)
+    })).subscribe(
+      (response : any) => {
+
+        response.forEach((items : any)=> {
+          this.totalIncomes = items.total;
+          amount = parseFloat(this.totalIncomes);
+          this.totalIncome += amount;
+        })
+
+        //console.log(this.billItems.length);
+
+        //console.log(this.totalSales)
+        
+      },
+      (error) => {
+        if(error.message?.message){
+          this.responseMessage = error.message?.message;
+        }else{
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
+      }
+    )
   }
 
   getMonthValues(value: any){
@@ -111,14 +235,6 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  getTotalIncome() {
-
-  }
-
-  getMostSellProducts() {
-
-  }
-
   showGraphic(labelGraphic:any[], graphicData:any[]){
 
     const labels = [
@@ -131,7 +247,11 @@ export class HomeComponent implements OnInit {
       'Domingo'
     ]
 
-    const barChart = new Chart('barChart',{
+    if(this.barChart){
+      this.barChart.destroy();
+    }
+
+    this.barChart = new Chart('barChart',{
       type:'bar',
       data: {
         labels: labelGraphic,
@@ -157,6 +277,7 @@ export class HomeComponent implements OnInit {
         }
       }
     });
+
   }
   
 }

@@ -1,251 +1,286 @@
-<mat-card class="header">
-    <mat-card-header>
-        <h2> Nueva factura </h2>
-    </mat-card-header>
-    <mat-card-content>
-        <button mat-raised-button [disabled]="validateSubmit()" (click)="submitAction()">
-            <mat-icon>print</mat-icon> Guardar factura
-        </button>
-    </mat-card-content>
-</mat-card>
+<section fxLayout="column" fxLayoutAlign="space-around-center">
+    <mat-card class="header">
+        <mat-card-header>
+            <h2> Nueva factura </h2>
+        </mat-card-header>
+        <mat-card-content>
+            <button mat-raised-button [disabled]="validateSubmit()" (click)="submitAction()">
+                <mat-icon>print</mat-icon> Guardar factura
+            </button>
+        </mat-card-content>
+    </mat-card>
 
-<hr>
-
-<mat-card>
-    <h2>Seleccionar producto:</h2>
-    <form [formGroup]="invoiceForm">
-        <div fxLayout="column" fxLayoutAlign="space-evenly-center">
-            <div fxLayout="row">
-                <mat-form-field appearance="outline">
-                    <mat-label>Categoria</mat-label>
-                    <mat-select formControlName="category" (selectionChange)="getProductsByCategory($event.value)">
-                        <mat-option *ngFor="let category of productsCategories" [value]="category.name">
-                            {{category.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Producto</mat-label>
-                    <mat-select formControlName="productName" (selectionChange)="getProductDetails($event.value); getProductStock($event.value)">
-                        <mat-option *ngFor="let product of productsByCategorySelected" [value]="product.name">
-                            {{product.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Precio</mat-label>
-                    <input matInput formControlName="price" readonly>
-                </mat-form-field>
-
-               <mat-form-field appearance="outline">
-                    <mat-label>Cantidad</mat-label>
-                    <input matInput formControlName="amount_products" required (keyup)="setQuantity($event)" #input>
-                    <mat-error *ngIf="invoiceForm.controls['amount_products'].touched && invoiceForm.controls['amount_products'].invalid">
-                        <span *ngIf="invoiceForm.controls['amount_products'].errors?.['required']">Debe rellenar este campo</span>
-                        <span *ngIf="invoiceForm.controls['amount_products'].errors?.['amount_products']">Información invalida</span>
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Sub Total</mat-label>
-                    <input matInput formControlName="total_sale" readonly>
-                </mat-form-field>
-            </div>
-        </div>
-    </form>
-    <div class="add-product-section">
-        <button
-        class="add"
-        mat-flat-button 
-        [disabled]="validateAddProduct()" 
-        [ngStyle]="{'background-color' : validateAddProduct() === false ? 'green' : 'primary'}"
-        (click)="addProductToBillList()">
-            Agregar producto
-        </button>
-
-        <button class="total" mat-flat-button>
-           <mat-icon>monetization_on</mat-icon> Total: {{totalAmount}}
-        </button>
-    </div>
-</mat-card>
-
-<hr>
-
-<div class="responsive-table">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      
-        <!-- Weight Column -->
-        <ng-container matColumnDef="Nombre">
-          <th mat-header-cell *matHeaderCellDef> Nombre </th>
-          <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
-        </ng-container>
-
-          <!-- Name Column -->
-          <ng-container matColumnDef="Categoria">
-            <th mat-header-cell *matHeaderCellDef> Categoria </th>
-            <td mat-cell *matCellDef="let element"> {{element.category}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Precio">
-            <th mat-header-cell *matHeaderCellDef> Precio </th>
-            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Cantidad">
-            <th mat-header-cell *matHeaderCellDef> Cantidad </th>
-            <td mat-cell *matCellDef="let element"> {{element.amount_products}} </td>
-        </ng-container>
+    <mat-card>
+        <mat-card-content>
+            <h2>Detalles del Cliente</h2>
+            <form [formGroup]="invoiceForm">
+                <div fxLayout="column" fxLayoutAlign="space-evenly-center">
+                    <div fxLayout="row">
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Numero de Factura</mat-label>
+                            <input matInput formControlName="billNumber" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Nombre del Cliente</mat-label>
+                            <input matInput type="text" formControlName="customer_name" required>
+                            <mat-error *ngIf="invoiceForm.controls['customer_name'].touched && invoiceForm.controls['customer_name'].invalid">
+                                <span *ngIf="invoiceForm.controls['customer_name'].errors?.['required']">Debe rellenar este campo</span>
+                                <span *ngIf="invoiceForm.controls['customer_name'].errors?.['pattern']">Información invalida</span>
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tipo de cliente</mat-label>
+                            <mat-select formControlName="customer_type" required>
+                                <mat-option *ngFor="let customer of customerType" [value]="customer.customerType">
+                                    {{customer.customerType}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Numero de contacto</mat-label>
+                            <input 
+                            matInput 
+                            type='text' mask="9999 9999" 
+                            formControlName="phoneNumber" 
+                            required>
+                            <mat-error *ngIf="invoiceForm.controls['phoneNumber'].touched && invoiceForm.controls['phoneNumber'].invalid">
+                                <span *ngIf="invoiceForm.controls['phoneNumber'].errors?.['required']">Debe rellenar este campo</span>
+                                <span *ngIf="invoiceForm.controls['phoneNumber'].errors?.['pattern']">Información invalida</span>
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tipo de Pago</mat-label>
+                            <mat-select formControlName="payment_type" required>
+                                <mat-option *ngFor="let payment of payment_type" [value]="payment.payment_type">
+                                    {{payment.payment_type}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
     
-        <ng-container matColumnDef="Total">
-            <th mat-header-cell *matHeaderCellDef> Total </th>
-            <td mat-cell *matCellDef="let element"> {{element.total_sale}} </td>
-        </ng-container>
-    
-        <!-- Delete Column -->
-        <ng-container matColumnDef="Eliminar">
-            <th mat-header-cell *matHeaderCellDef> Eliminar </th>
-            <td mat-cell *matCellDef="let element;let i = index" class="action-link"> 
-                <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="handleDeleteAction(i, element)">
-                    <mat-icon> delete </mat-icon>
+            <h2>Seleccionar Producto:</h2>
+
+            <form [formGroup]="invoiceForm">
+                <div fxLayout="column" fxLayoutAlign="space-evenly-center">
+                    <div fxLayout="row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Categoria</mat-label>
+                            <mat-select formControlName="category" (selectionChange)="getProductsByCategory($event.value)">
+                                <mat-option *ngFor="let category of productsCategories" [value]="category.name">
+                                    {{category.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Producto</mat-label>
+                            <mat-select formControlName="productName" (selectionChange)="getProductDetails($event.value);">
+                                <mat-option *ngFor="let product of productsByCategorySelected" [value]="product.name">
+                                    {{product.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Precio</mat-label>
+                            <input matInput formControlName="price" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tipo de moneda</mat-label>
+                            <input matInput formControlName="currency_type" readonly>
+                        </mat-form-field>
+        
+                       <mat-form-field appearance="outline">
+                            <mat-label>Cantidad</mat-label>
+                            <input matInput formControlName="amount_products" required (keyup)="setQuantity($event)" #input>
+                            <mat-error *ngIf="invoiceForm.controls['amount_products'].touched && invoiceForm.controls['amount_products'].invalid">
+                                <span *ngIf="invoiceForm.controls['amount_products'].errors?.['required']">Debe rellenar este campo</span>
+                                <span *ngIf="invoiceForm.controls['amount_products'].errors?.['amount_products']">Información invalida</span>
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Sub Total</mat-label>
+                            <input matInput formControlName="total_sale" readonly>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+
+            <div class="add-product-section">
+                <button
+                class="add"
+                mat-flat-button 
+                [disabled]="validateAddProduct()" 
+                [ngStyle]="{'background-color' : validateAddProduct() === false ? '#ffa500' : 'primary'}"
+                (click)="addProductToBillList()">
+                    Agregar producto
                 </button>
-               <!--  <mat-slide-toggle (change)="onChange($event.checked, element.id)"
-                matTooltip="Activar o desactivar producto" [checked]="element.status">
-                </mat-slide-toggle> -->
-            </td>
-        </ng-container>
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>  
-</div>
-
-<hr>
-
-<mat-card>
-    <mat-card-header>
-        <h2>Detalles de la venta</h2>
-    </mat-card-header>
-
-    <mat-card-content>
-        <form [formGroup]="invoiceForm">
-            <div fxLayout="row">
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Tipo de Moneda</mat-label>
-                    <mat-select formControlName="currency_type" required>
-                        <mat-option *ngFor="let currency of currency" [value]="currency.currency">
-                            {{currency.currency}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Mes</mat-label>
-                    <mat-select formControlName="id_month" required>
-                        <mat-option *ngFor="let month of month" [value]="month.name">
-                            {{month.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Año</mat-label>
-                    <mat-select formControlName="id_year" required>
-                        <mat-option *ngFor="let year of year" [value]="year.name">
-                            {{year.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Fecha</mat-label>
-                    <input
-                     matInput 
-                     [matDatepicker]="picker" 
-                     formControlName="created_at" required>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Estado</mat-label>
-                    <mat-select formControlName="bill_state" required>
-                        <mat-option *ngFor="let status of billState" [value]="status.name">
-                            {{status.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+        
+                <button class="total" mat-flat-button>
+                   <mat-icon>monetization_on</mat-icon> Total: {{totalAmount}}
+                </button>
             </div>
+
+            <hr>
+
+            <mat-card-header class="table-header">
+                <mat-icon>
+                    shopping_cart
+                </mat-icon>
+                <div class="mx-2">
+                    <h2>Canasta</h2>
+                </div>
+             </mat-card-header>
+            <div class="responsive-table">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                  
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="Nombre">
+                      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                      <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+                    </ng-container>
             
-            <div fxLayout="row" fxLayoutAlign="space-between-center">
-                <mat-form-field appearance="outline">
-                    <mat-label>Sub-Total</mat-label>
-                    <input matInput formControlName="sub_total" readonly required>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>IVA</mat-label>
-                    <input matInput type="number" step="0.01" min="0.0" formControlName="iva" (keyup.enter)="calculateIvaMount()" #input>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Total</mat-label>
-                    <input matInput formControlName="total" readonly>
-                </mat-form-field>
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="Categoria">
+                        <th mat-header-cell *matHeaderCellDef> Categoria </th>
+                        <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Precio">
+                        <th mat-header-cell *matHeaderCellDef> Precio </th>
+                        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Cantidad">
+                        <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+                        <td mat-cell *matCellDef="let element"> {{element.amount_products}} </td>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="Total">
+                        <th mat-header-cell *matHeaderCellDef> Total </th>
+                        <td mat-cell *matCellDef="let element"> {{element.total_sale}} </td>
+                    </ng-container>
+                
+                    <!-- Delete Column -->
+                    <ng-container matColumnDef="Eliminar">
+                        <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                        <td mat-cell *matCellDef="let element;let i = index" class="action-link"> 
+                            <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="handleDeleteAction(i, element)">
+                                <mat-icon> delete </mat-icon>
+                            </button>
+                           <!--  <mat-slide-toggle (change)="onChange($event.checked, element.id)"
+                            matTooltip="Activar o desactivar producto" [checked]="element.status">
+                            </mat-slide-toggle> -->
+                        </td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>  
             </div>
-        </form>
-    </mat-card-content>
-</mat-card>
+    
+            <hr>
+    
+            <h2>Detalles Venta</h2>
+    
+            <form [formGroup]="invoiceForm">
+                <div fxLayout="column">
+                    <div fxLayout="row" fxLayoutAlign="space-between-center">
 
-<mat-card>
-    <mat-card-header>
-        <h2>Detalles del cliente</h2>
-    </mat-card-header>
-    <form [formGroup]="invoiceForm">
-        <div fxLayout="column" fxLayoutAlign="space-evenly-center">
-            <div fxLayout="row">
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Tipo de Moneda</mat-label>
+                            <mat-select formControlName="currency_type" required>
+                                <mat-option *ngFor="let currency of currency" [value]="currency.currency">
+                                    {{currency.currency}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Numero de Factura</mat-label>
-                    <input matInput formControlName="billNumber" readonly>
-                </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tipo de Moneda</mat-label>
+                            <input matInput formControlName="currency_type" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Sub-Total</mat-label>
+                            <input matInput formControlName="sub_total" readonly required>
+                        </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Cliente</mat-label>
-                    <input matInput type="text" formControlName="customer_name" required>
-                    <mat-error *ngIf="invoiceForm.controls['customer_name'].touched && invoiceForm.controls['customer_name'].invalid">
-                        <span *ngIf="invoiceForm.controls['customer_name'].errors?.['required']">Debe rellenar este campo</span>
-                        <span *ngIf="invoiceForm.controls['customer_name'].errors?.['pattern']">Información invalida</span>
-                    </mat-error>
-                </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>IVA</mat-label>
+                            <input matInput type="number" step="0.01" min="0.0" formControlName="iva" (keyup.enter)="calculateIvaMount()" #input>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Total</mat-label>
+                            <input matInput formControlName="total" readonly>
+                        </mat-form-field>
+                    </div>
+    
+                    <div fxLayout="row" fxLayoutAlign="space-between-center">
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Tipo de cliente</mat-label>
-                    <mat-select formControlName="customer_type" required>
-                        <mat-option *ngFor="let customer of customerType" [value]="customer.customerType">
-                            {{customer.customerType}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Mes</mat-label>
+                            <input matInput formControlName="id_month" readonly>
+                        </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Numero de contacto</mat-label>
-                    <input matInput type="text" formControlName="phoneNumber" placeholder="7876-1234" maxlength="9" required>
-                    <mat-error *ngIf="invoiceForm.controls['phoneNumber'].touched && invoiceForm.controls['phoneNumber'].invalid">
-                        <span *ngIf="invoiceForm.controls['phoneNumber'].errors?.['required']">Debe rellenar este campo</span>
-                        <span *ngIf="invoiceForm.controls['phoneNumber'].errors?.['pattern']">Información invalida</span>
-                    </mat-error>
-                </mat-form-field>
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Mes</mat-label>
+                            <mat-select formControlName="id_month" required>
+                                <mat-option *ngFor="let month of month" [value]="month.name">
+                                    {{month.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Tipo de Pago</mat-label>
-                    <mat-select formControlName="payment_type" required>
-                        <mat-option *ngFor="let payment of payment_type" [value]="payment.payment_type">
-                            {{payment.payment_type}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-    </form>
-</mat-card>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Año</mat-label>
+                            <input matInput formControlName="id_year" readonly>
+                        </mat-form-field>
+        
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Año</mat-label>
+                            <mat-select formControlName="id_year" required>
+                                <mat-option *ngFor="let year of year" [value]="year.name">
+                                    {{year.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Fecha</mat-label>
+                            <input matInput formControlName="created_at" readonly>
+                        </mat-form-field>
+        
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Fecha</mat-label>
+                            <input
+                             matInput 
+                             [matDatepicker]="picker" 
+                             formControlName="created_at" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field> -->
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Estado</mat-label>
+                            <mat-select formControlName="bill_state" required>
+                                <mat-option *ngFor="let status of billState" [value]="status.name">
+                                    {{status.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</section>

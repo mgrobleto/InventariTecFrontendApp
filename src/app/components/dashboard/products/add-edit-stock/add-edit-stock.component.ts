@@ -5,6 +5,8 @@ import { CoreService } from 'src/app/components/shared/core.service';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
 import { CategoriesService } from 'src/app/services/categoryService/categories.service';
 import { ProductService } from 'src/app/services/productService/product.service';
+import swal from'sweetalert2';
+
 
 @Component({
   selector: 'app-add-edit-stock',
@@ -94,12 +96,17 @@ export class AddEditStockComponent implements OnInit {
       stock : formData.stock
     }
 
-    this._productService.updateProductStockById(data).subscribe(
+    this._productService.updateProductStock(data).subscribe(
       (response:any) => {
         this._dialogRef.close();
         this.onEditProduct.emit();
+        swal.fire(
+          'Stock actualizado!',
+          'Producto: '+ formData.productName,
+          'success'
+        )
         this.responseMessage = response.message;
-        this._coreService.openSuccessSnackBar("Stock actualizado", "con éxito");
+        //this._coreService.openSuccessSnackBar("Stock actualizado", "con éxito");
       },
       (error) => {
         if(error.message?.message){

@@ -5,6 +5,7 @@ import { CoreService } from 'src/app/components/shared/core.service';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
 import { CategoriesService } from 'src/app/services/categoryService/categories.service';
 import { EquipmentService } from 'src/app/services/equipmentService/equipment.service';
+import swal from'sweetalert2';
 
 @Component({
   selector: 'app-add-edit-form',
@@ -35,7 +36,7 @@ export class AddEditEquipmentFormComponent implements OnInit {
     //this.productForm.patchValue(this.data);
     this.equipmentForm = this._fb.group({
       name: [null,[Validators.required]],
-      category: [null,[Validators.required]],
+      id_equipment_category: [null,[Validators.required]],
     });
     //console.log(this.data);
 
@@ -77,7 +78,7 @@ export class AddEditEquipmentFormComponent implements OnInit {
     var formData = this.equipmentForm.value;
     var data = {
       name: formData.name,
-      category : formData.category,
+      id_equipment_category : formData.id_equipment_category,
     }
 
     this._equipmentService.addEquipment(data).subscribe(
@@ -85,8 +86,13 @@ export class AddEditEquipmentFormComponent implements OnInit {
         console.log(data);
         this._dialogRef.close();
         this.onAddEquipment.emit();
+        swal.fire(
+          '¡ Nuevo equipo de mantenimiento agregado al inventario !',
+          'Elemento: '+ formData.name,
+          'success'
+        )
         this.responseMessage = response.message;
-        this._coreService.openSuccessSnackBar(this.responseMessage, "con exito!");
+        //this._coreService.openSuccessSnackBar(this.responseMessage, "con exito!");
       },
       (error) => {
         console.log(data);
@@ -95,7 +101,15 @@ export class AddEditEquipmentFormComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
+
+        swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal!',
+          footer: this.responseMessage
+        })
+        
+        //this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }
@@ -105,15 +119,20 @@ export class AddEditEquipmentFormComponent implements OnInit {
     var data = {
       id : this.dialogData.data.id,
       name: formData.name,
-      category : formData.category,
+      id_equipment_category : formData.id_equipment_category,
     }
 
     this._equipmentService.update(data).subscribe(
       (response:any) => {
         this._dialogRef.close();
         this.onEditEquipment.emit();
+        swal.fire(
+          '¡ El elemento ha sido actualizado con éxito !',
+          'Elemento: '+ formData.name,
+          'success'
+        )
         this.responseMessage = response.message;
-        this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
+        //this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
       },
       (error) => {
         if(error.message?.message){
@@ -121,7 +140,15 @@ export class AddEditEquipmentFormComponent implements OnInit {
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
+
+        swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal!',
+          footer: this.responseMessage
+        })
+
+        //this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }

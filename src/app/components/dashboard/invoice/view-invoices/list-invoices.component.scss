@@ -1,10 +1,19 @@
 .header {
-    background: #1a1853;
+    background: #192653;
     color: #ffff;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
+
+.mat-toolbar {
+    /* margin-top: 24px; */
+    //margin-bottom: 10px;
+    width: auto;
+   /*  max-width: 700px; */
+    background: #192653;
+    color: #FFFF;
 }
 
 .header-title {
@@ -28,13 +37,22 @@ mat-card {
     margin-bottom: 1rem;
 }
 
-table {
-    width: 100%;
+.table-header {
+    background: #192653;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h2 {
+        margin-bottom: 0;
+    }
+  /*  justify-content: space-between; */
 }
 
-/* table td :hover {
-    background: #9FA8DA;
-} */
+mat-table {
+    width: 100%;
+}
 
 .mat-header-cell{
     padding: 0;
@@ -44,18 +62,73 @@ table {
     width: 49%;
 }
 
-.mdc-data-table__cell, .mdc-data-table__header-cell {
+/* .mdc-data-table__cell, .mdc-data-table__header-cell {
     padding-bottom: 10px;
+} */
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+    padding: 20px 20px 20px 20px;
+}
+
+.mat-column-Numero-de-Factura {
+    width: 15% !important;
+}
+
+.mat-column-Nombre-Cliente {
+    width: 15% !important;
+}
+
+.mat-column-Tipo-de-Cliente {
+    width: 15% !important;
+}
+
+.mat-column-Total {
+    width: 15% !important;
+}
+
+
+.mat-column-Tipo-de-pago {
+    width: 15% !important;
+}
+
+.mat-column-Fecha {
+    width: 15% !important;
+}
+
+.mat-column-Ver-detalle {
+    width: 10% !important;
+}
+
+.mat-column-Estado {
+    width: 10% !important;
+}
+
+.mat-column-Eliminar {
+    width: 20% !important;
+    padding-left: 54px;
+    padding-right: 95px;
+}
+
+tr.mat-row {
+    height: 52px;
+  
+    td.mat-cell {
+     padding-top: 10px;
+      padding-left: 16px;
+      padding-right: 16px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
 }
 
 mat-form-field {
     padding: 1rem 1rem 1rem 0rem;
 }
   
-/* .mat-mdc-row:hover .mat-mdc-cell {
-      background-color: #E8EAF6;
-      transition: 0.3s;
-} */
+.mat-mdc-row:hover .mat-mdc-cell {
+    background-color: rgb(216, 216, 216);
+    transition: 0.3s;
+} 
 
 .input-group {
     flex-wrap: nowrap;
@@ -94,16 +167,23 @@ mat-form-field {
     margin-bottom: auto;
 }
 
-.btn {
-   padding: 10px;
-   background-color: transparent;
-   border: none;
-   color: #178e40;
-   font-weight: bold;
+.billState {
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    color: #178e40;
+    font-weight: bold;
+    margin: 10px;
 }
 
-.btn:hover {
+.billState:hover {
     background-color: #E8EAF6;
+}
+
+.download {
+    margin: auto;
+    background-color: green;
+    border: none;
 }
 
 /* Styles for tab labels */
@@ -119,6 +199,6 @@ mat-form-field {
 }
 
 .mat-mdc-table {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+   /*  margin-top: 1rem; */
+    margin-bottom: 2rem;
 }

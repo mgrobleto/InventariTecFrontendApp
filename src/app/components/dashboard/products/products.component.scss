@@ -1,18 +1,11 @@
 .header {
-    background: #1a1853;
+    background: #192653;
     color: #ffff;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
-
-/* .filter {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-} */
 
 .header-title {
     max-width: 600px;
@@ -31,8 +24,21 @@ button .float-right {
 
 mat-card {
     /* max-width: 500px; */
+    background-color: #E8EAF6;
     padding: 20px;
     margin-bottom: 2rem;
+}
+
+.table-header {
+    background: #192653;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h2 {
+        margin-bottom: 0;
+    }
 }
 
 .filter{
@@ -45,7 +51,11 @@ mat-card {
     box-shadow: 0 2px 0 black;
 }
 
-table {
+mat-table {
+    width: 100%;
+}
+
+.responsive-table {
     width: 100%;
 }
 
@@ -53,26 +63,49 @@ th {
     width: auto;
 }
 
+/* .mat-mdc-table .mdc-data-table__row {
+    height: 52px;
+}
+ */
+tr.mat-row {
+    height: 52px;
+
+    td.mat-cell {
+      padding-left: 16px;
+      padding-right: 16px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+}
+
 .mdc-data-table__cell, .mdc-data-table__header-cell {
-  padding: 16px 20px 9px 40px;
+  padding: 16px 40px 9px 40px;
+}
+
+.mat-column-ID {
+    width: 16% !important;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+   width: auto;
+
 }
 
 .mat-mdc-row:hover .mat-mdc-cell {
-    background-color: #E8EAF6;
+    background-color: #e4e4e4;
     transition: 0.3s;
 }
 
-.btn-primary {
-  box-shadow: 1px 2px 5px #847878;   
-  background-color: #0e90d0;
-  border: none;
-
+.btn:hover {
+    box-shadow: 1px 2px 5px #847878; 
+    border: none;
+    transition: background-color 0.5s ease;
 }
 
-.btn:hover {
-  background-color: #0d80bc;
-  border: none;
-  transition: background-color 0.3s ease;
+.download {
+    margin: auto;
+    background-color: green;
+    border: none;
 }
 
 input {
@@ -107,7 +140,12 @@ input {
     padding-bottom: 1rem;
 }
 
+mat-paginator {
+    background-color: #E8EAF6;
+}
+
 .mat-mdc-table {
+    width: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }

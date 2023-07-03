@@ -1,0 +1,33 @@
+.table-header {
+    background: #192653;
+    border-radius: 5rem;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h2 {
+        margin-bottom: 0;
+    }
+  /*  justify-content: space-between; */
+}
+
+mat-card {
+    background-color: #eeeeff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
+
+.help-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    //justify-content: space-between;
+    padding: 2rem;
+    border-radius: 3rem;
+    max-height: 200px;
+}
+
+.help-item:hover {
+    transform: translate(-10px, 0);
+    transition: 300ms;
+}

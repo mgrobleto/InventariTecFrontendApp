@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -14,13 +14,16 @@ import { EditInvoiceStatusComponent } from '../edit-invoice-status/edit-invoice-
 import { MatPaginator } from '@angular/material/paginator';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
+import * as XLSX from 'xlsx';
+
 
 @Component({
   selector: 'app-list-invoices',
   templateUrl: './list-invoices.component.html',
   styleUrls: ['./list-invoices.component.scss']
 })
-export class ListInvoicesComponent implements OnInit{
+export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
   searchOptionsForm:any = FormGroup;
   searchOptions: any [] = [
@@ -28,12 +31,13 @@ export class ListInvoicesComponent implements OnInit{
     { value: 'status', description: "Por estado de factura" },
   ];
 
+  fileName= 'VentasReporte.xlsx';
   filterBill:any;
-  billDetails:any;
+  billDetails:any = [];
   items:any = [];
   responseMessage:any;
-  displayedColumns: string[] = ['Número de Factura', 'Nombre Cliente', 'Tipo de Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Estado', 'Eliminar'];
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Tipo de Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Estado', 'Eliminar'];
+  @ViewChild(MatPaginator) paginator :any = MatPaginator;
   billState: any;
 
   constructor(
@@ -42,7 +46,8 @@ export class ListInvoicesComponent implements OnInit{
     private dialog : MatDialog,
     private _coreService : CoreService,
     private ngxService: NgxUiLoaderService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private datePipe: DatePipe,
   ) { 
 
     this.searchOptionsForm = this._fb.group({
@@ -61,20 +66,42 @@ export class ListInvoicesComponent implements OnInit{
     )
   }
 
+  exportToExcel(): void
+  {
+    /* pass here the table id */
+    let element = document.getElementById('sales-details');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
+  handleSearchAction() {
+    if(this.searchOptionsForm.value.searchBy === "date"){
+
+      var dateSelected = this.searchOptionsForm.controls['dateSelected'].value;
+      this.searchByDate(dateSelected);
+
+    }else {
+      var billState = this.searchOptionsForm.controls['bill_state'].value;
+      this.searchByBillStatus(billState);
+    }
+  }
+
   searchByDate(date: any) {
-    let dateSelected : string="";
 
-    if(this.searchOptionsForm.value.searchBy === "date") {
-      date = moment(this.searchOptionsForm.value.initialDate.value).format("YYYY-MM-dd");
-    }
+    //var dateSelected = this.searchOptionsForm.controls['dateSelected'].value;
+    date.value = this.datePipe.transform(date.value, "YYYY-MM-dd");
 
-    if(date === "Invalid date"){
-      this._coreService.openSuccessSnackBar("Erro. Debe ingresar ambas fechas");
-      return;
-    }
+    //console.log(date);
 
     this._billService.getAllBills().pipe(map( (bill : any) => {
-      return bill.filter((bill : any) => bill.created_at === date)
+      return bill.filter((bill : any) => bill.created_at === date.value)
     })).subscribe(
       (response: any) => {
         this.billDetails = new MatTableDataSource(response);
@@ -92,6 +119,21 @@ export class ListInvoicesComponent implements OnInit{
 
   searchByBillStatus(billStatus: any) {
 
+    this._billService.getAllBills().pipe(map( (bill : any) => {
+      return bill.filter((bill : any) => bill.bill_state === billStatus)
+    })).subscribe(
+      (response: any) => {
+        this.billDetails = new MatTableDataSource(response);
+      }, (error : any) => {
+        console.log(error);
+        if(error.message?.message){
+          this.responseMessage = error.error?.message;
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+      }
+    )
   }
 
   ngOnInit(): void { 
@@ -198,7 +240,7 @@ export class ListInvoicesComponent implements OnInit{
       //items: this.items
     }
     dialogConfig.width = '50%';
-    /* dialogConfig.height= 'auto'; */
+    //dialogConfig.height= 'auto';
     const dialogRef =  this.dialog.open(InvoiceDetailsComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();

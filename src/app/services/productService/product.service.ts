@@ -49,8 +49,8 @@ export class ProductService {
     });
   }
 
-  updateProductStockById(data:any) {
-    return this.httpClient.put(this.url + '/productStock/' + data.id + '/', data,{
+  updateProductStock(data:any) {
+    return this.httpClient.patch(this.url + '/productStock/' + data.id + '/', data,{
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     })
   }

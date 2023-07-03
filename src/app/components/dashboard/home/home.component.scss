@@ -1,3 +1,18 @@
+.table-header {
+    background: #192653;
+    border-radius: 5rem;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h2 {
+        margin-bottom: 0;
+    }
+  /*  justify-content: space-between; */
+}
+
 .c-dashboardInfo {
     margin-bottom: 15px;
 }
@@ -81,5 +96,14 @@
     flex-direction: row;
     justify-content: space-between; */
    /*  align-items: center; */
+}
+
+.inventory-item {
+    cursor: pointer;
+}
+
+.inventory-item:hover {
+    transform: translate(0, -10px);
+    transition: 300ms;
 }
   

@@ -1,54 +1,41 @@
 <section>
+    <mat-toolbar class="table-header">
+        <mat-icon>
+            <span class="material-symbols-outlined">
+                person
+                </span>
+        </mat-icon>
+        <div class="mx-2">
+            <h2>¡ Bienvenido !</h2>
+        </div>
+    </mat-toolbar>
     <div class="container p-3">
         <div class="row align-items-stretch">
-            <div class="c-dashboardInfo col-lg-3 col-md-6">
-                <div class="wrap">
+            <div class="c-dashboardInfo inventory-item col-lg-3 col-md-6" (click)="redirectToProductsInventory()">
+                <div class="wrap" matTooltip="Ver Inventario">
                 <i class="fas fa-boxes-alt" style="font-size: 40px; margin-bottom: 1rem;"></i>
-                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Productos<svg
-                    class="MuiSvgIcon-root-19" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z">
-                    </path>
-                    </svg>
-                    </h4><span class="hind-font caption-12 c-dashboardInfo__count">10</span>
+                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Productos
+                    </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{totalProducts}}</span>
                     
                 </div>
             </div>
-            <div class="c-dashboardInfo col-lg-3 col-md-6">
-                <div class="wrap">
+            <div class="c-dashboardInfo inventory-item col-lg-3 col-md-6" (click)="redirectToeEquipmentInventory()">
+                <div class="wrap" matTooltip="Ver Inventario">
                     <i class="fas fa-tools" style="font-size: 40px; margin-bottom: 1rem;"></i>
-                  <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Herramientas<svg
-                      class="MuiSvgIcon-root-19" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
-                      <path fill="none" d="M0 0h24v24H0z"></path>
-                      <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z">
-                      </path>
-                    </svg></h4><span class="hind-font caption-12 c-dashboardInfo__count">20</span>
+                  <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Herramientas
+                    </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{totalEquipments}}</span>
                 </div>
               </div>
             <div class="c-dashboardInfo col-lg-3 col-md-6">
                 <div class="wrap">
                 <i class="fas fa-calendar-check" style="font-size: 40px; margin-bottom: 1rem;"></i>
-                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Ventas<svg
-                    class="MuiSvgIcon-root-19" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z">
-                    </path>
-                    </svg></h4><span class="hind-font caption-12 c-dashboardInfo__count">€500</span>
+                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Ventas | {{monthReturned}}</h4><span class="hind-font caption-12 c-dashboardInfo__count">{{totalSales}}</span>
                 </div>
             </div>
             <div class="c-dashboardInfo col-lg-3 col-md-6">
                 <div class="wrap">
                     <i class="fas fa-hands-usd" style="font-size: 40px; margin-bottom: 1rem;"></i>
-                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Ingresos<svg
-                    class="MuiSvgIcon-root-19" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z">
-                    </path>
-                    </svg></h4><span class="hind-font caption-12 c-dashboardInfo__count">€500</span>
+                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Ingresos</h4><span class="hind-font caption-12 c-dashboardInfo__count">M./${{totalIncome}}</span>
                 </div>
             </div>
         </div>
@@ -64,7 +51,7 @@
                 <form [formGroup]="monthSelect">
                     <mat-form-field appearance="outline">
                         <mat-label>Seleccionar mes</mat-label>
-                        <mat-select formControlName="id_month" (selectionChange)="getMonthValues($event.value)" required>
+                        <mat-select formControlName="id_month" (selectionChange)="getMonthValues($event.value); getTotalSales($event.value); getTotalIncomeByMonth($event.value)" required>
                             <mat-option *ngFor="let month of month" [value]="month.name">
                                 {{month.name}}
                             </mat-option>

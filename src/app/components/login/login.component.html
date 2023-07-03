@@ -1,11 +1,11 @@
-<div class="body">
+<div class="bg">
     <div class="login">
         <mat-spinner *ngIf="loading" diameter="50"></mat-spinner>
-        <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="login()">
+        <form *ngIf="!loading" [formGroup]="form">
             <div class="image-section">
-                <img src="../../../assets/img/login.png" width="30%">
+                <img src="../../../assets/img/logoInventariaTec.png" width="100%">
             </div>
-            <h2>Iniciar sesión</h2>
+            <h2 class="my-4">Iniciar sesión</h2>
             <mat-form-field appearance="fill">
                 <mat-label>Nombre de usuario</mat-label>
                 <input matInput autocomplete="off" formControlName="username">
@@ -17,7 +17,7 @@
                   <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
             </mat-form-field>
-            <button type="submit" mat-raised-button color="primary" > Ingresar</button>
+            <button type="submit" mat-raised-button color="primary" (click)="login()"> Ingresar</button>
         </form>
     </div>
 </div>

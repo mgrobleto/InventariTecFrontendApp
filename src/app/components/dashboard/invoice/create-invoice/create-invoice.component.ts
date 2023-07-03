@@ -12,7 +12,7 @@ import { DatePipe} from '@angular/common';
 import swal from'sweetalert2';
 
 interface productStock {
-  name: String,
+  productName: String,
   stock: Number,
 }
 
@@ -81,19 +81,17 @@ export class CreateInvoiceComponent implements OnInit {
 
   ngOnInit(): void {
 
-   /*  var myDate = new Date();
-    this.billDate = this.datePipe.transform(myDate, "MM/dd/YYYY");
-    console.log(this.billDate); */
+    var myDate = new Date();
 
     this.invoiceForm = this._fb.group({
       billNumber: [null, [Validators.required]],
       customer_name: [null,[Validators.required]],
       customer_type: [null,[Validators.required]],
-      phoneNumber: [null,[Validators.required, Validators.pattern(GlobalConstants.phoneRegex)]],
+      phoneNumber: [null,[Validators.required]],
       sub_total: [null,[Validators.required]],
       iva: [null,[Validators.required]],
       total: [null,[Validators.required]],
-      currency_type: [null,[Validators.required]],
+      currency_type: [null],
       payment_type: [null,[Validators.required]],
       id_month: [null,[Validators.required]],
       id_year: [null,[Validators.required]],
@@ -106,19 +104,9 @@ export class CreateInvoiceComponent implements OnInit {
       total_sale: [null,[Validators.required]],
     })
 
-    /* this.invoiceDetailForm = this._fb.group({
-      billNumber : [null,[Validators.required]],
-      productName: [null,[Validators.required]],
-      category: [null,[Validators.required]],
-      price: [null,[Validators.required]],
-      amount_products: [null,[Validators.required]],
-      total_sale: [null,[Validators.required]],
-    }) */
-
     this.ngxService.start();
     this.generateBillId();
     this.getProductsCategories();
-    this.getCustomers();
     this.getCustomersType();
     this.getPaymentType();
     this.getCurrencyType();
@@ -128,22 +116,10 @@ export class CreateInvoiceComponent implements OnInit {
 
     this.invoiceForm.controls['iva'].setValue(0.0);
     console.log(this.invoiceForm.controls['iva'].value);
-  }
 
-  getCustomers() {
-    this._customerService.getAllCustomers().subscribe(
-      (resp : any) => {
-        this.customers = resp;
-      }, (err : any) => {
-        console.log(err);
-        if(err.message?.message){
-          this.responseMessage = err.message?.message;
-        }else{
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
-      }
-    )
+    this.billDate = this.datePipe.transform(myDate, "YYYY-MM-dd");
+    this.invoiceForm.controls['created_at'].setValue(this.billDate);
+    console.log(this.billDate);
   }
   
   getCustomersType() {
@@ -197,7 +173,10 @@ export class CreateInvoiceComponent implements OnInit {
   getMonth() {
     this._billService.getMonth().subscribe(
       (resp : any) => {
-        this.month = resp;
+        resp.forEach((element:any) => {
+          this.month = element.name;
+        });
+        this.invoiceForm.controls['id_month'].setValue(this.month);
       }, (err : any) => {
         console.log(err);
         if(err.message?.message){
@@ -213,7 +192,10 @@ export class CreateInvoiceComponent implements OnInit {
   getYear() {
     this._billService.getYear().subscribe(
       (resp : any) => {
-        this.year = resp;
+        resp.forEach((element:any) => {
+          this.year = element.name;
+        });
+        this.invoiceForm.controls['id_year'].setValue(this.year);
       }, (err : any) => {
         console.log(err);
         if(err.message?.message){
@@ -283,6 +265,9 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   getProductDetails(value:any){
+
+    var currency_type: any;
+
     this.productService.getAllProducts().pipe( map( (product: any) => {
       return product.filter((product : any) => product.name === value)
     })).subscribe(
@@ -291,9 +276,12 @@ export class CreateInvoiceComponent implements OnInit {
         console.log(this.productDetail);
         this.productDetail.forEach((element:any) => {
           this.price = element.price;
+          currency_type = element.currency;
+          this.productStockQuantity = element.stock;
         });
-        console.log(this.productStockQuantity);
+        //console.log(this.productStockQuantity);
         this.invoiceForm.controls['price'].setValue(this.price);
+        this.invoiceForm.controls['currency_type'].setValue(currency_type);
         this.invoiceForm.controls['amount_products'].setValue('1');
         this.invoiceForm.controls['total_sale'].setValue(this.price * 1);
       }, (error : any) => {
@@ -303,29 +291,7 @@ export class CreateInvoiceComponent implements OnInit {
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
-      }
-    )
-  }
-
-  getProductStock(value: any){
-    this.productService.getProductStock().pipe(map( (product : any) => {
-      return product.filter((product : any) => product.productName === value)
-    })).subscribe(
-      (response: any) => {
-        this.productStock = response;
-        this.productStock.forEach((element:any) => {
-          this.productStockQuantity = element.stock;
-        });
-        console.log(this.productStockQuantity);
-      }, (error : any) => {
-        console.log(error);
-        if(error.message?.message){
-          this.responseMessage = error.error?.message;
-        } else {
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+        //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     )
   }
@@ -337,7 +303,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.invoiceForm.controls['total_sale'].setValue(this.invoiceForm.controls['amount_products'].value * this.invoiceForm.controls['price'].value);
     }
     else if (temp > this.productStockQuantity) {
-      this._coreService.openSuccessSnackBar(GlobalConstants.stock, GlobalConstants.error);
+      this._coreService.openFailureSnackBar(GlobalConstants.stock, GlobalConstants.error);
     }
     else if (temp != '') {
       this.invoiceForm.controls['amount_products'].setValue('1');
@@ -374,7 +340,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.invoiceForm.controls['total'].setValue(this.netAmount);
       this.dataSource.push({productName:billDetailFormData.productName, category:billDetailFormData.category, price:billDetailFormData.price, amount_products:billDetailFormData.amount_products, total_sale:billDetailFormData.total_sale})
       this.dataSource = [...this.dataSource]
-      this._coreService.openSuccessSnackBar(GlobalConstants.productAdded, "con exito");
+      //this._coreService.openSuccessSnackBar(GlobalConstants.productAdded, "con exito");
       //this.productQuantity = 0;
 
     } else if(this.productQuantity > this.productStockQuantity) {
@@ -396,7 +362,6 @@ export class CreateInvoiceComponent implements OnInit {
     } else {
       return false;
     }
-   
   }
 
   calculateIvaMount() {
@@ -419,7 +384,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.totalAmount = this.totalAmount - element.total_sale;
     this.dataSource.splice(value, 1);
     this.dataSource = [...this.dataSource]
-    this.invoiceForm.reset();
+    this.invoiceForm.controls['sub_total'].reset();
   }
 
   updateProductStock() {
@@ -452,15 +417,21 @@ export class CreateInvoiceComponent implements OnInit {
       id_year:billFormData.id_year,
       created_at: selectedDate,
       bill_state: billFormData.bill_state,
-      billItems: JSON.stringify(this.dataSource),
+      billItems: this.dataSource,
     }
 
     console.log(billData);
 
     this._billService.addNewBill(billData).subscribe(
       (response:any) => {
+        console.log(billData);
         this.responseMessage = response.message;
         console.log(this.responseMessage);
+        swal.fire(
+          'Venta registrada',
+          'Número de Factura: '+ billFormData.billNumber,
+          'success'
+        )
       },
       (error) => {
         if(error.message?.message){
@@ -472,13 +443,40 @@ export class CreateInvoiceComponent implements OnInit {
       }
     )
 
-    //this.getAllBills();
+    /* this.dataSource.forEach((element : any) => {
 
-    //var billNumber = this.invoiceForm.controls['billNumber'].value;
+      // restamos el stock actual con la cantidad de produtos comprados
+      this.productStockQuantity = this.productStockQuantity - element.amount_products;
+    })
 
-    // NO FUNCIONA ESTA PARTE, TENGO QUE CAMBIAR LA URL
+    this.productService.updateProductStock().pipe(map( (product : any) => {
+      return product.filter((product : any) => product.productName === value)
+    })).subscribe(
+      (response: any) => {
+        this.productStock = response;
+        this.productStock.forEach((element:any) => {
+          this.productStockQuantity = element.stock;
+        });
+        console.log(this.productStockQuantity);
+      }, (error : any) => {
+        console.log(error);
+        if(error.message?.message){
+          this.responseMessage = error.error?.message;
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+      }
+    )
+
+    this.productDetail.forEach((element:any) => {
+      element.stock = element.stock - this.productQuantity;
+    });
+
+    console.log(this.productDetail); */
     
-    var billDetailData = {
+    
+    /* var billDetailData = {
       billNumber : billFormData.billNumber, // id de la factura creada anteriormente
       billItems: JSON.stringify(this.dataSource),
     }
@@ -504,58 +502,6 @@ export class CreateInvoiceComponent implements OnInit {
         }
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
-    )
-
-    /* this.productDetail.forEach((element:any) => {
-      element.stock = element.stock - this.productQuantity;
-    });
-
-    console.log(this.productDetail);
-
-    var id;
-    var name;
-    var description;
-    var stock;
-    var cost;
-    var price;
-    var category;
-
-    this.productDetail.forEach((element : any) => {
-      id = element.id;
-      name = element.name;
-      description = element.description;
-      stock = element.stock - this.productQuantity;
-      cost = element.cost;
-      price = element.price;
-      category = element.category
-    });
-
-    var data = {
-      id : id,
-      name: name,
-      description: description,
-      stock: stock,
-      cost: cost,
-      price: price,
-      category: category
-    }
-
-    this.productService.updateProductStockById(data).subscribe(
-      (response:any) => {
-        this.responseMessage = response.message;
-        this._coreService.openSnackBar(this.responseMessage, "con exito");
-      },
-      (error) => {
-        if(error.message?.message){
-          this.responseMessage = error.message?.message;
-        }else{
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this._coreService.openSnackBar(this.responseMessage, GlobalConstants.error);
-      }
     ) */
-
   }
-  
-
 }
