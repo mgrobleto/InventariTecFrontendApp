@@ -14,7 +14,6 @@ import { SettingsComponent } from './settings/settings.component';
 import { AddEditEquipmentFormComponent } from './equipment/add-edit-equipment-form/add-edit-equipment-form.component';
 import { AddEditFormComponent } from './products/add-edit-form/add-edit-form.component';
 import { EquipmentComponent } from './equipment/equipment.component';
-import { AddEditStockComponent } from './products/add-edit-stock/add-edit-stock.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text:'Cargando...',
@@ -39,7 +38,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AddEditEquipmentFormComponent,
     EquipmentComponent,
     SettingsComponent,
-    AddEditStockComponent,
   ],
   imports: [
     CommonModule,

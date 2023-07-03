@@ -2,7 +2,7 @@ import { Component, OnInit , Inject, EventEmitter} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductService } from 'src/app/services/productService/product.service';
-import { CoreService } from 'src/app/components/shared/core.service';
+import { CoreService } from 'src/app/services/snackBar/core.service';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
 import { CategoriesService } from 'src/app/services/categoryService/categories.service';
 import { BillService } from 'src/app/services/salesService/sales.service';

@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ProductService } from 'src/app/services/productService/product.service';
 import { CategoriesService } from 'src/app/services/categoryService/categories.service';
-import { CoreService } from 'src/app/components/shared/core.service';
+import { CoreService } from 'src/app/services/snackBar/core.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
 import { map } from 'rxjs';

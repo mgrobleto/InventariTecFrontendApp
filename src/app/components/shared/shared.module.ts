@@ -12,7 +12,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table'; 
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatDialogModule} from '@angular/material/dialog'; 
-import { ConfirmationDialog } from './confirmation-dialog.component';
+import { ConfirmationDialog } from './confirmation-dialog/confirmation-dialog.component';
 import {MatSelectModule} from '@angular/material/select'; 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';

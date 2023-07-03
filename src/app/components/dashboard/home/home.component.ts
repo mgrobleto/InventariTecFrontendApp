@@ -4,7 +4,7 @@ import { BillService } from 'src/app/services/salesService/sales.service';
 import { ProductService } from 'src/app/services/productService/product.service';
 import { DatePipe } from '@angular/common';
 import { GlobalConstants } from '../../shared/global-constants';
-import { CoreService } from '../../shared/core.service';
+import { CoreService } from 'src/app/services/snackBar/core.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 import { EquipmentService } from 'src/app/services/equipmentService/equipment.service';
@@ -122,7 +122,8 @@ export class HomeComponent implements OnInit {
 
   getTotalSales(value : any) {
 
-    var amount:any;
+    this.totalSales = 0;
+    var amount:any = 0;
     //this.totalSales = this._billService.getAllBills().pipe(map( resp => resp.billItems.length))
 
     this._billService.getAllBills().pipe( map ( (resp : any) => {
@@ -153,7 +154,9 @@ export class HomeComponent implements OnInit {
   }
 
   getTotalIncomeByMonth(value : any) {
-    var amount:any;
+
+    this.totalIncome = 0;
+    var amount:any = 0;
 
     this._billService.getAllBills().pipe( map ( (resp : any) => {
       return resp.filter((month : any) => month.id_month === value)

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CoreService } from '../../shared/core.service';
+import { CoreService } from 'src/app/services/snackBar/core.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CategoriesService } from 'src/app/services/categoryService/categories.service';
 import { EquipmentService } from 'src/app/services/equipmentService/equipment.service';
@@ -9,7 +9,7 @@ import { AddEditEquipmentFormComponent } from './add-edit-equipment-form/add-edi
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalConstants } from '../../shared/global-constants';
-import { ConfirmationDialog } from '../../shared/confirmation-dialog.component';
+import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 import * as XLSX from 'xlsx';
 import { MatPaginator } from '@angular/material/paginator';
 

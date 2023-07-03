@@ -3,11 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ListInvoicesComponent } from '../view-invoices/list-invoices.component';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
 import { BillService } from 'src/app/services/salesService/sales.service';
-import { CoreService } from 'src/app/components/shared/core.service';
+import { CoreService } from 'src/app/services/snackBar/core.service';
 import { map } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 
 import * as pdfMake from 'pdfmake/build/pdfmake';
