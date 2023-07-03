@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 import { ProductService } from 'src/app/services/productService/product.service';
 import { AddEditFormComponent } from '../add-edit-form/add-edit-form.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { CoreService } from 'src/app/components/shared/core.service';
+import { CoreService } from 'src/app/services/snackBar/core.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
-import { ConfirmationDialog } from 'src/app/components/shared/confirmation-dialog.component';
+import { ConfirmationDialog } from 'src/app/components/shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-list-products',

@@ -52,7 +52,7 @@ export class BillService {
     });
   }
 
-  getAllSalaes(){
+  getAllSales(){
     return this.httpClient.get<any>(this.url + '/sale/');
   }
 
@@ -63,7 +63,7 @@ export class BillService {
   }
 
   getBillItems() : Observable<any[]> {
-    return this.httpClient.get<any[]>(this.url + '/billItems/')
+    return this.httpClient.get<any[]>(this.url + '/bill/')
   }
 
   update(data:any) {

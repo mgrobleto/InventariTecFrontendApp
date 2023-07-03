@@ -38,6 +38,10 @@ export class AuthService {
     );
   }
 
+  getUserInfo() {
+    return this.http.get<any>(this.api_url + `/accounts/profile/`);
+  }
+
   auth() {
     return this.isLoggedIn;
   }

@@ -12,7 +12,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table'; 
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatDialogModule} from '@angular/material/dialog'; 
-import { ConfirmationDialog } from './confirmation-dialog.component';
+import { ConfirmationDialog } from './confirmation-dialog/confirmation-dialog.component';
 import {MatSelectModule} from '@angular/material/select'; 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -23,6 +23,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import {MatTooltipModule} from '@angular/material/tooltip'; 
 import {MatTabsModule} from '@angular/material/tabs';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import {NgxPrintModule} from 'ngx-print';
+
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatSlideToggleModule,
     FlexLayoutModule,
     MatTooltipModule,
-    MatTabsModule
+    MatTabsModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
+    NgxPrintModule
   ],
   exports: [
     FormsModule,
@@ -75,6 +81,12 @@ import {MatTabsModule} from '@angular/material/tabs';
     FlexLayoutModule,
     MatTooltipModule,
     MatTabsModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
+    NgxPrintModule,
+  ],
+  providers: [
+    provideNgxMask(),
   ]
 })
 export class SharedModule { }

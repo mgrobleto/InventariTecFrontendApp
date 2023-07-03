@@ -22,7 +22,7 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Categoria</mat-label>
-                <mat-select formControlName="category">
+                <mat-select formControlName="id_equipment_category">
                     <mat-option *ngFor="let category of equipmentCategories" [value]="category.name">
                         {{category.name}}
                     </mat-option>

@@ -20,7 +20,7 @@ export const navbarData : INavbarData[] = [
             {
                 routeLink: 'invoice/allInvoices',
                 //icon: 'fas fa-laptop',
-                label: 'Ver Facturas',
+                label: 'Historial de Ventas',
             },
         ]
     },
@@ -35,36 +35,9 @@ export const navbarData : INavbarData[] = [
         label: 'Equipamiento',
     },
     {
-        routeLink: 'customers',
-        icon: 'fas fa-user-tag',
-        label: 'Gestión de Clientes',
-    },
-    {
-        routeLink: 'manageCategories',
-        icon: 'fas fa-bookmark',
-        label: 'Gestionar Categorias',
-        items: [
-            {
-                routeLink: 'manageCategories/products',
-                //icon: 'fas fa-laptop',
-                label: 'Productos',
-            },
-            {
-                routeLink: 'manageCategories/equipment',
-                //icon: 'fas fa-laptop',
-                label: 'Equipos de mantenimiento',
-            },
-            {
-                routeLink: 'manageCategories/customers',
-                //icon: 'fas fa-laptop',
-                label: 'Tipos de Clientes',
-            },
-        ]
-    },
-    {
         routeLink: 'settings',
-        icon: 'fas fa-cogs',
-        label: 'Ajustes',
+        icon: 'fas fa-user-tag',
+        label: 'Ayuda',
     },
     {
         routeLink: 'logout',

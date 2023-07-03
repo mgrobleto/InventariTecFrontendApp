@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CoreService } from '../../shared/core.service';
+import { CoreService } from 'src/app/services/snackBar/core.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CategoriesService } from 'src/app/services/categoryService/categories.service';
 import { EquipmentService } from 'src/app/services/equipmentService/equipment.service';
@@ -9,7 +9,9 @@ import { AddEditEquipmentFormComponent } from './add-edit-equipment-form/add-edi
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalConstants } from '../../shared/global-constants';
-import { ConfirmationDialog } from '../../shared/confirmation-dialog.component';
+import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog.component';
+import * as XLSX from 'xlsx';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-equipment',
@@ -17,10 +19,15 @@ import { ConfirmationDialog } from '../../shared/confirmation-dialog.component';
   styleUrls: ['./equipment.component.scss']
 })
 export class EquipmentComponent {
-  productDetails:any;
+
+  dataSource = new MatTableDataSource<any>();
+  //productDetails:any;
   equipmentCategories:any;
   responseMessage:any;
   displayedColumns: string[] = ['ID', 'Nombre', 'Categoria', 'Editar', 'Eliminar'];
+  fileName= 'InventarioEquiposdeMantenimiento.xlsx';
+
+  @ViewChild(MatPaginator) paginator :any = MatPaginator;
 
   constructor(
     public router : Router,
@@ -36,6 +43,22 @@ export class EquipmentComponent {
     this.getEquipments();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  exportToExcel() {
+    /* pass here the table id */
+    let element = document.getElementById('equipmentData');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+  }
   
 
   openEditEquipmentForm(data : any) {
@@ -54,7 +77,7 @@ export class EquipmentComponent {
       (response: any) => {
         console.log(response);
         this.ngxService.stop();
-        this.productDetails = new MatTableDataSource(response);
+        this.dataSource.data = response;
         //this.productDetails = response;
       }, (error : HttpErrorResponse) => {
         this.ngxService.stop();
@@ -89,7 +112,7 @@ export class EquipmentComponent {
   applyFilter(event: Event){
     const filterValue = (event.target as HTMLInputElement).value;
     //this.productDetails.filter((value:any) => value.productsCategories.category).breadcrumb[0].replace()
-    this.productDetails.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   handleAddAction() {

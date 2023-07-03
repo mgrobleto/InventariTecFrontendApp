@@ -1,21 +1,19 @@
 .mat-toolbar {
-    margin: 24px;
-    margin-bottom: 10px;
+    margin: 20px;
+   /*  margin-bottom: 10px; */
     width: auto;
    /*  max-width: 700px; */
-    background: #29296a;
+    background: #192653;
     color: #FFFF;
-  }
+}
   
 .details {
     margin: 0;
-    background: #a3bc44;
-    color: white;
+    background-color: #192653;
+    /* background: #192653;
+    color: white; */
+    height: 40px;
 }
-
-/* #customer {
-    max-width: 700px;
-} */
 
 .download {
     margin: auto;
@@ -29,4 +27,12 @@
 
 table {
     width: 100%;
+    padding: 0;
+}
+
+mat-card {
+    /* width: 50%; */
+    background-color: #E8EAF6;
+    padding: 20px;
+    margin-bottom: 1rem;
 }

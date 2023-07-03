@@ -3,9 +3,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ListInvoicesComponent } from '../view-invoices/list-invoices.component';
 import { GlobalConstants } from 'src/app/components/shared/global-constants';
 import { BillService } from 'src/app/services/salesService/sales.service';
-import { CoreService } from 'src/app/components/shared/core.service';
+import { CoreService } from 'src/app/services/snackBar/core.service';
 import { map } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+
+
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-invoice-details',
@@ -48,14 +53,38 @@ export class InvoiceDetailsComponent implements OnInit {
     //console.log(this.dataSource);
   }
 
+  /* generateReportPDF() {
+    
+    let DATA: any = document.getElementById('reportData');
+
+
+    html2canvas(DATA)!.then((canvas) => {
+
+      const FILEURI = canvas.toDataURL('base64');
+      var docDefinition = {
+        content: [{
+          image: FILEURI,
+          width: 500,
+        }]
+      }
+
+      pdfMake.createPdf(docDefinition).download("Detalle venta.pdf");
+    });
+  } */
+
+  getDocumentDefinition() {
+    throw new Error('Method not implemented.');
+  }
+
+
   getBillItemsDetails(values: any) {
     this._billService.getBillItems().pipe( map( (items: any) => {
       return items.filter((billNumber : any) => billNumber.billNumber === values.billNumber)
     })).subscribe(
       (data: any) => {
         //console.log(values.billNumber)
-        this.items = data;
-        this.items.forEach((element:any) => {
+        //this.items = data;
+        data.forEach((element:any) => {
           this.productsData = element.billItems;
         });
         //this.items = data;
