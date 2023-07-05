@@ -98,8 +98,8 @@
 
 <mat-card>
     <mat-card-content>
-        <div class="responsive-table">
-            <mat-table id="sales-details" [dataSource]="billDetails" class="mat-elevation-z8">
+        <div class="responsive-table" id="sales-details">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         
                 <!-- Position Column -->
                 <ng-container matColumnDef="Numero de Factura">

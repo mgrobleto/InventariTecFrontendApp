@@ -71,6 +71,7 @@ tr.mat-row {
     height: 52px;
 
     td.mat-cell {
+      padding-top: 16px;
       padding-left: 16px;
       padding-right: 16px;
       box-sizing: border-box;
@@ -83,7 +84,7 @@ tr.mat-row {
 }
 
 .mat-column-ID {
-    width: 16% !important;
+    width: 9% !important;
 }
 
 .mat-mdc-row .mat-mdc-cell {

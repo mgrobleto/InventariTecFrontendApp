@@ -63,10 +63,11 @@ tr.mat-row {
     height: 52px;
   
     td.mat-cell {
-      /* padding-left: 16px;
+      padding-top: 16px;
+      padding-left: 16px;
       padding-right: 16px;
-      box-sizing: border-box; */
-      font-size: 2rem;
+      box-sizing: border-box;
+      font-size: 1rem;
     }
 }
 

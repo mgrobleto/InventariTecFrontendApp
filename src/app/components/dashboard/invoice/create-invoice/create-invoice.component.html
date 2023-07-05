@@ -109,7 +109,7 @@
         
                         <mat-form-field appearance="outline">
                             <mat-label>Sub Total</mat-label>
-                            <input matInput formControlName="total_sale" readonly>
+                            <input matInput formControlName="total_sale"  min="1" readonly>
                         </mat-form-field>
                     </div>
                 </div>
@@ -212,12 +212,12 @@
         
                         <mat-form-field appearance="outline">
                             <mat-label>Sub-Total</mat-label>
-                            <input matInput formControlName="sub_total" readonly required>
+                            <input matInput formControlName="sub_total"  min="1" readonly required>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
                             <mat-label>IVA</mat-label>
-                            <input matInput type="number" step="0.01" min="0.0" formControlName="iva" (keyup.enter)="calculateIvaMount()" #input>
+                            <input matInput type="number" step="0.01"  min="0.0" formControlName="iva" (keyup.enter)="calculateIvaMount()" #input>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                             <mat-label>Total</mat-label>

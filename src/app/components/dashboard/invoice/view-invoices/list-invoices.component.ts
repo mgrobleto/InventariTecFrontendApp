@@ -31,6 +31,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     { value: 'status', description: "Por estado de factura" },
   ];
 
+  dataSource = new MatTableDataSource<any>();
   fileName= 'VentasReporte.xlsx';
   filterBill:any;
   billDetails:any = [];
@@ -104,7 +105,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       return bill.filter((bill : any) => bill.created_at === date.value)
     })).subscribe(
       (response: any) => {
-        this.billDetails = new MatTableDataSource(response);
+        this.dataSource.data = response;
       }, (error : any) => {
         console.log(error);
         if(error.message?.message){
@@ -123,7 +124,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       return bill.filter((bill : any) => bill.bill_state === billStatus)
     })).subscribe(
       (response: any) => {
-        this.billDetails = new MatTableDataSource(response);
+        this.dataSource.data = response;
       }, (error : any) => {
         console.log(error);
         if(error.message?.message){
@@ -143,7 +144,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.billDetails.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator;
   }
   
 
@@ -156,7 +157,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       (data: any) => {
         console.log(data);
         this.ngxService.stop();
-        this.billDetails = new MatTableDataSource(data);
+        this.dataSource.data = data;
         //this.productDetails = response;
       }, (error : any) => {
         this.ngxService.stop();

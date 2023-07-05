@@ -58,6 +58,7 @@ export class CreateInvoiceComponent implements OnInit {
   invoiceDetailForm:any = FormGroup;
   billDate:any;
   currentMonth: any;
+  yearValue: any;
 
 
   constructor(
@@ -116,6 +117,9 @@ export class CreateInvoiceComponent implements OnInit {
     this.getBillState();
 
     const value = new Date().getMonth();
+    this.yearValue = new Date().getFullYear();
+    //this.invoiceForm.controls['id_year'].setValue(year);
+    //console.log("el año"+ year);
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     this.currentMonth = monthNames[value];
     //this.getMonth();
@@ -202,7 +206,11 @@ export class CreateInvoiceComponent implements OnInit {
     this._billService.getYear().subscribe(
       (resp : any) => {
         resp.forEach((element:any) => {
-          this.year = element.name;
+          if(element.name == this.yearValue){
+            this.year = element.name;
+            this.invoiceForm.controls['id_year'].setValue(this.year);
+          }
+          //this.year = element.name;
         });
         this.invoiceForm.controls['id_year'].setValue(this.year);
       }, (err : any) => {
@@ -337,16 +345,23 @@ export class CreateInvoiceComponent implements OnInit {
   addProductToBillList() {
     var billDetailFormData = this.invoiceForm.value;
     var temp = this.invoiceForm.controls['iva'].value;
+    //var twoPlaces = Number.toFied(2)x;
 
     var productName = this.dataSource.find((e: {productName : any}) => e.productName === billDetailFormData.productName);
     //console.log(productName);
 
     if( productName ===  undefined && this.productQuantity <= this.productStockQuantity) {
       this.totalAmount = this.totalAmount + billDetailFormData.total_sale;
+      var totalAmountValue = this.totalAmount.toFixed(2);
       this.ivatMount = this.totalAmount * temp;
-      this.netAmount = this.totalAmount + this.ivatMount;
-      this.invoiceForm.controls['sub_total'].setValue(this.totalAmount);
-      this.invoiceForm.controls['total'].setValue(this.netAmount);
+      //var iva = this.ivatMount.toFixed(2);
+      //this.ivatMount.toFixed(2);
+      this.netAmount = parseFloat(totalAmountValue) + this.ivatMount;
+
+      var netTotal = this.netAmount.toFixed(2);
+      this.invoiceForm.controls['sub_total'].setValue(totalAmountValue);
+      this.invoiceForm.controls['total'].setValue(netTotal);
+
       this.dataSource.push({productName:billDetailFormData.productName, category:billDetailFormData.category, price:billDetailFormData.price, amount_products:billDetailFormData.amount_products, total_sale:billDetailFormData.total_sale})
       this.dataSource = [...this.dataSource]
       //this._coreService.openSuccessSnackBar(GlobalConstants.productAdded, "con exito");
@@ -377,12 +392,14 @@ export class CreateInvoiceComponent implements OnInit {
     var temp = this.invoiceForm.controls['iva'].value;
 
     if(this.totalAmount > 0){
-      this.ivatMount = this.totalAmount * temp;
+      var totalAmountValue = this.totalAmount.toFixed(2);
+      this.ivatMount = parseFloat(totalAmountValue) * temp;
+      var iva = this.ivatMount.toFixed(2);
 
       console.log(this.ivatMount);
   
-      this.invoiceForm.controls['iva'].setValue(this.ivatMount);
-      this.netAmount = this.totalAmount + this.ivatMount;
+      this.invoiceForm.controls['iva'].setValue(iva);
+      this.netAmount = parseFloat(totalAmountValue) + parseFloat(iva);
       this.invoiceForm.controls['total'].setValue(this.netAmount);
     } else {
       this.invoiceForm.controls['iva'].setValue(temp);
@@ -457,6 +474,11 @@ export class CreateInvoiceComponent implements OnInit {
         //this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
+
+    this.invoiceForm.reset();
+    this.dataSource.reset();
+    this.totalAmount = 0;
+    this.ngOnInit();
 
     /* this.dataSource.forEach((element : any) => {
 

@@ -123,6 +123,7 @@ export class EditInvoiceStatusComponent implements OnInit {
       id_year: this.dialogData.data.id_year,
       created_at: this.dialogData.data.created_at,
       bill_state: formData.bill_state,
+      billItems: this.dialogData.data.billItems,
     }
 
     this._billService.updateBillState(data).subscribe(

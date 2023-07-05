@@ -157,6 +157,7 @@ export class HomeComponent implements OnInit {
 
     this.totalIncome = 0;
     var amount:any = 0;
+    var incomeValue: any = 0;
 
     this._billService.getAllBills().pipe( map ( (resp : any) => {
       return resp.filter((month : any) => month.id_month === value)
@@ -166,7 +167,8 @@ export class HomeComponent implements OnInit {
         response.forEach((items : any)=> {
           this.totalIncomes = items.total;
           amount = parseFloat(this.totalIncomes);
-          this.totalIncome += amount;
+          incomeValue += amount;
+          this.totalIncome = incomeValue.toFixed(2)
         })
 
         //console.log(this.billItems.length);
