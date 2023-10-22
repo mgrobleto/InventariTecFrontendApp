@@ -7,8 +7,8 @@ import { AddEditFormComponent } from './components/add-edit-form/add-edit-form.c
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CoreService } from 'src/app/data/service/snackBar/core.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { GlobalConstants } from 'src/app/components/shared/global-constants';
-import { ConfirmationDialog } from 'src/app/components/shared/confirmation-dialog/confirmation-dialog.component';
+import { GlobalConstants } from '../../shared/global-constants';
+import { ConfirmationDialog } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { CategoriesService } from 'src/app/data/service/categoryService/categories.service';
 import * as XLSX from 'xlsx';
 import { MatPaginator } from '@angular/material/paginator';

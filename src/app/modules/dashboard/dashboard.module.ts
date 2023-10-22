@@ -29,7 +29,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     DashboardComponent,
     BodyComponent,
     SidebarComponent,
-    //HomeComponent,
+    HomeComponent,
     SublevelMenuComponent,
     ProductsComponent,
     AddEditFormComponent,

@@ -1,7 +1,7 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {map, tap, delay} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -14,6 +14,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
   api_url = environment.apiUrl;
@@ -29,7 +30,7 @@ export class AuthService {
           console.log("Ha iniciado sesion");
           this.isLoggedIn = true;
           console.log(this.isLoggedIn)
-        }else{
+        }else {
           this.isLoggedIn = false;
         }
         //this.isLoggedIn();

@@ -27,8 +27,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   declarations: [
     AppComponent,
     LoginComponent,
-    SidebarComponent,
-    BodyComponent
   ],
   imports: [
     BrowserModule,
