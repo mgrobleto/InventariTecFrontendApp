@@ -8,6 +8,7 @@
 
 .login {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -32,7 +33,15 @@
   color: black;
 }
 
-.login button{
+.login button {
   border: none;
   border-radius: 1rem;
+}
+
+.register-section {
+  font-size: large;
+}
+
+.register-section a:hover {
+  cursor: pointer;
 }

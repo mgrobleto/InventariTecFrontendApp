@@ -1,1 +1,134 @@
-<p>registration works!</p>
+<section id="register-section">
+    <div class="register-side-image"></div>
+    <div class="register-form">
+      <div class="register-form-header my-4">
+        <h1 class="my-4">Administra tu inventario con nosotros</h1>
+        <p>¿Ya tienes una cuenta?</p>
+        <a (click)="redirectToLogin()" style="color: orange;">Iniciar sesion</a>
+      </div>
+
+      <mat-stepper orientation="vertical" [linear]="false" #stepper>
+          <mat-step [stepControl]="registerForm">
+            <form [formGroup]="registerForm">
+              <ng-template matStepLabel>Datos personales</ng-template>
+              <mat-form-field>
+                <mat-label>Nombre de Usuario</mat-label>
+                <input matInput placeholder="Nombre de usuario" formControlName="username" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Crear Contraseña</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" autocomplete="off" formControlName="password">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>                     
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Cofirmar contraseña</mat-label>
+                <input 
+                  matInput 
+                  [type]="hide ? 'password' : 'text'" 
+                  autocomplete="off" 
+                  formControlName="passwordConfirmation"
+                >
+                <span *ngIf="registerForm.errors?.['passwordmatcherror']" style="color: red;">La contraseña no coincide</span>
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>                     
+              </mat-form-field>
+              <div>
+                <button mat-button matStepperNext>Siguiente</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="businessDataForm">
+            <form [formGroup]="businessDataForm">
+              <ng-template matStepLabel>Negocio</ng-template>
+                <mat-form-field>
+                  <mat-label>Nombre del Negocio</mat-label>
+                  <input matInput formControlName="name" placeholder="Ingresar nombre del Negocio"
+                    required>
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Regresar</button>
+                  <button mat-button matStepperNext>Siguiente</button>
+                </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="businessDataForm">
+              <form [formGroup]="businessDataForm">
+                <ng-template matStepLabel>Factura DGI</ng-template>
+                <mat-form-field>
+                  <mat-label>Número de Autorización de Factura</mat-label>
+                  <input matInput type="url" formControlName="invoiceAuthorizationNumber" placeholder="A"
+                    required>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Serie de Factura</mat-label>
+                  <input matInput type="url" formControlName="invoiceSerie" placeholder="A"
+                    required>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Número de Factura</mat-label>
+                    <input matInput formControlName="invoiceNumber" placeholder="1"
+                      required>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Ultima Factura Agregada</mat-label>
+                  <input matInput formControlName="lastRegisteredInvoices" placeholder="0"
+                    required>
+                </mat-form-field>
+                <div>
+                <button mat-button matStepperPrevious>Regresar</button>
+                <button mat-button matStepperNext>Siguiente</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="businessDataForm">
+            <form [formGroup]="businessDataForm">
+              <ng-template matStepLabel>Tipo de Plan y Moneda</ng-template>
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo de Moneda</mat-label>
+                <mat-select formControlName="currencyTypeId" required>
+                    <mat-option *ngFor="let currency of currencyType" [value]="currency.name">
+                      {{currency.name}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo de Plan</mat-label>
+                  <mat-select formControlName="planTypeId" required>
+                    <mat-option *ngFor="let planType of planType" [value]="planType.id">
+                        {{planType.name}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Registro de Productos Disponible</mat-label>
+                  <input  matInput 
+                          formControlName="numberOfProductRecordsAvailable" 
+                          placeholder="0"
+                          type="number"
+                          min="1"
+                          required
+                  >
+              </mat-form-field>
+
+              <div>
+                <button mat-button matStepperPrevious>Regresar</button>
+                <button mat-button matStepperNext>Siguiente</button>
+              </div>
+            </form>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Finalizar</ng-template>
+              <div class="my-2">
+                <button mat-button matStepperPrevious>Regresar</button>
+                <button mat-button (click)="stepper.reset()">Reiniciar</button>
+                <button mat-button [disabled]="registerForm.invalid">Registrarme</button>
+              </div>
+            </mat-step>
+        </mat-stepper>
+    </div>
+</section>

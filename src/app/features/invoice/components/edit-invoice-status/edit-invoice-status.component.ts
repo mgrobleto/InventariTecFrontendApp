@@ -62,7 +62,7 @@ export class EditInvoiceStatusComponent implements OnInit {
       this.billForm.patchValue(this.dialogData.data);
     }
 
-    this.getBillState();
+    //this.getBillState();
   }
 
   getBillState(){

@@ -43,8 +43,8 @@ export class InvoiceDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.data = this.dialogData.data;
-    this.getBillItemsDetails(this.data);
+    //this.data = this.dialogData.data;
+    //this.getBillItemsDetails(this.data);
 
     //this.productsData = this.dialogData.items;
     //this.dataSource = this.dialogData.items;

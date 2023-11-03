@@ -43,8 +43,8 @@ export class ProductsComponent implements OnInit, AfterViewInit{
     ){}
 
   ngOnInit(): void {
-    this.ngxService.start();
-    this.getAllProducts();
+    /* this.ngxService.start();
+    this.getAllProducts(); */
   }
 
   ngAfterViewInit() {

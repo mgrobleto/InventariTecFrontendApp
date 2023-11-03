@@ -50,9 +50,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getMonth();
+    /* this.getMonth();
     this.getTotalProducts();
-    this.userInfo();
+    this.userInfo(); */
 
     this.monthSelect = this._fb.group({
         id_month: [null,[Validators.required]],
@@ -64,14 +64,14 @@ export class HomeComponent implements OnInit {
     const value = monthNames[this.currentMonth];
     console.log(value);
 
-    this.getTotalSales(value);
-    this.getTotalIncomeByMonth(value);
+   /*  this.getTotalSales(value);
+    this.getTotalIncomeByMonth(value); */
     
 
     if(this.monthSelect.controls['id_month'].value === null) {
       this.monthSelect.controls['id_month'].setValue(value);
       var initialValue = this.monthSelect.controls['id_month'].value;
-      this.getMonthValues(initialValue);
+      //this.getMonthValues(initialValue);
     }
   }
 

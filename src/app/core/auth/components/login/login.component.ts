@@ -18,10 +18,12 @@ export class LoginComponent implements OnInit {
 
   requestData$! : Observable<any>;
 
- constructor(private fb : FormBuilder, 
+ constructor(
+  private fb : FormBuilder, 
   private authService: AuthService,
   private _snackBar: MatSnackBar,
-  private router: Router) {
+  private router: Router
+  ) {
     this.form = this.fb.group({
       username: ["", Validators.required],
       password: ["", Validators.required]
@@ -53,6 +55,10 @@ export class LoginComponent implements OnInit {
 
   logOut() {
     this.authService.logout();
+  }
+
+  redirectToRegister() {
+    this.router.navigate(['/registration']);
   }
 
 }

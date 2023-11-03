@@ -138,9 +138,9 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void { 
-    this.ngxService.start();
+   /*  this.ngxService.start();
     this.getAllBills();
-    this.getBillState();
+    this.getBillState(); */
   }
 
   ngAfterViewInit() {

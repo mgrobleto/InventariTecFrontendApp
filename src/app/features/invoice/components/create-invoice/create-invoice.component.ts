@@ -32,6 +32,7 @@ export class CreateInvoiceComponent implements OnInit {
     'Total',
     'Eliminar',
   ];
+  
   productsByCategorySelected:any =[];
   productsCategories:any=[];
   productDetail:any = [];
@@ -106,7 +107,7 @@ export class CreateInvoiceComponent implements OnInit {
       total_sale: [null,[Validators.required]],
     })
 
-    this.ngxService.start();
+    /* this.ngxService.start();
     this.generateBillId();
     this.getProductsCategories();
     this.getCustomersType();
@@ -115,7 +116,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.getMonth();
     this.getYear();
     this.getBillState();
-
+ */
     const value = new Date().getMonth();
     this.yearValue = new Date().getFullYear();
     //this.invoiceForm.controls['id_year'].setValue(year);
@@ -411,10 +412,6 @@ export class CreateInvoiceComponent implements OnInit {
     this.dataSource.splice(value, 1);
     this.dataSource = [...this.dataSource]
     this.invoiceForm.controls['sub_total'].reset();
-  }
-
-  updateProductStock() {
-
   }
 
   submitAction() {

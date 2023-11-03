@@ -24,6 +24,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTabsModule} from '@angular/material/tabs';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import {NgxPrintModule} from 'ngx-print';
+import { MatStepperModule } from '@angular/material/stepper'
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import {NgxPrintModule} from 'ngx-print';
     MatTabsModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    NgxPrintModule
+    NgxPrintModule,
+    MatStepperModule
   ],
   exports: [
     FormsModule,
@@ -82,6 +84,7 @@ import {NgxPrintModule} from 'ngx-print';
     NgxMaskDirective,
     NgxMaskPipe,
     NgxPrintModule,
+    MatStepperModule
   ],
   providers: [
     provideNgxMask(),

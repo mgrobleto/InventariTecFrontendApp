@@ -1,0 +1,49 @@
+#register-section {
+    height: 100vh;
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.register-side-image {
+    background-image: url('../../../../../assets//svg//registerImage.svg');
+    background-position: center;
+    background-size: cover;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   /*  background-color: aqua; */
+    justify-content: center;
+}
+
+.register-form-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: large;
+    font-weight: bold;
+}
+
+h1 {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+a:hover {
+   cursor: pointer;
+}
+
+.mat-stepper-vertical {
+    margin-top: 8px;
+    margin-right: 5px;
+}
+  
+.mat-mdc-form-field {
+    display: flex;
+    flex-direction: column;
+    margin-top: 7px;
+}
+  
