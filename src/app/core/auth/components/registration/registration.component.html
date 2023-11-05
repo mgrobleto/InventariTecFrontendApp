@@ -23,7 +23,7 @@
                 </button>                     
               </mat-form-field>
               <mat-form-field>
-                <mat-label>Cofirmar contraseña</mat-label>
+                <mat-label>Confirmar contraseña</mat-label>
                 <input 
                   matInput 
                   [type]="hide ? 'password' : 'text'" 
@@ -89,7 +89,7 @@
               <mat-form-field appearance="outline">
                 <mat-label>Tipo de Moneda</mat-label>
                 <mat-select formControlName="currencyTypeId" required>
-                    <mat-option *ngFor="let currency of currencyType" [value]="currency.name">
+                    <mat-option *ngFor="let currency of currencyType" [value]="currency.id">
                       {{currency.name}}
                     </mat-option>
                 </mat-select>
@@ -126,7 +126,12 @@
               <div class="my-2">
                 <button mat-button matStepperPrevious>Regresar</button>
                 <button mat-button (click)="stepper.reset()">Reiniciar</button>
-                <button mat-button [disabled]="registerForm.invalid">Registrarme</button>
+                <button
+                  mat-button [disabled]="registerForm.invalid"
+                  [ngStyle]="{'background-color': '#ffa500'}"
+                  (click)="submitRegistration()"
+                  > Registrarme
+                </button>
               </div>
             </mat-step>
         </mat-stepper>

@@ -19,7 +19,7 @@ export class RegisterService {
 
   constructor(private httpClient : HttpClient) { }
 
-  registerUserWithBusiness(registerData : any) {
-    return this.httpClient.post<any>(this.apiUrl + '/user/register-user-with-business/', {registerData},  httpOptions)
+  registerUserWithBusiness(user : any, business : any) {
+    return this.httpClient.post<any>(this.apiUrl + '/user/register-user-with-business/', {user, business},  httpOptions)
   }
 }
