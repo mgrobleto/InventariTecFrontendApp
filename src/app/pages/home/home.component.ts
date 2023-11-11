@@ -35,7 +35,8 @@ export class HomeComponent implements OnInit {
   monthReturned: any;
   currentMonth: any;
   monthSelect: any = FormGroup;
-  userName: any;
+  userData: any = [];
+  userName: number = 0;
   barChart: any
 
   constructor(
@@ -53,6 +54,8 @@ export class HomeComponent implements OnInit {
     /* this.getMonth();
     this.getTotalProducts();
     this.userInfo(); */
+
+    this.getUserInfo();
 
     this.monthSelect = this._fb.group({
         id_month: [null,[Validators.required]],
@@ -75,20 +78,9 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  userInfo() {
-    this.authService.getUserInfo().subscribe(
-      (response: any) => {
-        this.userName = response.user;
-      }, 
-      (err) => {
-        if(err.message?.message){
-          this.responseMessage = err.message?.message;
-        }else{
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
-      }
-    )
+  getUserInfo() {
+   this.userData = this.authService.getUserInfo();
+   this.userName = this.userData.business.name;
   }
 
   redirectToProductsInventory(){

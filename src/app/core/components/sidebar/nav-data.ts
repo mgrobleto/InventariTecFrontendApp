@@ -44,9 +44,9 @@ export const navbarData : INavbarData[] = [
         icon: 'fas fa-user-tag',
         label: 'Ayuda',
     },
-    {
+    /* {
         routeLink: 'logout',
         icon: 'fas fa-sign-out-alt',
         label: 'Cerrar sesión',
-    },
+    }, */
 ];

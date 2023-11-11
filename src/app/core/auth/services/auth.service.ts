@@ -1,15 +1,4 @@
-import { HttpClient, HttpEvent } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {map} from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-
-const httpOptions = {
-  headers : new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-};
 
 @Injectable({
   providedIn: 'root'
@@ -17,46 +6,39 @@ const httpOptions = {
 
 export class AuthService {
 
-  api_url = environment.apiUrl;
   isLoggedIn = false;
 
-  constructor(private http : HttpClient) {}
+  private authToken: string | null = null;
+  private userData : any = [];
 
-  login (username : string, password : string) : Observable<boolean> {
-    return this.http.post<any>(this.api_url + `/accounts/api/auth/`, {username, password}, httpOptions).pipe(
-      map (user => {
-        if (user && user.token){
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          console.log("Ha iniciado sesion");
-          this.isLoggedIn = true;
-          console.log(this.isLoggedIn)
-        }else {
-          this.isLoggedIn = false;
-        }
-        //this.isLoggedIn();
-        return user.token;
-      })
-    );
+  setAuthToken(token: string) {
+    this.authToken = token;
+    this.isLoggedIn = true;
+  }
+
+  getAuthToken() {
+    return this.authToken;
+  }
+
+  setUserInfo(userData: any) {
+    this.userData = userData;
   }
 
   getUserInfo() {
-    return this.http.get<any>(this.api_url + `/accounts/profile/`);
+    return this.userData;
   }
 
-  auth() {
-    return this.isLoggedIn;
-  }
 
-  //isLoggedIn(){
-  //   const token = localStorage.getItem('token');
-  //   console.log(token);
-  //   if(token === null) return false;
-  //   else return true;
-  // }
+ /*  isLoggedIn() {
+    const token = localStorage.getItem('token');
+   console.log(token);
+    if(token === null) return false;
+    else return true;
+  } */
 
-  logout(){ 
+  /* logout(){ 
     localStorage.removeItem('currentUser');
     this.isLoggedIn = false;
     console.log(this.isLoggedIn);
-  }
+  } */
 }
