@@ -12,26 +12,22 @@ export class CategoriesService {
   constructor(private httpClient : HttpClient) { }
 
   getProductsCategories(){
-    return this.httpClient.get<any>(this.url + '/category/');
+    return this.httpClient.get<any>(this.url + '/products_category/list-product-categories/');
   }
 
-  addCategory(data: any) {
-    return this.httpClient.post(this.url + '/category/', data, {
+  createNewCategory(data: any) {
+    return this.httpClient.post(this.url + '/create-product-category/', data, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }
 
-  update(data:any) {
-    return this.httpClient.put(this.url + '/category/' + data.id + '/', data,{
+  updateProductCategory(data:any) {
+    return this.httpClient.put(this.url + '/products_category/update-product-category/' + data.id + '/', data,{
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     })
   }
 
-  delete(id:string){
-    return this.httpClient.delete(this.url + '/category/' + id);
-  }
-
-  getEquipmentCategories(){
-    return this.httpClient.get<any>(this.url + '/equipmentCategory/');
+  deleteProductCategory(id:string){
+    return this.httpClient.delete(this.url + '/products_category/delete-product-category/' + id);
   }
 }

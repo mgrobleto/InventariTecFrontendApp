@@ -133,7 +133,7 @@ export class ListProductsComponent implements OnInit {
   } */
 
   deleteProduct(id: string) {
-      this.productService.delete(id).subscribe(
+      this.productService.deleteProduct(id).subscribe(
         (response:any) => {
           this.ngxService.stop();
           this.getAllProducts();

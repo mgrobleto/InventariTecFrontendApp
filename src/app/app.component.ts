@@ -27,7 +27,7 @@ export class AppComponent {
     this.http.get(this.apiURL + '/get_csrf_token/').subscribe(
       (data : any) => {
         this.csrfService.setCsrfToken(data.csrf_token)
-        console.log(data.csrf_token)
+        //console.log(data.csrf_token)
       },
       err => console.log('no se obtuvo el csrf token',err)
     )

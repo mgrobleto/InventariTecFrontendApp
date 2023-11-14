@@ -30,6 +30,11 @@ export const navbarData : INavbarData[] = [
         label: 'Productos',
     },
     {
+        routeLink: 'categories',
+        icon: 'fas fa-boxes',
+        label: 'Categoría Productos',
+    },
+    {
         routeLink: 'equipment',
         icon: 'fas fa-toolbox',
         label: 'Proveedores',

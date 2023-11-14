@@ -11,27 +11,27 @@ export class CustomerService {
   
   constructor(private httpClient : HttpClient) { }
 
-  getAllCustomers(){
-    return this.httpClient.get<any>(this.url + '/customer/');
-  }
-
-  getCustomerType() {
-    return this.httpClient.get<any>(this.url + '/typeCustomer/');
-  }
-
-  addCustomer(data: any) {
-    return this.httpClient.post(this.url + '/customer/', data, {
+  addNewCustomer(data: any) {
+    return this.httpClient.post(this.url + '/customers/create-customer/', data, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }
 
-  update(data:any) {
-    return this.httpClient.put(this.url + '/customer/' + data.id + '/', data,{
+  getAllCustomers(){
+    return this.httpClient.get<any>(this.url + '/customers/list-customers/');
+  }
+
+  updateCustomerInfo(data:any) {
+    return this.httpClient.put(this.url + '/customers/update-customer/' + data.id + '/', data,{
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     })
   }
 
-  delete(id:string){
-    return this.httpClient.delete(this.url + '/customer/' + id);
+  deleteCustomer(id:string){
+    return this.httpClient.delete(this.url + '/customers/delete-customer/' + id + '/');
+  }
+
+  getCustomerType() {
+    return this.httpClient.get<any>(this.url + '/typeCustomer/');
   }
 }

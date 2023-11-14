@@ -12,6 +12,7 @@ import { SidebarComponent } from './core/components/sidebar/sidebar.component';
 import { BodyComponent } from './layout/body/body.component';
 import { NgxUiLoaderConfig, NgxUiLoaderModule , SPINNER} from 'ngx-ui-loader';
 import { RegistrationComponent } from './core/auth/components/registration/registration.component';
+import { ProductCategoryComponent } from './features/productCategory/product-category/product-category.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text:'Cargando...',
@@ -28,7 +29,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   declarations: [
     AppComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    ProductCategoryComponent
   ],
   imports: [
     BrowserModule,

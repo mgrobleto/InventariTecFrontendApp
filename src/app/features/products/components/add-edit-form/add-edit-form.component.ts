@@ -123,7 +123,7 @@ export class AddEditFormComponent implements OnInit {
     }
     console.log(data);
 
-    this._productService.addProduct(data).subscribe(
+    this._productService.addNewProduct(data).subscribe(
       (response:any) => {
         console.log(data);
         this._dialogRef.close();
@@ -167,7 +167,7 @@ export class AddEditFormComponent implements OnInit {
       currency: formData.currency,
     }
 
-    this._productService.update(data).subscribe(
+    this._productService.updateProduct(data).subscribe(
       (response:any) => {
         this._dialogRef.close();
         this.onEditProduct.emit();

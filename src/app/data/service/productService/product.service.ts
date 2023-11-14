@@ -12,23 +12,23 @@ export class ProductService {
   constructor(private httpClient : HttpClient){}
 
   getAllProducts(){
-    return this.httpClient.get<any>(this.url + '/products/');
+    return this.httpClient.get<any>(this.url + '/products/list-products/');
   }
 
-  addProduct(data : any) {
-    return this.httpClient.post(this.url + '/products/', data, {
+  addNewProduct(data : any) {
+    return this.httpClient.post(this.url + '/products/create-product/', data, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }
 
-  update(data:any) {
-    return this.httpClient.put(this.url + '/products/' + data.id + '/', data,{
+  updateProduct(data:any) {
+    return this.httpClient.put(this.url + '/products/update-product/' + data.id + '/', data,{
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     })
   }
 
-  delete(id:string){
-    return this.httpClient.delete(this.url + '/products/' + id);
+  deleteProduct(id:string){
+    return this.httpClient.delete(this.url + '/products/delete-product/' + id);
   }
 
   /* getProductsByCategory(id:any) {
