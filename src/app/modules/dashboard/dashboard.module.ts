@@ -11,6 +11,9 @@ import { SublevelMenuComponent } from '../../core/components/sidebar/sub-level.c
 import { NgxUiLoaderConfig, NgxUiLoaderModule , SPINNER} from 'ngx-ui-loader';
 import { ProductsComponent } from '../../features/products/products.component';
 import { AddEditFormComponent } from '../../features/products/components/add-edit-form/add-edit-form.component';
+import { ListProductsComponent } from 'src/app/features/products/components/view-products/list-products.component';
+import { CustomersComponent } from 'src/app/features/customers/customers.component';
+import { SuppliersComponent } from 'src/app/features/suppliers/suppliers.component';
 import { SettingsComponent } from '../../pages/settings/settings.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -33,6 +36,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     SublevelMenuComponent,
     ProductsComponent,
     AddEditFormComponent,
+    ListProductsComponent,
+    CustomersComponent,
+    SuppliersComponent,
     SettingsComponent,
   ],
   imports: [

@@ -35,12 +35,12 @@ export const navbarData : INavbarData[] = [
         label: 'Categoría Productos',
     },
     {
-        routeLink: 'equipment',
+        routeLink: 'suppliers',
         icon: 'fas fa-toolbox',
         label: 'Proveedores',
     },
     {
-        routeLink: 'clientes',
+        routeLink: 'clients',
         icon: 'fas fa-user-friends',
         label: 'Clientes'
     },

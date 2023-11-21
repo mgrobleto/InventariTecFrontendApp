@@ -8,11 +8,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule} from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { DatePipe } from '@angular/common';
-import { SidebarComponent } from './core/components/sidebar/sidebar.component';
-import { BodyComponent } from './layout/body/body.component';
 import { NgxUiLoaderConfig, NgxUiLoaderModule , SPINNER} from 'ngx-ui-loader';
 import { RegistrationComponent } from './core/auth/components/registration/registration.component';
 import { ProductCategoryComponent } from './features/productCategory/product-category/product-category.component';
+import { AddEditCustomerFormComponent } from './features/customers/add-edit-customer-form/add-edit-customer-form.component';
+import { AddEditSuppliersFormComponent } from './features/suppliers/add-edit-suppliers-form/add-edit-suppliers-form/add-edit-suppliers-form.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text:'Cargando...',
@@ -30,7 +30,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    ProductCategoryComponent
+    ProductCategoryComponent,
+    AddEditCustomerFormComponent,
+    AddEditSuppliersFormComponent
   ],
   imports: [
     BrowserModule,

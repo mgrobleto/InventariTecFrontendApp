@@ -24,12 +24,14 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTabsModule} from '@angular/material/tabs';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import {NgxPrintModule} from 'ngx-print';
-import { MatStepperModule } from '@angular/material/stepper'
+import { MatStepperModule } from '@angular/material/stepper';
+import { AddEditFormComponent } from './components/add-edit-form/add-edit-form.component'
 
 
 @NgModule({
   declarations: [
     ConfirmationDialog,
+    AddEditFormComponent,
   ],
   imports: [
     CommonModule,

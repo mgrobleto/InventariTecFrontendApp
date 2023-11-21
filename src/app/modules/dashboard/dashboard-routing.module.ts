@@ -5,6 +5,8 @@ import { HomeComponent } from '../../pages/home/home.component';
 import { ProductsComponent} from '../../features/products/products.component';
 import { SettingsComponent } from '../../pages/settings/settings.component';
 import { ProductCategoryComponent } from 'src/app/features/productCategory/product-category/product-category.component';
+import { SuppliersComponent } from 'src/app/features/suppliers/suppliers.component';
+import { CustomersComponent } from 'src/app/features/customers/customers.component';
 
 
 const routes: Routes = [
@@ -30,6 +32,16 @@ const routes: Routes = [
     {
       path: 'categories', 
       component:ProductCategoryComponent,
+      //loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
+    },
+    {
+      path: 'suppliers', 
+      component:SuppliersComponent,
+      //loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
+    },
+    {
+      path: 'clients', 
+      component:CustomersComponent,
       //loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
     },
     {

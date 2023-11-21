@@ -1,0 +1,64 @@
+<mat-toolbar>
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+        <span>{{dialogData.action}} Cliente </span>
+        <span class="spacer"></span>
+        <button class="mat-dialog-close" mat-icon-button mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content>
+    <form [formGroup]="customerForm" (ngSubmit)="handleSubmit()">
+        <div fxLayout="column" fxLayoutAlign="space-evenly-center">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombres</mat-label>
+                <input matInput type="text" formControlName="fullName" required="">
+                <mat-error *ngIf="customerForm.controls['fullName'].touched && customerForm.controls['fullName'].invalid">
+                    <span *ngIf="customerForm.controls['fullName'].errors?.['required']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['fullName'].errors?.['pattern']">Información invalida</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Apellidos</mat-label>
+                <input matInput type="text" formControlName="fullLastName" required="">
+                <mat-error *ngIf="customerForm.controls['fullLastName'].touched && customerForm.controls['fullLastName'].invalid">
+                    <span *ngIf="customerForm.controls['fullLastName'].errors?.['fullLastName']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['fullLastName'].errors?.['fullLastName']">Información invalida</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Numero de contacto</mat-label>
+                <input 
+                matInput 
+                type='text' mask="9999 9999" 
+                formControlName="phoneNumber" 
+                required>
+                <mat-error *ngIf="customerForm.controls['phoneNumber'].touched && customerForm.controls['phoneNumber'].invalid">
+                    <span *ngIf="customerForm.controls['phoneNumber'].errors?.['required']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['phoneNumber'].errors?.['pattern']">Información invalida</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Direccion</mat-label>
+                <input matInput type="number" min="0" formControlName="address" required="">
+                <mat-error *ngIf="customerForm.controls['address'].touched && customerForm.controls['address'].invalid">
+                    <span *ngIf="customerForm.controls['address'].errors?.['address']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['address'].errors?.['address']">Información invalida</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button type="submit" class="btn btn-success" (click)="handleSubmit()"> <!-- [disabled]="!(productForm.valid && productForm.dirty)" -->
+        {{action}}
+    </button>
+    <button class="btn btn-danger" type="button" mat-dialog-close>
+       Cancelar
+    </button>
+</mat-dialog-actions>
