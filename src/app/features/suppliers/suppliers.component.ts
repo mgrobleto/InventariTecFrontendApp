@@ -22,9 +22,9 @@ import { SuppliersService } from 'src/app/data/service/suppliersService/supplier
 export class SuppliersComponent {
   dataSource = new MatTableDataSource<any>();
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
 
-  fileName= 'ClientesInfo.xlsx';
+  fileName= 'InformacionProveedores.xlsx';
 
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   
@@ -48,7 +48,7 @@ export class SuppliersComponent {
 
   exportToExcel() {
     /* pass here the table id */
-    let element = document.getElementById('ClientsData');
+    let element = document.getElementById('suppliersData');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
  
     /* generate workbook and add the worksheet */
@@ -80,7 +80,7 @@ export class SuppliersComponent {
 
         console.log(response);
         this.ngxService.stop();
-        this.dataSource.data = response;
+        this.dataSource.data = response.data;
 
       }, (error : any) => {
 
@@ -139,7 +139,7 @@ export class SuppliersComponent {
   handleDeleteAction(values:any) {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
-      message: 'eliminar el ' + 'cliente' + values.fullName,
+      message: 'eliminar el ' + 'proveedor con nombre ' + values.first_name,
       confirmation: true
     }
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
@@ -160,7 +160,7 @@ export class SuppliersComponent {
         this.getAllSuppliers();
         this.responseMessage = response?.message;
         swal.fire (
-          'El cliente ha sido eliminado',
+          'Proveedor eliminado',
           this.responseMessage = response?.message,
           'success'
         )

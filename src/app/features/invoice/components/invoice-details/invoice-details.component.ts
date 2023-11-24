@@ -2,7 +2,7 @@ import { Component, OnInit , Inject} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ListInvoicesComponent } from '../view-invoices/list-invoices.component';
 import { GlobalConstants } from '../../../../shared/global-constants';
-import { BillService } from 'src/app/data/service/salesService/sales.service';
+import { InvoiceSalesService } from 'src/app/data/service/invoiceSalesService/invoiceSales.service';
 import { CoreService } from 'src/app/data/service/snackBar/core.service';
 import { map } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -38,7 +38,7 @@ export class InvoiceDetailsComponent implements OnInit {
   constructor(
     public _dialogRef : MatDialogRef<InvoiceDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private _billService : BillService, 
+    private _billService : InvoiceSalesService, 
     private _coreService : CoreService,
   ) {}
 
@@ -77,7 +77,7 @@ export class InvoiceDetailsComponent implements OnInit {
   }
 
 
-  getBillItemsDetails(values: any) {
+ /*  getBillItemsDetails(values: any) {
     this._billService.getBillItems().pipe( map( (items: any) => {
       return items.filter((billNumber : any) => billNumber.billNumber === values.billNumber)
     })).subscribe(
@@ -104,5 +104,5 @@ export class InvoiceDetailsComponent implements OnInit {
         this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     )
-  }
+  } */
 }

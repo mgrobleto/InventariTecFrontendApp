@@ -16,6 +16,8 @@ import { CustomersComponent } from 'src/app/features/customers/customers.compone
 import { SuppliersComponent } from 'src/app/features/suppliers/suppliers.component';
 import { SettingsComponent } from '../../pages/settings/settings.component';
 
+import { AddEditProductCategoryFormComponent } from 'src/app/features/productCategory/components/add-edit-form/add-edit-productCategory-form.component';
+
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text:'Cargando...',
   textColor: '#0e073e',
@@ -37,6 +39,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ProductsComponent,
     AddEditFormComponent,
     ListProductsComponent,
+    AddEditProductCategoryFormComponent,
     CustomersComponent,
     SuppliersComponent,
     SettingsComponent,

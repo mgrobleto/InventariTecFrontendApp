@@ -7,7 +7,6 @@ import { ListInvoicesComponent } from './components/view-invoices/list-invoices.
 import { InvoiceComponent } from './invoice.component';
 import { InvoiceDetailsComponent } from './components/invoice-details/invoice-details.component';
 import { SharedModule } from '../../shared/shared.module';
-import { IntlTelInputNgModule } from 'intl-tel-input-ng';
 import { EditInvoiceStatusComponent } from './components/edit-invoice-status/edit-invoice-status.component';
 
 

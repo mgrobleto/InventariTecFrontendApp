@@ -13,19 +13,28 @@
         <div fxLayout="column" fxLayoutAlign="space-evenly-center">
             <mat-form-field appearance="outline">
                 <mat-label>Nombres</mat-label>
-                <input matInput type="text" formControlName="fullName" required="">
-                <mat-error *ngIf="customerForm.controls['fullName'].touched && customerForm.controls['fullName'].invalid">
-                    <span *ngIf="customerForm.controls['fullName'].errors?.['required']">Debe rellenar este campo</span>
-                    <span *ngIf="customerForm.controls['fullName'].errors?.['pattern']">Información invalida</span>
+                <input matInput type="text" formControlName="first_name" required="">
+                <mat-error *ngIf="customerForm.controls['first_name'].touched && customerForm.controls['first_name'].invalid">
+                    <span *ngIf="customerForm.controls['first_name'].errors?.['required']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['first_name'].errors?.['pattern']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>Apellidos</mat-label>
-                <input matInput type="text" formControlName="fullLastName" required="">
-                <mat-error *ngIf="customerForm.controls['fullLastName'].touched && customerForm.controls['fullLastName'].invalid">
-                    <span *ngIf="customerForm.controls['fullLastName'].errors?.['fullLastName']">Debe rellenar este campo</span>
-                    <span *ngIf="customerForm.controls['fullLastName'].errors?.['fullLastName']">Información invalida</span>
+                <input matInput type="text" formControlName="last_name" required="">
+                <mat-error *ngIf="customerForm.controls['last_name'].touched && customerForm.controls['last_name'].invalid">
+                    <span *ngIf="customerForm.controls['last_name'].errors?.['last_name']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['last_name'].errors?.['last_name']">Información invalida</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Correo Electrónico</mat-label>
+                <input matInput type="email" formControlName="email" required="" placeholder="ejemplo@gmail.com">
+                <mat-error *ngIf="customerForm.controls['email'].touched && customerForm.controls['email'].invalid">
+                    <span *ngIf="customerForm.controls['email'].errors?.['email']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['email'].errors?.['email']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
 
@@ -34,20 +43,21 @@
                 <input 
                 matInput 
                 type='text' mask="9999 9999" 
-                formControlName="phoneNumber" 
+                formControlName="phone"
+                placeholder="9999 9999" 
                 required>
-                <mat-error *ngIf="customerForm.controls['phoneNumber'].touched && customerForm.controls['phoneNumber'].invalid">
-                    <span *ngIf="customerForm.controls['phoneNumber'].errors?.['required']">Debe rellenar este campo</span>
-                    <span *ngIf="customerForm.controls['phoneNumber'].errors?.['pattern']">Información invalida</span>
+                <mat-error *ngIf="customerForm.controls['phone'].touched && customerForm.controls['phone'].invalid">
+                    <span *ngIf="customerForm.controls['phone'].errors?.['required']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['phone'].errors?.['pattern']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>Direccion</mat-label>
-                <input matInput type="number" min="0" formControlName="address" required="">
-                <mat-error *ngIf="customerForm.controls['address'].touched && customerForm.controls['address'].invalid">
-                    <span *ngIf="customerForm.controls['address'].errors?.['address']">Debe rellenar este campo</span>
-                    <span *ngIf="customerForm.controls['address'].errors?.['address']">Información invalida</span>
+                <input matInput type="text" formControlName="c_address" required="">
+                <mat-error *ngIf="customerForm.controls['c_address'].touched && customerForm.controls['c_address'].invalid">
+                    <span *ngIf="customerForm.controls['c_address'].errors?.['c_address']">Debe rellenar este campo</span>
+                    <span *ngIf="customerForm.controls['c_address'].errors?.['c_address']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
         </div>

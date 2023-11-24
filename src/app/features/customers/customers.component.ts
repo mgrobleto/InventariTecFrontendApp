@@ -7,7 +7,6 @@ import { CoreService } from 'src/app/data/service/snackBar/core.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalConstants } from '../../shared/global-constants';
 import { ConfirmationDialog } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { CategoriesService } from 'src/app/data/service/categoryService/categories.service';
 import { AddEditCustomerFormComponent } from './add-edit-customer-form/add-edit-customer-form.component';
 import * as XLSX from 'xlsx';
 import { MatPaginator } from '@angular/material/paginator';
@@ -23,7 +22,7 @@ export class CustomersComponent {
 
   dataSource = new MatTableDataSource<any>();
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre Completo', 'Apellidos', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
 
   fileName= 'ClientesInfo.xlsx';
 
@@ -36,7 +35,6 @@ export class CustomersComponent {
     private dialog : MatDialog,
     private _coreService : CoreService,
     private ngxService: NgxUiLoaderService,
-    private _categoryService : CategoriesService
     ){}
 
   ngOnInit(): void {
@@ -80,9 +78,9 @@ export class CustomersComponent {
     (
       (response: any) => {
 
-        console.log(response);
         this.ngxService.stop();
-        this.dataSource.data = response;
+        this.dataSource.data = response.data;
+        console.log(this.dataSource.data);
 
       }, (error : any) => {
 
@@ -116,9 +114,9 @@ export class CustomersComponent {
       dialogRef.close();
     });
 
-    /* const sub = dialogRef.componentInstance.onAddCustomer.subscribe((response) => {
+    const sub = dialogRef.componentInstance.onAddCustomer.subscribe((response) => {
       this.getAllClients();
-    }); */
+    });
   }
 
   handleEditAction(values:any) {
@@ -133,15 +131,15 @@ export class CustomersComponent {
       dialogRef.close();
     });
 
-   /*  const sub = dialogRef.componentInstance.onEditCustomer.subscribe((response) => {
+   const sub = dialogRef.componentInstance.onEditCustomer.subscribe((response) => {
       this.getAllClients();
-    }); */
+    });
   }
 
   handleDeleteAction(values:any) {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
-      message: 'eliminar el ' + 'cliente' + values.fullName,
+      message: 'eliminar el ' + 'cliente ' + values.first_name,
       confirmation: true
     }
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);

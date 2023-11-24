@@ -10,7 +10,7 @@ import { SharedModule } from './shared/shared.module';
 import { DatePipe } from '@angular/common';
 import { NgxUiLoaderConfig, NgxUiLoaderModule , SPINNER} from 'ngx-ui-loader';
 import { RegistrationComponent } from './core/auth/components/registration/registration.component';
-import { ProductCategoryComponent } from './features/productCategory/product-category/product-category.component';
+import { ProductCategoryComponent } from './features/productCategory/product-category.component';
 import { AddEditCustomerFormComponent } from './features/customers/add-edit-customer-form/add-edit-customer-form.component';
 import { AddEditSuppliersFormComponent } from './features/suppliers/add-edit-suppliers-form/add-edit-suppliers-form/add-edit-suppliers-form.component';
 

@@ -4,7 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from '../../pages/home/home.component';
 import { ProductsComponent} from '../../features/products/products.component';
 import { SettingsComponent } from '../../pages/settings/settings.component';
-import { ProductCategoryComponent } from 'src/app/features/productCategory/product-category/product-category.component';
+import { ProductCategoryComponent } from 'src/app/features/productCategory/product-category.component';
 import { SuppliersComponent } from 'src/app/features/suppliers/suppliers.component';
 import { CustomersComponent } from 'src/app/features/customers/customers.component';
 

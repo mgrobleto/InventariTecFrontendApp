@@ -12,17 +12,16 @@ import swal from'sweetalert2';
 
 @Component({
   selector: 'app-add-edit-form',
-  templateUrl: './add-edit-form.component.html',
-  styleUrls: ['./add-edit-form.component.scss'
+  templateUrl: './add-edit-productCategory-form.component.html',
+  styleUrls: ['./add-edit-productCategory-form.component.scss'
 ]
 })
-export class AddEditFormComponent implements OnInit {
+export class AddEditProductCategoryFormComponent implements OnInit {
   
-  onAddProduct = new EventEmitter();
-  onEditProduct = new EventEmitter();
+  onAddProductCategory = new EventEmitter();
+  onEditProductCategory = new EventEmitter();
 
-  currencies:any;
-  productForm:any = FormGroup;
+  productCategoryForm:any = FormGroup;
   dialogAction: any = 'Agregar';
   action: any = 'Agregar';
   responseMessage: any;
@@ -30,92 +29,56 @@ export class AddEditFormComponent implements OnInit {
   
   constructor(
     private _fb : FormBuilder,
-    private _productService : ProductService,
     private productCategorieService : ProductCategorieService,
     private authService : AuthService,
-    public _dialogRef : MatDialogRef<AddEditFormComponent>,
+    public _dialogRef : MatDialogRef<AddEditProductCategoryFormComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private _coreService: CoreService,
-  ) {
-    /* this.productForm = this._fb.group({
-      'name': '',
-      'description': '',
-      'stock': '',
-      'cost': '',
-      'price': '',
-      'id_category': '',
-    }); */
-  }
+  ) {}
 
   ngOnInit(): void {
-    //this.productForm.patchValue(this.data);
-    this.productForm = this._fb.group({
+    this.productCategoryForm = this._fb.group({
       name: [null,[Validators.required]],
-      description: [null,[Validators.required]],
-      stock: [null,[Validators.required]],
-      cost_price: [null,[Validators.required]],
-      sale_price: [null,[Validators.required]],
-      category: [null,[Validators.required]]
     });
-    //console.log(this.data);
 
-    if(this.dialogData.action === "Editar") {
+    if(this.dialogData.action === "Editar") 
+    {
       this.dialogAction = "Editar";
       this.action = "Actualizar";
-      this.productForm.patchValue(this.dialogData.data);
+      this.productCategoryForm.patchValue(this.dialogData.data);
     }
 
-    this.getProductsCategories() ;
+    //this.getProductsCategories() ;
   }
 
-  getProductsCategories() {
-    this.productCategorieService.getProductsCategories().subscribe(
-      (resp : any) => {
-        console.log(resp);
-        this.productsCategories = resp;
-      }, (err : any) => {
-        console.log(err);
-        if(err.message?.message){
-          this.responseMessage = err.message?.message;
-        }else{
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
-      }
-    )
-  }
-
-  handleSubmit(){
+  handleSubmit() {
     if(this.dialogAction === "Editar") {
-      this.editProduct();
+      this.editProductCategory();
     } else {
-      this.addProduct();
+      this.addProductCategory();
     }
   }
 
-  addProduct() {
-    var formData = this.productForm.value;
+  addProductCategory() {
+    var formData = this.productCategoryForm.value;
     var businessId = this.authService.getUserInfo().business.id;
 
     var data = {
       name: formData.name,
-      description : formData.description,
-      stock: formData.stock,
-      cost_price : formData.cost,
-      sale_price : formData.price,
-      category : formData.category,
       business: businessId
     }
     console.log(data);
 
-    this._productService.addNewProduct(data).subscribe(
+    this.productCategorieService.createNewCategory(data)
+    .subscribe(
+
       (response:any) => {
         console.log(data);
         this._dialogRef.close();
-        this.onAddProduct.emit();
+        this.onAddProductCategory.emit();
         swal.fire(
-          '¡ Nuevo producto agregado al inventario !',
-          'Producto: '+ formData.name,
+          '¡ Nueva categoría registrada !',
+          'Categoría: '+ formData.name,
           'success'
         )
         this.responseMessage = response.message;
@@ -139,25 +102,21 @@ export class AddEditFormComponent implements OnInit {
     );
   }
 
-  editProduct() {
-    var formData = this.productForm.value;
+  editProductCategory() {
+    var formData = this.productCategoryForm.value;
     var data = {
-      id : this.dialogData.data.id,
+      product_category_id : this.dialogData.data.id,
       name: formData.name,
-      description : formData.description,
-      stock: formData.stock,
-      cost_price : formData.cost,
-      sale_price : formData.price,
-      category : formData.category,
     }
 
-    this._productService.updateProduct(data).subscribe(
+    this.productCategorieService.updateProductCategory(data)
+    .subscribe(
       (response:any) => {
         this._dialogRef.close();
-        this.onEditProduct.emit();
+        this.onEditProductCategory.emit();
         swal.fire(
-          '¡ Producto editado con éxito !',
-          'Producto: '+ formData.name,
+          '¡ Se ha actualizado !',
+          'Categoría: '+ formData.name,
           'success'
         )
         this.responseMessage = response.message;

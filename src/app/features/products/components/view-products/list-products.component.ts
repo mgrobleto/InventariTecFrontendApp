@@ -10,6 +10,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GlobalConstants } from '../../../../shared/global-constants';
 import { ConfirmationDialog } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-list-products',
   templateUrl: './list-products.component.html',
@@ -51,10 +53,12 @@ export class ListProductsComponent implements OnInit {
   getAllProducts() {
     this.productService.getAllProducts().subscribe(
       (response: any) => {
+
         console.log(response);
         this.ngxService.stop();
         this.productDetails = new MatTableDataSource(response);
         //this.productDetails = response;
+
       }, (error : HttpErrorResponse) => {
         this.ngxService.stop();
         console.log(error.error?.message);
@@ -133,23 +137,37 @@ export class ListProductsComponent implements OnInit {
   } */
 
   deleteProduct(id: string) {
-      this.productService.deleteProduct(id).subscribe(
-        (response:any) => {
-          this.ngxService.stop();
-          this.getAllProducts();
-          this.responseMessage = response?.message;
-          this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
-          console.log(response);
-        },
-        (error : HttpErrorResponse) => {
-          this.ngxService.stop();
-          console.log(error.error?.message);
-          if(error.error?.message){
-            this.responseMessage = error.error?.message;
-          } else {
-            this.responseMessage = GlobalConstants.genericError;
-          }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+    this.productService.deleteProduct(id)
+    .subscribe(
+      (response:any) => {
+        this.ngxService.stop();
+        this.getAllProducts();
+        this.responseMessage = response?.message;
+
+        Swal.fire (
+          'Producto eliminado',
+          this.responseMessage = response?.message,
+          'success'
+        )
+        //this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
+        //console.log(response);
+      },
+      (error : HttpErrorResponse) => {
+        this.ngxService.stop();
+        console.log(error.error?.message);
+        if(error.error?.message){
+          this.responseMessage = error.error?.message;
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal!',
+          footer: this.responseMessage
+        })
+        //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     );
   }

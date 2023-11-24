@@ -9,7 +9,7 @@ import { CoreService } from 'src/app/data/service/snackBar/core.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalConstants } from '../../shared/global-constants';
 import { ConfirmationDialog } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { CategoriesService } from 'src/app/data/service/categoryService/categories.service';
+import { ProductCategorieService } from 'src/app/data/service/productCategoryService/productCategories.service';
 import * as XLSX from 'xlsx';
 import { MatPaginator } from '@angular/material/paginator';
 import swal from'sweetalert2';
@@ -39,7 +39,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
     private dialog : MatDialog,
     private _coreService : CoreService,
     private ngxService: NgxUiLoaderService,
-    private _categoryService : CategoriesService
+    private productCategoryService : ProductCategorieService
     ){}
 
   ngOnInit(): void {
@@ -78,13 +78,18 @@ export class ProductsComponent implements OnInit, AfterViewInit{
 
 
   getAllProducts() {
-    this.productService.getAllProducts().subscribe(
+    this.productService.getAllProducts()
+    .subscribe
+    (
       (response: any) => {
+
         console.log(response);
         this.ngxService.stop();
-        this.dataSource.data = response;
+        this.dataSource.data = response.data;
         //this.productDetails = response;
+
       }, (error : any) => {
+
         this.ngxService.stop();
         console.log(error.error?.message);
         if(error.message?.message){
@@ -93,15 +98,20 @@ export class ProductsComponent implements OnInit, AfterViewInit{
           this.responseMessage = GlobalConstants.genericError;
         }
         this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+
       }
       );
   }
 
   getProductsCategories() {
-    this._categoryService.getProductsCategories().subscribe(
+    this.productCategoryService.getProductsCategories()
+    .subscribe
+    (
       (resp : any) => {
+
         console.log(resp);
         this.productsCategories = resp;
+
       }, (err : any) => {
         console.log(err);
         if(err.message?.message){
@@ -168,34 +178,39 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   }
 
   deleteProduct(id: string) {
-      this.productService.deleteProduct(id).subscribe(
-        (response:any) => {
-          this.ngxService.stop();
-          this.getAllProducts();
-          this.responseMessage = response?.message;
-          swal.fire(
-            'El producto ha sido eliminado correctamente',
-            this.responseMessage = response?.message,
-            'success'
-          )
-          //this._coreService.openSuccessSnackBar("Producto eliminado", "con exito");
-          console.log(response);
-        },
-        (error : HttpErrorResponse) => {
-          this.ngxService.stop();
-          console.log(error.error?.message);
-          if(error.error?.message){
-            this.responseMessage = error.error?.message;
-          } else {
-            this.responseMessage = GlobalConstants.genericError;
-          }
-          swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Algo salió mal!',
-            footer: this.responseMessage
-          })
-        //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+    this.productService.deleteProduct(id)
+    .subscribe
+    (
+      (response:any) => {
+
+        this.ngxService.stop();
+        this.getAllProducts();
+        this.responseMessage = response?.message;
+
+        swal.fire(
+          'El producto ha sido eliminado correctamente',
+          this.responseMessage = response?.message,
+          'success'
+        )
+
+        console.log(response);
+      },
+      (error : HttpErrorResponse) => {
+
+        this.ngxService.stop();
+        console.log(error.error?.message);
+        if(error.error?.message){
+          this.responseMessage = error.error?.message;
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal!',
+          footer: this.responseMessage
+        })
+
       }
     );
   }

@@ -49,30 +49,22 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Costo</mat-label>
-                <input matInput type="number" min="0" formControlName="cost" required="">
-                <mat-error *ngIf="productForm.controls['cost'].touched && productForm.controls['cost'].invalid">
-                    <span *ngIf="productForm.controls['cost'].errors?.['cost']">Debe rellenar este campo</span>
-                    <span *ngIf="productForm.controls['cost'].errors?.['cost']">Información invalida</span>
+                <input matInput type="number" min="0" formControlName="cost_price" required="">
+                <mat-error *ngIf="productForm.controls['cost_price'].touched && productForm.controls['cost_price'].invalid">
+                    <span *ngIf="productForm.controls['cost_price'].errors?.['cost_price']">Debe rellenar este campo</span>
+                    <span *ngIf="productForm.controls['cost_price'].errors?.['cost_price']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>Precio Total</mat-label>
-                <input matInput type="number" min="0" formControlName="price" required="">
-                <mat-error *ngIf="productForm.controls['price'].touched && productForm.controls['price'].invalid">
-                    <span *ngIf="productForm.controls['price'].errors?.['price']">Debe rellenar este campo</span>
-                    <span *ngIf="productForm.controls['price'].errors?.['price']">Información invalida</span>
+                <input matInput type="number" min="0" formControlName="sale_price" required="">
+                <mat-error *ngIf="productForm.controls['sale_price'].touched && productForm.controls['sale_price'].invalid">
+                    <span *ngIf="productForm.controls['sale_price'].errors?.['sale_price']">Debe rellenar este campo</span>
+                    <span *ngIf="productForm.controls['sale_price'].errors?.['sale_price']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Tipo de moneda</mat-label>
-                <mat-select formControlName="currency">
-                    <mat-option *ngFor="let currency of currencies" [value]="currency.currency">
-                        {{currency.currency}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
         </div>
     </form>
 </mat-dialog-content>

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CoreService } from 'src/app/data/service/snackBar/core.service';
 import { GlobalConstants } from '../../../../shared/global-constants';
-import { BillService } from 'src/app/data/service/salesService/sales.service';
+import { InvoiceSalesService } from 'src/app/data/service/invoiceSalesService/invoiceSales.service';
 import swal from'sweetalert2';
 
 @Component({
@@ -26,7 +26,7 @@ export class EditInvoiceStatusComponent implements OnInit {
   
   constructor(
     private _fb : FormBuilder,
-    private _billService:BillService,
+    private _billService:InvoiceSalesService,
     public _dialogRef : MatDialogRef<EditInvoiceStatusComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private _coreService: CoreService
@@ -65,7 +65,7 @@ export class EditInvoiceStatusComponent implements OnInit {
     //this.getBillState();
   }
 
-  getBillState(){
+ /*  getBillState(){
     this._billService.getBillStatus().subscribe(
       (resp : any) => {
         this.billState = resp;
@@ -79,10 +79,10 @@ export class EditInvoiceStatusComponent implements OnInit {
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
-  }
+  } */
 
   getAllBills() {
-    this._billService.getAllBills().subscribe(
+    this._billService.getAllInvoices().subscribe(
       (data: any) => {
         console.log(data);
         this.billDetails = data;
@@ -101,11 +101,11 @@ export class EditInvoiceStatusComponent implements OnInit {
 
   handleSubmit(){
     if(this.dialogAction === "Editar") {
-      this.edit();
+      //this.edit();
     } 
   }
 
-  edit() {
+  /* edit() {
     var formData = this.billForm.value;
 
     var data = {
@@ -153,5 +153,5 @@ export class EditInvoiceStatusComponent implements OnInit {
         //this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
-  }
+  } */
 }

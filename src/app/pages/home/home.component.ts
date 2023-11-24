@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { BillService } from 'src/app/data/service/salesService/sales.service';
+import { InvoiceSalesService } from 'src/app/data/service/invoiceSalesService/invoiceSales.service';
 import { ProductService } from 'src/app/data/service/productService/product.service';
 import { DatePipe } from '@angular/common';
 import { GlobalConstants } from '../../shared/global-constants';
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private _billService:BillService,
+    private _billService:InvoiceSalesService,
     private _productService:ProductService,
     private datePipe: DatePipe,
     private _coreService: CoreService,
@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit {
     var amount:any = 0;
     //this.totalSales = this._billService.getAllBills().pipe(map( resp => resp.billItems.length))
 
-    this._billService.getAllBills().pipe( map ( (resp : any) => {
+    this._billService.getAllInvoices().pipe( map ( (resp : any) => {
       return resp.filter((month : any) => month.id_month === value)
     })).subscribe(
       (response : any) => {
@@ -139,7 +139,7 @@ export class HomeComponent implements OnInit {
     var amount:any = 0;
     var incomeValue: any = 0;
 
-    this._billService.getAllBills().pipe( map ( (resp : any) => {
+    this._billService.getAllInvoices().pipe( map ( (resp : any) => {
       return resp.filter((month : any) => month.id_month === value)
     })).subscribe(
       (response : any) => {
@@ -176,7 +176,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  getMonth() {
+  /* getMonth() {
     this._billService.getMonth().subscribe(
       (resp : any) => {
         this.month = resp;
@@ -190,10 +190,10 @@ export class HomeComponent implements OnInit {
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
-  }
+  } */
 
   getTotalSalesByMonth(selectedMonth : any) {
-    this._billService.getAllBills().pipe( map ( (resp : any) => {
+    this._billService.getAllInvoices().pipe( map ( (resp : any) => {
       return resp.filter((month : any) => month.id_month === selectedMonth)
     })).subscribe(
       (data : any) => {

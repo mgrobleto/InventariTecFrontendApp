@@ -34,11 +34,11 @@ export class AddEditCustomerFormComponent {
 
   ngOnInit(): void {
     this.customerForm = this._fb.group({
-      fullName: [null,[Validators.required]],
-      fullLastName: [null,[Validators.required]],
+      first_name: [null,[Validators.required]],
+      last_name: [null,[Validators.required]],
       email: [null,[Validators.required]],
-      phoneNumber: [null,[Validators.required]],
-      address: [null,[Validators.required]],
+      phone: [null,[Validators.required]],
+      c_address: [null,[Validators.required]],
     });
 
     if(this.dialogData.action === "Editar") {
@@ -62,12 +62,12 @@ export class AddEditCustomerFormComponent {
     var businessId = this.authService.getUserInfo().business.id;
     var data = 
     {
-      fullName: formData.fullName,
-      fullLastName : formData.fullLastName,
+      first_name: formData.first_name,
+      last_name : formData.last_name,
       email: formData.email,
-      phone: formData.phoneNumber,
-      address : formData.address,
-      businessId: businessId
+      phone: formData.phone,
+      c_address : formData.c_address,
+      business: businessId
     }
     console.log(data);
 
@@ -106,12 +106,12 @@ export class AddEditCustomerFormComponent {
     var formData = this.customerForm.value;
     var data = 
     {
-      id : this.dialogData.data.id,
-      fullName: formData.fullName,
-      fullLastName : formData.fullLastName,
+      customer_id : this.dialogData.data.id,
+      first_name: formData.first_name,
+      last_name : formData.last_name,
       email: formData.email,
-      phone: formData.phoneNumber,
-      address : formData.address,
+      phone: formData.phone,
+      c_address : formData.c_address,
       // id business
     }
 
@@ -123,6 +123,7 @@ export class AddEditCustomerFormComponent {
         this.onEditCustomer.emit();
         swal.fire(
           '¡ Información editada con éxito !',
+          '',
           'success'
         )
         this.responseMessage = response.message;

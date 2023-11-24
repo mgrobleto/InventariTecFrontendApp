@@ -10,7 +10,7 @@ import { SuppliersService } from 'src/app/data/service/suppliersService/supplier
 @Component({
   selector: 'app-add-edit-suppliers-form',
   templateUrl: './add-edit-suppliers-form.component.html',
-  styleUrls: ['./add-edit-suppliers-form.component.css'],
+  styleUrls: ['./add-edit-suppliers-form.component.scss'],
 })
 export class AddEditSuppliersFormComponent {
 
@@ -34,11 +34,11 @@ export class AddEditSuppliersFormComponent {
 
   ngOnInit(): void {
     this.supplierForm = this._fb.group({
-      fullName: [null,[Validators.required]],
-      fullLastName: [null,[Validators.required]],
+      first_name: [null,[Validators.required]],
+      last_name: [null,[Validators.required]],
       email: [null,[Validators.required]],
-      phoneNumber: [null,[Validators.required]],
-      address: [null,[Validators.required]],
+      phone: [null,[Validators.required]],
+      s_address: [null,[Validators.required]],
     });
 
     if(this.dialogData.action === "Editar") {
@@ -62,11 +62,12 @@ export class AddEditSuppliersFormComponent {
     var businessId = this.authService.getUserInfo().business.id;
     var data = 
     {
-      name: formData.name,
+      first_name: formData.first_name,
+      last_name: formData.last_name,
       email: formData.email,
-      phone: formData.phoneNumber,
-      address : formData.address,
-      businessId: businessId
+      phone: formData.phone,
+      s_address : formData.s_address,
+      business: businessId
     }
     console.log(data);
 
@@ -79,7 +80,7 @@ export class AddEditSuppliersFormComponent {
         this.onAddSupplier.emit();
         swal.fire(
           '¡ Nuevo proveedor agregado !',
-          'Proveedor: '+ formData.fullName,
+          'Proveedor: '+ formData.first_name,
           'success'
         )
         this.responseMessage = response.message;
@@ -105,12 +106,12 @@ export class AddEditSuppliersFormComponent {
     var formData = this.supplierForm.value;
     var data = 
     {
-      id : this.dialogData.data.id,
-      name: formData.name,
-      fullLastName : formData.fullLastName,
+      supplier_id : this.dialogData.data.id,
+      first_name: formData.first_name,
+      last_name: formData.last_name,
       email: formData.email,
-      phone: formData.phoneNumber,
-      address : formData.address,
+      phone: formData.phone,
+      s_address : formData.s_address,
       //agregar id business
     }
 
@@ -122,6 +123,7 @@ export class AddEditSuppliersFormComponent {
         this.onEditSupplier.emit();
         swal.fire(
           '¡ Información editada con éxito !',
+          '',
           'success'
         )
         this.responseMessage = response.message;

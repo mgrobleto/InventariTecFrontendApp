@@ -7,7 +7,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ConfirmationDialog } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { CoreService } from 'src/app/data/service/snackBar/core.service';
 import { GlobalConstants } from '../../../../shared/global-constants';
-import { BillService } from 'src/app/data/service/salesService/sales.service';
+import { InvoiceSalesService } from 'src/app/data/service/invoiceSalesService/invoiceSales.service';
 import { InvoiceDetailsComponent } from '../invoice-details/invoice-details.component';
 import { map } from 'rxjs';
 import { EditInvoiceStatusComponent } from '../edit-invoice-status/edit-invoice-status.component';
@@ -42,7 +42,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   billState: any;
 
   constructor(
-    private _billService : BillService, 
+    private _billService : InvoiceSalesService, 
     public router : Router,
     private dialog : MatDialog,
     private _coreService : CoreService,
@@ -101,7 +101,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
     //console.log(date);
 
-    this._billService.getAllBills().pipe(map( (bill : any) => {
+    this._billService.getAllInvoices().pipe(map( (bill : any) => {
       return bill.filter((bill : any) => bill.created_at === date.value)
     })).subscribe(
       (response: any) => {
@@ -120,7 +120,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
   searchByBillStatus(billStatus: any) {
 
-    this._billService.getAllBills().pipe(map( (bill : any) => {
+    this._billService.getAllInvoices().pipe(map( (bill : any) => {
       return bill.filter((bill : any) => bill.bill_state === billStatus)
     })).subscribe(
       (response: any) => {
@@ -153,7 +153,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   getAllBills() {
-    this._billService.getAllBills().subscribe(
+    this._billService.getAllInvoices().subscribe(
       (data: any) => {
         console.log(data);
         this.ngxService.stop();
@@ -172,7 +172,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     );
   }
 
-  getBillState(){
+  /* getBillState(){
     this._billService.getBillStatus().subscribe(
       (resp : any) => {
         this.billState = resp;
@@ -186,7 +186,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
-  }
+  } */
 
   applyFilter(event: Event){
     const filterValue = (event.target as HTMLInputElement).value;
@@ -194,7 +194,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     this.billDetails.filter = filterValue.trim().toLowerCase();
   }
 
-  getBillItemsDetails(values: any) {
+  /* getBillItemsDetails(values: any) {
     this._billService.getBillItems().pipe( map( (items: any) => {
       return items.filter((billNumber : any) => billNumber.billNumber === values.billNumber)
     })).subscribe(
@@ -210,7 +210,6 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
           items: this.items
         }
         dialogConfig.width = '30%';
-        /* dialogConfig.height= 'auto'; */
         const dialogRef =  this.dialog.open(InvoiceDetailsComponent, dialogConfig);
         this.router.events.subscribe(() => {
           dialogRef.close();
@@ -226,10 +225,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
         this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     )
-
-   
-
-  }
+  } */
 
   handleViewAction(values : any) {
 
@@ -274,13 +270,14 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
       this.ngxService.start();
-      this.deleteBill(values.id);
+      this.deleteInvoice(values.id);
       dialogRef.close();
     })
   }
 
-  deleteBill(id: string) {
-    this._billService.delete(id).subscribe(
+  deleteInvoice(id: string) {
+    this._billService.deleteInvoice(id)
+    .subscribe(
       (response:any) => {
         this.ngxService.stop();
         this.getAllBills();

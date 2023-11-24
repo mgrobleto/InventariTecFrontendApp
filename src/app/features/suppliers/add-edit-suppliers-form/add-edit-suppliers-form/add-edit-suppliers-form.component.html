@@ -11,12 +11,31 @@
 <mat-dialog-content>
     <form [formGroup]="supplierForm" (ngSubmit)="handleSubmit()">
         <div fxLayout="column" fxLayoutAlign="space-evenly-center">
+
             <mat-form-field appearance="outline">
-                <mat-label>Nombre</mat-label>
-                <input matInput type="text" formControlName="fullName" required="">
-                <mat-error *ngIf="supplierForm.controls['fullName'].touched && supplierForm.controls['fullName'].invalid">
-                    <span *ngIf="supplierForm.controls['fullName'].errors?.['required']">Debe rellenar este campo</span>
-                    <span *ngIf="supplierForm.controls['fullName'].errors?.['pattern']">Información invalida</span>
+                <mat-label>Nombres</mat-label>
+                <input matInput type="text" formControlName="first_name" required="">
+                <mat-error *ngIf="supplierForm.controls['first_name'].touched && supplierForm.controls['first_name'].invalid">
+                    <span *ngIf="supplierForm.controls['first_name'].errors?.['required']">Debe rellenar este campo</span>
+                    <span *ngIf="supplierForm.controls['first_name'].errors?.['pattern']">Información invalida</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Apellidos</mat-label>
+                <input matInput type="text" formControlName="last_name" required="">
+                <mat-error *ngIf="supplierForm.controls['last_name'].touched && supplierForm.controls['last_name'].invalid">
+                    <span *ngIf="supplierForm.controls['last_name'].errors?.['required']">Debe rellenar este campo</span>
+                    <span *ngIf="supplierForm.controls['last_name'].errors?.['pattern']">Información invalida</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Correo Electrónico</mat-label>
+                <input matInput type="email" formControlName="email" required="" placeholder="ejemplo@gmail.com">
+                <mat-error *ngIf="supplierForm.controls['email'].touched && supplierForm.controls['email'].invalid">
+                    <span *ngIf="supplierForm.controls['email'].errors?.['email']">Debe rellenar este campo</span>
+                    <span *ngIf="supplierForm.controls['email'].errors?.['email']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
 
@@ -25,20 +44,20 @@
                 <input 
                 matInput 
                 type='text' mask="9999 9999" 
-                formControlName="phoneNumber" 
+                formControlName="phone" 
                 required>
-                <mat-error *ngIf="supplierForm.controls['phoneNumber'].touched && supplierForm.controls['phoneNumber'].invalid">
-                    <span *ngIf="supplierForm.controls['phoneNumber'].errors?.['required']">Debe rellenar este campo</span>
-                    <span *ngIf="supplierForm.controls['phoneNumber'].errors?.['pattern']">Información invalida</span>
+                <mat-error *ngIf="supplierForm.controls['phone'].touched && supplierForm.controls['phone'].invalid">
+                    <span *ngIf="supplierForm.controls['phone'].errors?.['required']">Debe rellenar este campo</span>
+                    <span *ngIf="supplierForm.controls['phone'].errors?.['pattern']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>Direccion</mat-label>
-                <input matInput type="number" min="0" formControlName="address" required="">
-                <mat-error *ngIf="supplierForm.controls['address'].touched && supplierForm.controls['address'].invalid">
-                    <span *ngIf="supplierForm.controls['address'].errors?.['address']">Debe rellenar este campo</span>
-                    <span *ngIf="supplierForm.controls['address'].errors?.['address']">Información invalida</span>
+                <input matInput type="text" formControlName="s_address" required>
+                <mat-error *ngIf="supplierForm.controls['s_address'].touched && supplierForm.controls['s_address'].invalid">
+                    <span *ngIf="supplierForm.controls['s_address'].errors?.['s_address']">Debe rellenar este campo</span>
+                    <span *ngIf="supplierForm.controls['s_address'].errors?.['s_address']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
         </div>

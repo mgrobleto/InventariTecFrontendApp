@@ -69,9 +69,9 @@ export class LoginService {
 
     this.isLoggedIn = false;
 
-    const csrfToken = this.csrfService.getCsrfToken();
+    //const csrfToken = this.csrfService.getCsrfToken();
 
-    console.log('Obtuve el Token CSRF: ', csrfToken);
+    //console.log('Obtuve el Token CSRF: ', csrfToken);
     console.log('Obtuve el Token del user: ', auth_token);
 
     const headersObj = new HttpHeaders({
