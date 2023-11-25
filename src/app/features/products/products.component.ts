@@ -26,7 +26,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   productsCategories:any;
   productStocks:any;
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Descripcion', 'Stock','Costo', 'Precio Total', 'Tipo de moneda', 'Categoria', 'Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Descripcion', 'Stock','Costo', 'Precio Total', 'Categoria', 'Editar', 'Eliminar'];
   productStockColumns: string[] = ['ID', 'Nombre', 'Stock','Editar'];
 
   fileName= 'InventarioProductos.xlsx';
@@ -43,8 +43,8 @@ export class ProductsComponent implements OnInit, AfterViewInit{
     ){}
 
   ngOnInit(): void {
-    /* this.ngxService.start();
-    this.getAllProducts(); */
+    this.ngxService.start();
+    this.getAllProducts();
   }
 
   ngAfterViewInit() {
@@ -100,7 +100,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
         this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
 
       }
-      );
+    );
   }
 
   getProductsCategories() {

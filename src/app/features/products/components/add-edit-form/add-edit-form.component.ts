@@ -72,7 +72,7 @@ export class AddEditFormComponent implements OnInit {
     this.productCategorieService.getProductsCategories().subscribe(
       (resp : any) => {
         console.log(resp);
-        this.productsCategories = resp;
+        this.productsCategories = resp.data;
       }, (err : any) => {
         console.log(err);
         if(err.message?.message){
@@ -96,15 +96,17 @@ export class AddEditFormComponent implements OnInit {
   addProduct() {
     var formData = this.productForm.value;
     var businessId = this.authService.getUserInfo().business.id;
+    var categoryID = this.productForm.controls['category'].value;
 
     var data = {
       name: formData.name,
       description : formData.description,
       stock: formData.stock,
-      cost_price : formData.cost,
-      sale_price : formData.price,
-      category : formData.category,
-      business: businessId
+      cost_price : formData.cost_price,
+      sale_price : formData.sale_price,
+      category : categoryID,
+      business: businessId,
+      with_iva : true
     }
     console.log(data);
 
@@ -141,14 +143,16 @@ export class AddEditFormComponent implements OnInit {
 
   editProduct() {
     var formData = this.productForm.value;
+    var categoryID = this.productForm.controls['category'].value;
+    
     var data = {
-      id : this.dialogData.data.id,
+      product_id : this.dialogData.data.id,
       name: formData.name,
       description : formData.description,
       stock: formData.stock,
-      cost_price : formData.cost,
-      sale_price : formData.price,
-      category : formData.category,
+      cost_price : formData.cost_price,
+      sale_price : formData.sale_price,
+      category : categoryID,
     }
 
     this._productService.updateProduct(data).subscribe(
