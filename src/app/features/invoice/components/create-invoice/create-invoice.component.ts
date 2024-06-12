@@ -45,6 +45,9 @@ export class CreateInvoiceComponent implements OnInit {
   productsCategories:any;
   productDetail:any;
   customers:any;
+  customerDetail:any;
+
+  productId:any;
 
 
   dataSource:any = [];
@@ -232,7 +235,7 @@ export class CreateInvoiceComponent implements OnInit {
     //var currency_type: any;
     this.productService.getAllProducts().pipe(
       map((products: any) => {
-      return products.data.filter((product : any) => product.name === value)
+      return products.data.filter((product : any) => product.id === value)
     }))
     .subscribe(
       (response: any) => {
@@ -317,8 +320,9 @@ export class CreateInvoiceComponent implements OnInit {
       this.invoiceForm.controls['total'].setValue(netTotal);
 
       this.dataSource.push({
+        //id: invoiceDetailFormData.product,
         product:invoiceDetailFormData.product, 
-        quantity:invoiceDetailFormData.quantity, 
+        quantity:+invoiceDetailFormData.quantity, 
         cost_price_at_time:invoiceDetailFormData.cost_price_at_time, 
         sale_price_at_time:invoiceDetailFormData.sale_price_at_time
       })
@@ -363,11 +367,34 @@ export class CreateInvoiceComponent implements OnInit {
     }
   }
 
+  getCustomerInfo(value : any) {
+    this._customerService.getAllCustomers().pipe(map((customers : any) => {
+      return customers.data.filter((customer : any) => customer.id === value);
+    }))
+    .subscribe(
+      (response: any) => {
+        
+        this.customerDetail = response;
+        console.log(this.customerDetail)
+
+      }, (error : any) => {
+        console.log(error);
+        if(error.message?.message){
+          this.responseMessage = error.error?.message;
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+      }
+    )
+  }
+
   handleDeleteAction(value: any, element: any) {
-    this.totalAmount = this.totalAmount - element.total_sale;
+    this.totalAmount = this.totalAmount - element.sale_price_at_time;
     this.dataSource.splice(value, 1);
     this.dataSource = [...this.dataSource]
     this.invoiceForm.controls['sale_price_at_time'].reset();
+    this.invoiceForm.controls['total'].reset();
   }
 
   submitAction() {
@@ -382,6 +409,15 @@ export class CreateInvoiceComponent implements OnInit {
     //var phoneNumberValue = this.invoiceForm.controls['phoneNumber'].value;
 
     //console.log(selectedDate);
+
+    /* var customerInfo = {
+      id: this.customerDetail.id,
+      first_name: this.customerDetail.first_name,
+      last_name : this.customerDetail.last_name,
+      email: this.customerDetail.email,
+      phone: this.customerDetail.phone,
+      c_adress: this.customerDetail.c_adress
+    } */
 
     var invoiceData = {
       invoice_number : billFormData.invoice_number,
@@ -423,6 +459,8 @@ export class CreateInvoiceComponent implements OnInit {
         //this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
+
+    //this._billService.addNewSale()
 
     this.invoiceForm.reset();
     this.dataSource = [];

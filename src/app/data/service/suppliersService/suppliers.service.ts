@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpBackend} from '@angular/common/http';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 @Injectable({
@@ -9,34 +9,51 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
 export class SuppliersService {
 
   url = environment.apiUrl + '/suppliers';
+  token : string | null = null;
 
-  constructor(private httpClient : HttpClient, private authService: AuthService) { }
+  constructor (
+    private httpClient : HttpClient, 
+    handler: HttpBackend , 
+    private authService: AuthService
+  ) {
+    this.httpClient = new HttpClient(handler);
+    this.token =  this.authService.getAuthToken();
+  }
 
-  token = this.authService.getAuthToken();
-  
-  headerObj = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `Token ${this.token}`,
-  })
+  refreshAuthToken() {
+    this.token = this.authService.getAuthToken();
+  }
 
   addNewSupplier (data : any) {
-    return this.httpClient.post(this.url + '/create-supplier/', data, { headers: this.headerObj });
+    this.refreshAuthToken();
+    return this.httpClient.post(this.url + '/create-supplier/', data, { headers : new HttpHeaders({
+      'Authorization': `Token ${this.token}`,
+    })});
   }
 
   updateSupplier (data : any) {
-    return this.httpClient.put(this.url + '/update-supplier/', data, { headers: this.headerObj });
+    this.refreshAuthToken();
+    return this.httpClient.put(this.url + '/update-supplier/', data, { headers : new HttpHeaders({
+      'Authorization': `Token ${this.token}`,
+    })});
   }
 
   // or pass id
   deleteSupplier (supplier_id : any) {
+    this.refreshAuthToken();
     const httpOptions = {
-      headers: this.headerObj, 
+      headers: new HttpHeaders({
+        'Authorization': `Token ${this.token}`,
+      }), 
       body: supplier_id
     }
     return this.httpClient.delete(this.url + '/delete-supplier/', httpOptions);
   }
 
   getAllSuppliers () {
-    return this.httpClient.get(this.url + '/list-suppliers/', { headers: this.headerObj });
+    this.refreshAuthToken();
+    return this.httpClient.get(this.url + '/list-suppliers/', { headers : new HttpHeaders({
+      'Authorization': `Token ${this.token}`,
+    })});
   }
 }

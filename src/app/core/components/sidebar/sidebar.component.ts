@@ -82,18 +82,7 @@ export class SidebarComponent implements OnInit {
   }
 
   logOut() {
-    const token = this.authService.getAuthToken();
-    this._loginService.logOut(token).subscribe(
-      (resp) => {
-        console.log('complete');
-        console.log(resp);
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('token');
-        this.router.navigate(['/login']);
-      },
-      (error) => {
-        console.log('Logout failed!', error);
-      }
-    );
+    //const token = this.authService.getAuthToken();
+    this._loginService.logOut();
   }
 }

@@ -15,15 +15,15 @@ export class AppComponent {
   msg:any;
   apiURL = environment.apiUrl;
 
-  constructor(private pService: PublicService, private http: HttpClient, private csrfService : CsrfTokenService){}
+  constructor(private pService: PublicService, private http: HttpClient){}
 
   ngOnInit() {
     this.showMessage()
-    this.fetchCsrfToken()
+    //this.fetchCsrfToken()
   }
 
 
-  fetchCsrfToken() {
+  /* fetchCsrfToken() {
     this.http.get(this.apiURL + '/get_csrf_token/').subscribe(
       (data : any) => {
         this.csrfService.setCsrfToken(data.csrf_token)
@@ -31,7 +31,7 @@ export class AppComponent {
       },
       err => console.log('no se obtuvo el csrf token',err)
     )
-  }
+  } */
   
 
   showMessage(){

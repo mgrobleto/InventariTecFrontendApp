@@ -37,7 +37,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   billDetails:any = [];
   items:any = [];
   responseMessage:any;
-  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Tipo de Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Estado', 'Eliminar'];
+  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   billState: any;
 
@@ -101,8 +101,9 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
     //console.log(date);
 
-    this._billService.getAllInvoices().pipe(map( (bill : any) => {
-      return bill.filter((bill : any) => bill.created_at === date.value)
+    this._billService.getAllInvoices().pipe(
+      map( (bill : any) => {
+      return bill.data.filter((bill : any) => bill.created_at === date.value)
     })).subscribe(
       (response: any) => {
         this.dataSource.data = response;
@@ -138,9 +139,9 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void { 
-   /*  this.ngxService.start();
+    this.ngxService.start();
     this.getAllBills();
-    this.getBillState(); */
+    //this.getBillState()
   }
 
   ngAfterViewInit() {
@@ -157,7 +158,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       (data: any) => {
         console.log(data);
         this.ngxService.stop();
-        this.dataSource.data = data;
+        this.dataSource.data = data.data;
         //this.productDetails = response;
       }, (error : any) => {
         this.ngxService.stop();
@@ -270,7 +271,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
       this.ngxService.start();
-      this.deleteInvoice(values.id);
+      this.deleteInvoice(values.invoice_id);
       dialogRef.close();
     })
   }

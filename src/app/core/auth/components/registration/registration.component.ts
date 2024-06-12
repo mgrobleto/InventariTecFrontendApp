@@ -120,6 +120,7 @@ export class RegistrationComponent implements OnInit {
         responseMessage = resp.message;
         console.log(responseMessage);
         Swal.fire('¡Tu negocio ha sido registrado!', '','success');
+        this.redirectToLogin();
       },
       (error) => {
         if(error.message?.message) {

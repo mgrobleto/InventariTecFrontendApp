@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +11,46 @@ export class AuthService {
 
   isLoggedIn = false;
 
-  private authToken: string | null = null;
-  private userData : any = [];
+  apiURL = environment.apiUrl;
 
+  constructor(private http: HttpClient) {}
+
+  //private authToken: string | null = null;
+  private userData : any = [];
+  
   setAuthToken(token: string) {
-    this.authToken = token;
     this.isLoggedIn = true;
+    localStorage.setItem('token', token);
   }
 
-  getAuthToken() {
-    return this.authToken;
+  getAuthToken() : string | null {
+    return localStorage.getItem('token');
+  }
+
+  clearAuthToken() : void {
+    this.isLoggedIn = false;
+    localStorage.removeItem('token');
+  }
+
+  login(userCredentials : any) : Observable<any> {
+    return this.http.post(this.apiURL + '/user/login/', userCredentials)
+  }
+
+  logout() : Observable<any> {
+    const token = this.getAuthToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Token ${token}`) : new HttpHeaders();
+    console.log('header que le paso para que cierre sesion ' + headers.get('Authorization'));
+
+    this.clearAuthToken();
+    return this.http.post(this.apiURL + '/user/logout/', '', {headers}) 
+  }
+
+  getData(url: string) : Observable<any> {
+    return this.http.get(url);
+  }
+
+  postData(url: string, data: any) : Observable<any> {
+    return this.http.post(url, data);
   }
 
   setUserInfo(userData: any) {
@@ -28,17 +61,11 @@ export class AuthService {
     return this.userData;
   }
 
-
- /*  isLoggedIn() {
-    const token = localStorage.getItem('token');
-   console.log(token);
-    if(token === null) return false;
-    else return true;
-  } */
-
-  /* logout(){ 
-    localStorage.removeItem('currentUser');
-    this.isLoggedIn = false;
-    console.log(this.isLoggedIn);
-  } */
+  /*clearAuthInfo() {
+    this.authToken = null;
+    localStorage.removeItem('Token');
+    sessionStorage.removeItem('currentUser');
+    //this.userData = [];
+    //delete this.http.defaults.headers.common['Authorization']
+  }*/
 }

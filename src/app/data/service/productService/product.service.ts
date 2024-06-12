@@ -1,39 +1,53 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpBackend, HttpRequest } from '@angular/common/http';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProductService {
 
   url = environment.apiUrl;
+  token : string | null = null;
 
-  constructor(private httpClient : HttpClient, private authService : AuthService){}
+  constructor(private httpClient : HttpClient, handler : HttpBackend ,private authService : AuthService) {
+    this.httpClient = new HttpClient(handler);
+    this.token = this.authService.getAuthToken();
+  }
 
-  token = this.authService.getAuthToken();
+  refreshAuthToken() {
+    this.token = this.authService.getAuthToken();
+  }
 
-  headerObj = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `Token ${this.token}`,
-  })
-
-  getAllProducts(){
-    return this.httpClient.get<any>(this.url + '/products/list-products/', { headers: this.headerObj });
+  getAllProducts() {
+    this.refreshAuthToken();
+    return this.httpClient.get<any>(this.url + '/products/list-products/', {
+      headers : new HttpHeaders().set('Authorization', 'Token ' + this.token)
+    });
   }
 
   addNewProduct(data : any) {
-    return this.httpClient.post(this.url + '/products/create-product/', data, { headers: this.headerObj });
+    this.refreshAuthToken(); 
+    return this.httpClient.post(this.url + '/products/create-product/', data, { headers : new HttpHeaders({
+      'Authorization': `Token ${this.token}`,
+    })});
   }
 
   updateProduct(data:any) {
-    return this.httpClient.put(this.url + '/products/update-product/', data, { headers: this.headerObj })
+    this.refreshAuthToken();
+    return this.httpClient.put(this.url + '/products/update-product/', data, {headers : new HttpHeaders({
+      'Authorization': `Token ${this.token}`,
+    })})
   }
 
   deleteProduct(product_id:string) {
+    this.refreshAuthToken();
     const httpOptions = {
-      headers: this.headerObj, 
+      headers: new HttpHeaders({
+        'Authorization': `Token ${this.token}`,
+      }), 
       body: product_id
     }
     return this.httpClient.delete(this.url + '/products/delete-product/', httpOptions);

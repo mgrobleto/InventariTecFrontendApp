@@ -80,7 +80,7 @@ export class AddEditCustomerFormComponent {
         this.onAddCustomer.emit();
         swal.fire(
           '¡ Nuevo cliente agregado !',
-          'Cliente: '+ formData.fullName,
+          'Cliente: '+ formData.first_name + ' ' + formData.last_name,
           'success'
         )
         this.responseMessage = response.message;

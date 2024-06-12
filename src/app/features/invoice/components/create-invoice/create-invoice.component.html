@@ -70,7 +70,7 @@
                             <mat-label>Seleccionar Cliente</mat-label>
                             <mat-select formControlName="customer_name">
                                 <mat-option *ngFor="let customer of customers" [value]="customer.id">
-                                    {{customer.first_name + customer.last_name}}
+                                    {{customer.first_name + ' ' + customer.last_name}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -96,7 +96,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>Producto</mat-label>
                             <mat-select formControlName="product" (selectionChange)="getProductDetails($event.value);">
-                                <mat-option *ngFor="let product of productsByCategorySelected" [value]="product.name">
+                                <mat-option *ngFor="let product of productsByCategorySelected" [value]="product.id">
                                     {{product.name}}
                                 </mat-option>
                             </mat-select>

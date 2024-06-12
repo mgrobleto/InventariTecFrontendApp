@@ -7,6 +7,8 @@ import { CoreService } from 'src/app/data/service/snackBar/core.service';
 import { map } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 
+import { PaymentMethodService } from 'src/app/data/service/paymentType/paymentMethod.service';
+
 
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -25,7 +27,6 @@ export class InvoiceDetailsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'Producto',
-    'Categoria',
     'Precio',
     'Cantidad',
     'Total',
@@ -34,22 +35,25 @@ export class InvoiceDetailsComponent implements OnInit {
   //dataSource:any;
   data:any;
   productsData:any;
+  paymentTypeName: any;
 
   constructor(
     public _dialogRef : MatDialogRef<InvoiceDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private _billService : InvoiceSalesService, 
     private _coreService : CoreService,
+    private paymentType : PaymentMethodService
   ) {}
 
   ngOnInit(): void {
-    //this.data = this.dialogData.data;
-    //this.getBillItemsDetails(this.data);
+    this.data = this.dialogData.data;
+    this.getBillItemsDetails(this.data);
+    //this.getPaymentTypeName(this.data);
 
-    //this.productsData = this.dialogData.items;
-    //this.dataSource = this.dialogData.items;
+    //this.productsData = this.dialogData.data;
+    //this.dataSource.data = this.data.sale;
     //this.dataSource = this.items;
-    //console.log(this.dialogData.data);
+    //console.log('INFO DE LA FACTURA SELECCIONADA: ' + this.dataSource);
     //console.log(this.dataSource);
   }
 
@@ -77,15 +81,16 @@ export class InvoiceDetailsComponent implements OnInit {
   }
 
 
- /*  getBillItemsDetails(values: any) {
-    this._billService.getBillItems().pipe( map( (items: any) => {
-      return items.filter((billNumber : any) => billNumber.billNumber === values.billNumber)
+ getBillItemsDetails(values: any) {
+    this._billService.getAllInvoices().pipe( map( (items: any) => {
+      return items.data.filter((invoiceId : any) => invoiceId.invoice_id === values.invoice_id)
     })).subscribe(
       (data: any) => {
         //console.log(values.billNumber)
         //this.items = data;
+        console.log('Datos recibidos: ', data)
         data.forEach((element:any) => {
-          this.productsData = element.billItems;
+          this.productsData = element.sales;
         });
         //this.items = data;
         this.dataSource.data = this.productsData;
@@ -104,5 +109,32 @@ export class InvoiceDetailsComponent implements OnInit {
         this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     )
-  } */
+  }
+
+  getPaymentTypeName(value: any) {
+    console.log('valor que entraa ' + value)
+    this.paymentType.getPaymentType().pipe(
+      map( (type: any) => {
+        return type.data.filter((typeId: any) => typeId.id === value.data.payment_type)
+      })
+    )
+    .subscribe(
+      (data : any) => {
+        
+        data.forEach((element:any) => {
+          this.paymentTypeName = element.name;
+        })
+        console.log(this.paymentTypeName)
+
+      }, (error : any) => {
+        console.log(error);
+        if(error.message?.message){
+          this.responseMessage = error.error?.message;
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+      }
+    )
+  }
 }

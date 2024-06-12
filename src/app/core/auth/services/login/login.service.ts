@@ -1,26 +1,16 @@
 import { Injectable } from '@angular/core';
-import {HttpHeaders, HttpClient } from '@angular/common/http';
+import {HttpHeaders, HttpClient, HttpBackend} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { AuthService } from '../auth.service';
-import { CsrfTokenService } from '../csrf-token.service';
+import { Router } from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
   })
 }
-
-/* var token = '';
-
-const logOutOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `token ${token}`
-  })
-} */
-
 
 
 @Injectable({
@@ -29,25 +19,50 @@ const logOutOptions = {
 
 export class LoginService {
 
+  loggedIn = false;
   apiURL = environment.apiUrl;
-  isLoggedIn = false;  
 
-  constructor(private http: HttpClient, private authService : AuthService, private csrfService : CsrfTokenService) { }
+  constructor(
+    private http: HttpClient, 
+    handler: HttpBackend ,
+    private authService : AuthService, 
+    public router: Router
+  ) {
+    this.http = new HttpClient(handler);
+  }
 
-  login(username: string, password: string) : Observable<boolean> {
-    return this.http.post<any>(this.apiURL + '/user/login/', {username, password}, httpOptions).pipe(
+  /*login(username: string, password: string) {
+    const userCredentials = {username, password};
+    this.authService.login(userCredentials).subscribe((response : any) => {
+      const token = response.token;
+      this.authService.setAuthToken(token)
+      this.authService.setUserInfo(response.user)
+      window.localStorage.setItem('currentUser', JSON.stringify(response.user));
+      console.log('Logged in successfully')
+      console.log(response)
+      this.loggedIn = true;
+    }, (error) => {
+      console.log(error);
+      this.loggedIn = false;
+    })
+  } */
+
+
+  login(username: string, password: string)  {
+    const userCredentials = {username, password};
+
+    return this.authService.login(userCredentials).pipe(
       map(
         user => {
           if (user && user.token) {
-            this.authService.setAuthToken(user.token);
-            this.authService.setUserInfo(user);
+            let token = user.token;
+            this.authService.setAuthToken(token)
+            this.authService.setUserInfo(user)
             localStorage.setItem('currentUser', JSON.stringify(user));
-            localStorage.setItem('token', user.token);
-            console.log('Ha iniciado sesionando')
-            this.isLoggedIn = true;
+            console.log('TOKEN DEL NUEVO USUARIO: ' + token)
+            console.log('Logged in successfully')
+            console.log('Info user' + user)
           }
-
-          this.isLoggedIn = false;
 
           return user;
         }
@@ -55,32 +70,14 @@ export class LoginService {
     )
   }
 
-  logOut(auth_token: string | null) : Observable<any> {
-
-    //let csrfToken;
-
-    /* this.getCsrfToken().subscribe(
-      (data : any) => {
-      const csrf_Token = data.csrf_token;
-      csrfToken = csrf_Token;
-      console.log(csrfToken);
-      }, err => console.log('no se obtuvo el csrf token',err)
-    ) */
-
-    this.isLoggedIn = false;
-
-    //const csrfToken = this.csrfService.getCsrfToken();
-
-    //console.log('Obtuve el Token CSRF: ', csrfToken);
-    console.log('Obtuve el Token del user: ', auth_token);
-
-    const headersObj = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Token ${auth_token}`,
-    }) 
-
-    console.log(headersObj);
-
-    return this.http.post(this.apiURL + '/user/logout/', "", { 'headers': headersObj });
+  logOut() {
+    this.authService.logout().subscribe(() => {
+      localStorage.removeItem('currentUser');
+      console.log(localStorage.getItem('currentUser'))
+      console.log('Logged out successfully');
+      this.router.navigate(['/login']);
+    }, (error) => {
+      console.log('Log out failed!' + error);
+    })
   } 
 }

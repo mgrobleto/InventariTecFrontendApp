@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
 
@@ -10,10 +10,12 @@ export class PaymentMethodService {
 
   url = environment.apiUrl;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, handler : HttpBackend) { 
+    this.httpClient = new HttpClient(handler);
+  }
 
   getPaymentType() {
-    return this.httpClient.get(this.url + '/api/payment-types/', {headers:{'Content-Type': 'application/json'}});
+    return this.httpClient.get(this.url + '/api/payment-types/', { headers:{'Content-Type': 'application/json'}});
   }
 
 }

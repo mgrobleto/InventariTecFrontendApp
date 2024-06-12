@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './core/auth/components/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { DatePipe } from '@angular/common';
 import { NgxUiLoaderConfig, NgxUiLoaderModule , SPINNER} from 'ngx-ui-loader';
@@ -13,6 +13,7 @@ import { RegistrationComponent } from './core/auth/components/registration/regis
 import { ProductCategoryComponent } from './features/productCategory/product-category.component';
 import { AddEditCustomerFormComponent } from './features/customers/add-edit-customer-form/add-edit-customer-form.component';
 import { AddEditSuppliersFormComponent } from './features/suppliers/add-edit-suppliers-form/add-edit-suppliers-form/add-edit-suppliers-form.component';
+import { TokenInterceptorService } from './data/interceptors/TokenInterceptor.interceptor';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text:'Cargando...',
@@ -44,6 +45,11 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   ],
   providers: [
    DatePipe,
+   {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true
+   }
   ],
   bootstrap: [AppComponent]
 })
