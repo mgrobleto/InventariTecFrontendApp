@@ -1,14 +1,14 @@
 <section id="register-section">
     <div class="register-side-image"></div>
     <div class="register-form">
-      <div class="register-form-header my-4">
-        <h1 class="my-4">Administra tu inventario con nosotros</h1>
-        <p>¿Ya tienes una cuenta?</p>
-        <a (click)="redirectToLogin()" style="color: orange;">Iniciar sesion</a>
+      <div class="register-form-header">
+        <h1 class="fs-2 text-capitalize fw-bold">Administra tu inventario con nosotros</h1>
+        <p class="fs-5">¿Ya tienes una cuenta?</p>
+        <a (click)="redirectToLogin()" class="fs-5">Iniciar sesión</a>
       </div>
 
       <mat-stepper orientation="vertical" [linear]="false" #stepper>
-          <mat-step [stepControl]="registerForm">
+          <mat-step [stepControl]="registerForm" errorMessage="Datos vacíos">
             <form [formGroup]="registerForm">
               <ng-template matStepLabel>Datos personales</ng-template>
               <mat-form-field>
@@ -23,7 +23,7 @@
                 </button>                     
               </mat-form-field>
               <mat-form-field>
-                <mat-label>Confirmar contraseña</mat-label>
+                <mat-label>Confirmar Contraseña</mat-label>
                 <input 
                   matInput 
                   [type]="hide ? 'password' : 'text'" 
@@ -40,7 +40,7 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="businessDataForm">
+          <mat-step [stepControl]="businessDataForm" errorMessage="Ingrese el nombre del negocio">
             <form [formGroup]="businessDataForm">
               <ng-template matStepLabel>Negocio</ng-template>
                 <mat-form-field>
@@ -54,7 +54,7 @@
                 </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="businessDataForm">
+          <mat-step [stepControl]="businessDataForm" errorMessage="Ingresar factura DGI">
               <form [formGroup]="businessDataForm">
                 <ng-template matStepLabel>Factura DGI</ng-template>
                 <mat-form-field>
@@ -83,7 +83,7 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="businessDataForm">
+          <mat-step [stepControl]="businessDataForm" errorMessage="Seleccione una opción">
             <form [formGroup]="businessDataForm">
               <ng-template matStepLabel>Tipo de Plan y Moneda</ng-template>
               <mat-form-field appearance="outline">

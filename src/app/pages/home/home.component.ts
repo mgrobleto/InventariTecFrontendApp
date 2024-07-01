@@ -100,6 +100,18 @@ export class HomeComponent implements OnInit {
     )
   }
 
+  redirectToAddNewInvoice () {
+    this.router.navigate(['/dashboard/invoice/createNewInvoice']);
+  }
+
+  redirectToAddNewClient() {
+    this.router.navigate(['/dashboard/clients/']);
+  }
+
+  redirectToAddNewProduct() {
+    this.router.navigate(['dashboard/products'])
+  }
+
   getTotalSales(value : any) {
 
     this.totalSales = 0;

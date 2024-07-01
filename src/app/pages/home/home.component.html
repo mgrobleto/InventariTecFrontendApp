@@ -6,9 +6,20 @@
                 </span>
         </mat-icon>
         <div class="mx-2">
-            <h2>¡ Bienvenido, {{userName}} !</h2>
+            <h2 class="text-uppercase">Bienvenido, {{userName}}</h2>
         </div>
     </mat-toolbar>
+    <div class="d-flex flex-row-reverse my-4">
+        <button mat-raised-button (click)="redirectToAddNewInvoice()">
+            <mat-icon>add</mat-icon> Facturar nueva venta
+        </button>
+        <button mat-raised-button (click)="redirectToAddNewClient()">
+            <mat-icon>add</mat-icon> Agregar nuevo cliente
+        </button>
+        <button mat-raised-button (click)="redirectToAddNewProduct()">
+            <mat-icon>add</mat-icon> Agregar nuevo producto
+        </button>
+    </div>
     <div class="container p-3">
         <div class="row align-items-stretch">
             <div class="c-dashboardInfo inventory-item col-lg-3 col-md-6" (click)="redirectToProductsInventory()">

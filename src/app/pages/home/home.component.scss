@@ -1,7 +1,9 @@
 .table-header {
-    background: #192653;
+    background: #c1dbfc;
+    border: 2px solid #192653;
     border-radius: 5rem;
-    color: #ffff;
+    padding: 10px;
+    color: #192653;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -11,6 +13,20 @@
         margin-bottom: 0;
     }
   /*  justify-content: space-between; */
+}
+
+button {
+    float: right;
+    color: #0e073e;
+    border: none;
+    max-width: 300px;
+    margin-left: 10px;
+    border-radius: 20px;
+}
+
+.mat-mdc-raised-button:not(:disabled) {
+    background-color: #f2c166d6;
+    padding: 25px;
 }
 
 .c-dashboardInfo {
@@ -106,4 +122,5 @@
     transform: translate(0, -10px);
     transition: 300ms;
 }
+
   

@@ -5,12 +5,19 @@ import { PlanTypeService } from 'src/app/data/service/planType/plan-type-service
 import { RegisterService } from '../../services/register/register.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {showError: true},
+    }
+  ],
 })
 export class RegistrationComponent implements OnInit {
 

@@ -23,8 +23,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: large;
-    font-weight: bold;
+    margin-top: 3em;
+}
+
+.register-form-header h1 {
+    color: #F29F05;
+}
+
+.register-form-header a {
+    font-weight: 400;
+    text-decoration: none;
+    color: #F29F05;
 }
 
 h1 {
