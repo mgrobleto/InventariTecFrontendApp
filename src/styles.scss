@@ -4,7 +4,7 @@
 
 /* You can add global styles to this file, and also import other style files */
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap'); */
 
 * {
     margin: 0;
@@ -12,10 +12,10 @@
     box-sizing: border-box;
 }
 
-body {
+/* body {
     position: relative;
     font-family: 'Roboto', sans-serif;
-}
+} */
 
 .card {
     display: flex;
@@ -63,5 +63,16 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* body {
+    margin: 0; 
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100,
+      "YTLC" 500; 
+} */
 
 @media print { html, body { height: auto; overflow-y: visible !important; } }

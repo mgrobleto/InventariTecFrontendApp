@@ -1,12 +1,12 @@
 #register-section {
     height: 100vh;
-    background-color: #fff;
+    background-color: white;
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
 .register-side-image {
-    background-image: url('../../../../../assets//svg//registerImage.svg');
+    background-image: url('../../../../../assets//svg//registration_img_3.svg');
     background-position: center;
     background-size: cover;
 }
@@ -27,13 +27,37 @@
 }
 
 .register-form-header h1 {
-    color: #F29F05;
+    color: #ff5a7b;
+    opacity: 0.8;
+}
+
+.register-form-header p {
+    color: #ff5a7b;
+    opacity: 0.5;
+    margin: 0;
 }
 
 .register-form-header a {
-    font-weight: 400;
+    padding: none;
     text-decoration: none;
-    color: #F29F05;
+    color: #622ec2;
+}
+
+.register-form-header a:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.registration-buttons .mat-mdc-button {
+    background-color: #622ec2;
+    --mdc-text-button-label-text-color: white;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    border-radius: 0.5rem;
+}
+
+.registration-buttons .mat-mdc-button:hover {
+    opacity: 0.8;
 }
 
 h1 {
@@ -44,6 +68,10 @@ h1 {
 a:hover {
    cursor: pointer;
 }
+
+/* .mat-stepper-vertical, .mat-stepper-horizontal {
+    border-radius: 1.5rem;
+} */
 
 .mat-stepper-vertical {
     margin-top: 8px;

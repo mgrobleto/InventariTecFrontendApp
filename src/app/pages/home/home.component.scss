@@ -1,9 +1,9 @@
 .table-header {
-    background: #c1dbfc;
-    border: 2px solid #192653;
+    background: #551BA6;
+    /* border: 2px solid #622ec2; */
     border-radius: 5rem;
-    padding: 10px;
-    color: #192653;
+    padding: 20px;
+    color: white;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -25,7 +25,7 @@ button {
 }
 
 .mat-mdc-raised-button:not(:disabled) {
-    background-color: #f2c166d6;
+    background-color: #9EC4FE;
     padding: 25px;
 }
 
@@ -74,19 +74,19 @@ button {
 }
   
 .c-dashboardInfo:nth-child(1) .wrap:after {
-    background: linear-gradient(82.59deg, #00c48c 0%, #00a173 100%);
+    background: linear-gradient(82.59deg, rgba(158,196,254,1) 0%, rgba(85,27,166,1) 100%);
 }
 
 .c-dashboardInfo:nth-child(2) .wrap:after {
-    background: linear-gradient(81.67deg, #0084f4 0%, #1a4da2 100%);
+    background: linear-gradient(81.67deg, rgba(158,196,254,1) 0%, rgba(85,27,166,1) 100%);
 }
 
 .c-dashboardInfo:nth-child(3) .wrap:after {
-    background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
+    background: linear-gradient(69.83deg, rgba(158,196,254,1) 0%, rgba(85,27,166,1) 100%);
 }
 
 .c-dashboardInfo:nth-child(4) .wrap:after {
-    background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
+    background: linear-gradient(81.67deg,rgba(158,196,254,1) 0%, rgba(85,27,166,1) 100%);
 }
 
 .c-dashboardInfo__title svg {
@@ -121,6 +121,17 @@ button {
 .inventory-item:hover {
     transform: translate(0, -10px);
     transition: 300ms;
+}
+
+.dashboard-statistics {
+    h1 {
+        color: #12043e;
+    }
+}
+
+.mat-mdc-card {
+    padding: 20px;
+    border-radius: 20px;
 }
 
   

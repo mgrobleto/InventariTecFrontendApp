@@ -1,11 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+
+
 import { CurrencyService } from 'src/app/data/service/currency/currency-service.service';
 import { PlanTypeService } from 'src/app/data/service/planType/plan-type-service.service';
 import { RegisterService } from '../../services/register/register.service';
-import { Router } from '@angular/router';
+
+import {capitalize} from 'lodash';
 import Swal from 'sweetalert2';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-registration',
@@ -23,6 +27,8 @@ export class RegistrationComponent implements OnInit {
 
   registerForm: FormGroup;
   businessDataForm: FormGroup;
+  businessInvoiceDataForm: FormGroup;
+  businessOptionsDataForm: FormGroup;
   hide = true;
 
   /* temporary vars */
@@ -39,6 +45,7 @@ export class RegistrationComponent implements OnInit {
   {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required],
       passwordConfirmation: ['', Validators.required],
     },
@@ -47,15 +54,21 @@ export class RegistrationComponent implements OnInit {
     })
 
     this.businessDataForm = this.fb.group({
-      name: ['', Validators.required],
+      businessName: ['', Validators.required],
+    })
+
+    this.businessInvoiceDataForm = this.fb.group({
       invoiceAuthorizationNumber: ['', Validators.required],
       invoiceSerie: ['', Validators.required],
       invoiceNumber: ['', Validators.required],
       lastRegisteredInvoices: ['', Validators.required],
-      numberOfProductRecordsAvailable: ['', Validators.required],
-      planTypeId: ['', Validators.required],
-      currencyTypeId: ['', Validators.required],
     })
+
+    this.businessOptionsDataForm = this.fb.group({
+      currencyTypeId: ['', Validators.required],
+      planTypeId: ['', Validators.required]
+    })
+
   }
 
   ngOnInit(): void {
@@ -98,21 +111,24 @@ export class RegistrationComponent implements OnInit {
   submitRegistration() {
 
     let responseMessage;
+    
+    let name = capitalize(this.businessDataForm.value.businessName);
 
     var user = {
       username : this.registerForm.value.username,
       password : this.registerForm.value.password,
+      email: this.registerForm.value.email,
     }
 
     var business = {
-      name: this.businessDataForm.value.name,
-      authorization_number: this.businessDataForm.value.invoiceAuthorizationNumber,
-      invoice_series : this.businessDataForm.value.invoiceSerie,
-      invoice_number: this.businessDataForm.value.invoiceNumber,
-      last_registered_invoice: this.businessDataForm.value.lastRegisteredInvoices,
-      number_of_product_records_available: this.businessDataForm.value.numberOfProductRecordsAvailable,
-      plan_type : this.businessDataForm.value.planTypeId,
-      currency: this.businessDataForm.value.currencyTypeId
+      name: name,
+      authorization_number: this.businessInvoiceDataForm.value.invoiceAuthorizationNumber,
+      invoice_series : this.businessInvoiceDataForm.value.invoiceSerie,
+      invoice_number: this.businessInvoiceDataForm.value.invoiceNumber,
+      last_registered_invoice: this.businessInvoiceDataForm.value.lastRegisteredInvoices,
+      number_of_product_records_available: this.businessInvoiceDataForm.value.numberOfProductRecordsAvailable,
+      plan_type : this.businessOptionsDataForm.value.planTypeId,
+      currency: this.businessOptionsDataForm.value.currencyTypeId
     }
 
     var userData = {
@@ -137,6 +153,7 @@ export class RegistrationComponent implements OnInit {
             text: 'Algo salio mal, intenta de nuevo',
             footer: error.message?.message
           })
+          console.log(error.message?.message)
         }
       }
     )

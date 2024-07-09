@@ -1,7 +1,14 @@
-.bg {
-  /* background-color: #E8EAF6; */
+/*.bg {
   height: unset;
   background-image: url('~src/assets/img/background.png');
+  background-size: cover;
+  background-position: center center;
+}*/
+
+.bg {
+  height: unset;
+  background: #2c0076;
+  background: linear-gradient(331deg, rgba(44,0,118,1) 0%, rgba(90,55,154,1) 38%, rgba(127,99,184,1) 58%, rgba(217,206,255,1) 100%);
   background-size: cover;
   background-position: center center;
 }
@@ -38,10 +45,39 @@
   border-radius: 1rem;
 }
 
-.register-section {
-  font-size: large;
+.login-title h1 {
+  color: #5E49B0;
+  font-weight: bolder;
+}
+
+.login-welcome h3 {
+  color: #ff5a7b;
+  font-weight: lighter;
+}
+
+.new-password-section {
+  color: #ff5a7b;
+}
+
+.new-password-section a:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.register-section a {
+  color: #ff5a7b;
+}
+
+.register-section p {
+  color: #271b4b;
+  opacity: 0.8;
 }
 
 .register-section a:hover {
+  opacity: 0.8;
   cursor: pointer;
+}
+
+.mat-focused .mat-form-field-required-marker {
+  color: pink;
 }

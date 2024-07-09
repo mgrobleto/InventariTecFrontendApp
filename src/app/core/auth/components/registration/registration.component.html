@@ -11,18 +11,22 @@
           <mat-step [stepControl]="registerForm" errorMessage="Datos vacíos">
             <form [formGroup]="registerForm">
               <ng-template matStepLabel>Datos personales</ng-template>
-              <mat-form-field>
+              <mat-form-field appearance="outline">
                 <mat-label>Nombre de Usuario</mat-label>
                 <input matInput placeholder="Nombre de usuario" formControlName="username" required>
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Correo electrónico</mat-label>
+                <input matInput placeholder="E-mail" formControlName="email" type="email" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
                 <mat-label>Crear Contraseña</mat-label>
                 <input matInput [type]="hide ? 'password' : 'text'" autocomplete="off" formControlName="password">
                 <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                   <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>                     
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="outline">
                 <mat-label>Confirmar Contraseña</mat-label>
                 <input 
                   matInput 
@@ -43,9 +47,9 @@
           <mat-step [stepControl]="businessDataForm" errorMessage="Ingrese el nombre del negocio">
             <form [formGroup]="businessDataForm">
               <ng-template matStepLabel>Negocio</ng-template>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Nombre del Negocio</mat-label>
-                  <input matInput formControlName="name" placeholder="Ingresar nombre del Negocio"
+                  <input matInput formControlName="businessName" placeholder="Ingresar nombre del Negocio"
                     required>
                 </mat-form-field>
                 <div>
@@ -54,25 +58,25 @@
                 </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="businessDataForm" errorMessage="Ingresar factura DGI">
-              <form [formGroup]="businessDataForm">
+          <mat-step [stepControl]="businessInvoiceDataForm" errorMessage="Ingresar factura DGI">
+              <form [formGroup]="businessInvoiceDataForm">
                 <ng-template matStepLabel>Factura DGI</ng-template>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Número de Autorización de Factura</mat-label>
                   <input matInput type="url" formControlName="invoiceAuthorizationNumber" placeholder="A"
                     required>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Serie de Factura</mat-label>
                   <input matInput type="url" formControlName="invoiceSerie" placeholder="A"
                     required>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                     <mat-label>Número de Factura</mat-label>
                     <input matInput formControlName="invoiceNumber" placeholder="1"
                       required>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Ultima Factura Agregada</mat-label>
                   <input matInput formControlName="lastRegisteredInvoices" placeholder="0"
                     required>
@@ -83,8 +87,8 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="businessDataForm" errorMessage="Seleccione una opción">
-            <form [formGroup]="businessDataForm">
+          <mat-step [stepControl]="businessOptionsDataForm" errorMessage="Seleccione una opción">
+            <form [formGroup]="businessOptionsDataForm">
               <ng-template matStepLabel>Tipo de Plan y Moneda</ng-template>
               <mat-form-field appearance="outline">
                 <mat-label>Tipo de Moneda</mat-label>
@@ -111,12 +115,11 @@
             </mat-step>
             <mat-step>
               <ng-template matStepLabel>Finalizar</ng-template>
-              <div class="my-2">
+              <div class="registration-buttons my-2">
                 <button mat-button matStepperPrevious>Regresar</button>
                 <button mat-button (click)="stepper.reset()">Reiniciar</button>
                 <button
-                  mat-button [disabled]="registerForm.invalid"
-                  [ngStyle]="{'background-color': '#ffa500'}"
+                  mat-button [disabled]="registerForm.invalid && businessDataForm.invalid"
                   (click)="submitRegistration()"
                   > Registrarme
                 </button>
