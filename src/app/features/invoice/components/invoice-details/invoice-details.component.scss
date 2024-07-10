@@ -3,20 +3,25 @@
    /*  margin-bottom: 10px; */
     width: auto;
    /*  max-width: 700px; */
-    background: #192653;
+    background: #12043E;
+    opacity: 0.8;
     color: #FFFF;
 }
   
 .details {
     margin: 0;
-    background-color: #192653;
+    background-color: #d3d8ff;
     /* background: #192653;
     color: white; */
     height: 40px;
 }
 
 .download {
-    margin: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: .5rem;
+    border-radius: 10px;
+    padding: 10px;
     background-color: green;
     border: none;
 }

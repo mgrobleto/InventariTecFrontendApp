@@ -1,32 +1,54 @@
-.header {
-    background: #192653;
-    color: #ffff;
+.create-invoice-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.create-new-invoice-header {
+    color: #551BA6;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    /* margin-top: 30px;
+    margin-bottom: 20px; */
+    margin-left: 0;
+    margin-right: 0;
 }
 
-.header-title {
-    max-width: 600px;
+.save-new-invoice-button {
+    margin-left: 20px;
+    margin-right: 20px;
+
+    .mat-mdc-raised-button:not(:disabled) {
+        background-color: #8C4CEC;
+        padding: 20px;
+        float: right;
+        color: #0e073e;
+        border: none;
+        max-width: 300px;
+        margin-left: 10px;
+        border-radius: 50px;
+    }
 }
 
-.header button{
-    float: right;
-    color: #0e073e;
-    border: none;
-    max-width: 300px;
-}
-
-button .float-right {
-    float: right;
-}
-
-mat-card {
-    /* width: 50%; */
-    background-color: #E8EAF6;
+.create-new-invoice-card {
+    background-color: #d3d8ff;
+    border-radius: 20px;
+    margin-left: 0;
+    margin-right: 0;
     padding: 20px;
     margin-bottom: 1rem;
+}
+
+.create-new-invoice-card mat-card {
+    background: transparent;
+}
+
+.mat-mdc-card {
+    --mdc-elevated-card-container-elevation: none !important;
 }
 
 mat-card-content {
@@ -37,17 +59,70 @@ mat-form-field {
     padding: 1rem 1rem 1rem 0rem;
 }
 
-table {
-    width: 100%;
+.products-basket-container {
+    background-color: white;
+    border-radius: 20px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .table-header {
-    background: #192653;
+    background: #12043E;
+    opacity: 0.8;
     color: #ffff;
     display: flex;
     flex-direction: row;
-    /* align-items: center; */
+    border-radius: 10px;
+    align-items: self-start;
   /*  justify-content: space-between; */
+}
+
+.mat-mdc-table {
+    padding: 15px;
+    border-radius: 20px;
+    margin-top: 0 !important;
+}
+
+.mat-elevation-z8 {
+    box-shadow: none !important;
+}
+
+th {
+    width: auto;
+}
+
+/* .mat-mdc-table .mdc-data-table__row {
+    height: 52px;
+}
+ */
+tr.mat-row {
+    height: 52px;
+
+    td.mat-cell {
+      padding-top: 16px;
+      padding-left: 16px;
+      padding-right: 16px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+  padding: 16px 40px 9px 40px;
+}
+
+.mat-column-ID {
+    width: 9% !important;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+   width: auto;
+
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    background-color: #e4e4e4;
+    transition: 0.3s;
 }
 
 .add-product-section .add{

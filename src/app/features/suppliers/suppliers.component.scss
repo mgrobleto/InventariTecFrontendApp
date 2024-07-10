@@ -1,32 +1,87 @@
-.header {
-    background: #192653;
-    color: #ffff;
+.suppliers-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.suppliers-header-container {
+    color: #551BA6;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    /* margin-top: 30px;
+    margin-bottom: 20px; */
+    margin-left: 0;
+    margin-right: 0;
 }
 
-.header-title {
-    max-width: 600px;
+.add-suppliers-button {
+    margin-left: 20px;
+    margin-right: 20px;
+
+    .mat-mdc-raised-button:not(:disabled) {
+        background-color: #9EC4FE;
+        padding: 20px;
+        float: right;
+        color: #0e073e;
+        border: none;
+        max-width: 300px;
+        margin-left: 10px;
+        border-radius: 50px;
+    } 
 }
 
-.header button{
-    float: right;
-    color: #0e073e;
-    border: none;
-    max-width: 300px;
+.suppliers-table {
+    background-color: #d3d8ff;
+    border-radius: 20px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
-button .float-right {
-    float: right;
+.table-header {
+    background: #12043E;
+    opacity: 0.8;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 20px;
+
+    h2 {
+        margin-bottom: 0;
+    }
 }
 
-mat-card {
-    /* max-width: 500px; */
-    background-color: #E8EAF6;
-    padding: 20px;
-    margin-bottom: 2rem;
+.suppliers-table mat-card {
+    background-color: transparent;
+    /*  padding: 20px; */
+     margin-bottom: 2rem;
+}
+
+mat-table {
+    margin-top: 0;
+}
+
+.mat-mdc-table {
+    background-color: transparent;
+    padding: 15px;
+    border-radius: 20px;
+    margin-top: 0 !important;
+}
+
+.mat-elevation-z8 {
+    box-shadow: none !important;
+}
+
+.mat-mdc-paginator {
+    background-color: transparent !important;
+}
+
+.mat-mdc-card {
+    --mdc-elevated-card-container-elevation: none !important;
 }
 
 .table-header {
@@ -103,6 +158,17 @@ tr.mat-row {
     transition: background-color 0.5s ease;
 }
 
+.download-excel-button {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: .5rem;
+
+    button {
+        border-radius: 10px;
+        padding: 10px;
+    }
+}
+
 .download {
     margin: auto;
     background-color: green;
@@ -139,6 +205,10 @@ input {
 .navbar {
     padding-top: 1rem;
     padding-bottom: 1rem;
+
+    .container-fluid {
+        padding-left: 0;
+    }
 }
 
 mat-paginator {

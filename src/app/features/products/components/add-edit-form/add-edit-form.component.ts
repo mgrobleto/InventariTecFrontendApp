@@ -23,8 +23,8 @@ export class AddEditFormComponent implements OnInit {
 
   currencies:any;
   productForm:any = FormGroup;
-  dialogAction: any = 'Agregar';
-  action: any = 'Agregar';
+  dialogAction: any = 'Guardar';
+  action: any = 'Guardar';
   responseMessage: any;
   productsCategories:any = [];
   

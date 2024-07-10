@@ -22,8 +22,8 @@ export class AddEditProductCategoryFormComponent implements OnInit {
   onEditProductCategory = new EventEmitter();
 
   productCategoryForm:any = FormGroup;
-  dialogAction: any = 'Agregar';
-  action: any = 'Agregar';
+  dialogAction: any = 'Guardar';
+  action: any = 'Guardar';
   responseMessage: any;
   productsCategories:any = [];
   

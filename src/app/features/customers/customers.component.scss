@@ -1,44 +1,90 @@
-.header {
-    background: #192653;
-    color: #ffff;
+.customers-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.customers-header-container {
+    color: #551BA6;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    /* margin-top: 30px;
+    margin-bottom: 20px; */
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.add-new-customer-button {
+    margin-left: 20px;
+    margin-right: 20px;
+
+    .mat-mdc-raised-button:not(:disabled) {
+        background-color: #9EC4FE;
+        padding: 20px;
+        float: right;
+        color: #0e073e;
+        border: none;
+        max-width: 300px;
+        margin-left: 10px;
+        border-radius: 50px;
+    }
+}
+
+.customers-table {
+    background-color: #d3d8ff;
+    border-radius: 20px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.table-header {
+    background: #12043E;
+    opacity: 0.8;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 20px;
+
+    h2 {
+        margin-bottom: 0;
+    }
+}
+
+.customers-table mat-card {
+    background-color: transparent;
+     margin-bottom: 2rem;
 }
 
 .header-title {
     max-width: 600px;
 }
 
-.header button{
-    float: right;
-    color: #0e073e;
-    border: none;
-    max-width: 300px;
+mat-table {
+    margin-top: 0;
 }
 
-button .float-right {
-    float: right;
+.mat-mdc-table {
+    background-color: transparent;
+    padding: 15px;
+    border-radius: 20px;
+    margin-top: 0 !important;
 }
 
-mat-card {
-    /* max-width: 500px; */
-    background-color: #E8EAF6;
-    padding: 20px;
-    margin-bottom: 2rem;
+.mat-elevation-z8 {
+    box-shadow: none !important;
 }
 
-.table-header {
-    background: #192653;
-    color: #ffff;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.mat-mdc-paginator {
+    background-color: transparent !important;
+}
 
-    h2 {
-        margin-bottom: 0;
-    }
+.mat-mdc-card {
+    --mdc-elevated-card-container-elevation: none !important;
 }
 
 .filter{
@@ -63,10 +109,6 @@ th {
     width: auto;
 }
 
-/* .mat-mdc-table .mdc-data-table__row {
-    height: 52px;
-}
- */
 tr.mat-row {
     height: 52px;
 
@@ -101,6 +143,17 @@ tr.mat-row {
     box-shadow: 1px 2px 5px #847878; 
     border: none;
     transition: background-color 0.5s ease;
+}
+
+.download-excel-button {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: .5rem;
+
+    button {
+        border-radius: 10px;
+        padding: 10px;
+    }
 }
 
 .download {
@@ -139,6 +192,10 @@ input {
 .navbar {
     padding-top: 1rem;
     padding-bottom: 1rem;
+
+    .container-fluid {
+        padding-left: 0;
+    }
 }
 
 mat-paginator {

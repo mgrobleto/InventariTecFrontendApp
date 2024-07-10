@@ -1,57 +1,84 @@
-.header {
-    background: #192653;
-    color: #ffff;
+.invoices-list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.invoices-header-container {
+    color: #551BA6;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    /* margin-top: 30px;
+    margin-bottom: 20px; */
+    margin-left: 0;
+    margin-right: 0;
 }
 
-.mat-toolbar {
-    /* margin-top: 24px; */
-    //margin-bottom: 10px;
-    width: auto;
-   /*  max-width: 700px; */
-    background: #192653;
-    color: #FFFF;
+.new-invoice-button {
+    margin-left: 20px;
+    margin-right: 20px;
+
+    .mat-mdc-raised-button:not(:disabled) {
+        background-color: #9EC4FE;
+        padding: 20px;
+        float: right;
+        color: #0e073e;
+        border: none;
+        max-width: 300px;
+        margin-left: 10px;
+        border-radius: 50px;
+    }
 }
 
-.header-title {
-    max-width: 600px;
+.invoices-table {
+    background-color: #d3d8ff;
+    border-radius: 20px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
-.header button{
-    float: right;
-    color: #0e073e;
-    border: none;
-    max-width: 300px;
-}
-
-button .float-right {
-    float: right;
-}
-
-mat-card {
-    /* max-width: 500px; */
-    padding: 20px;
-    margin-bottom: 1rem;
+.invoices-table mat-table {
+    margin-top: 0;
+    background-color: transparent !important;
+    /*  padding: 20px; */
+     margin-bottom: 2rem;
 }
 
 .table-header {
-    background: #192653;
+    background: #12043E;
+    opacity: 0.8;
     color: #ffff;
     display: flex;
     flex-direction: row;
     align-items: center;
+    border-radius: 20px;
 
     h2 {
         margin-bottom: 0;
     }
-  /*  justify-content: space-between; */
 }
 
-mat-table {
-    width: 100%;
+.mat-mdc-table {
+    background-color: transparent;
+    padding: 15px;
+    border-radius: 20px;
+    margin-top: 0 !important;
+}
+
+.mat-elevation-z8 {
+    box-shadow: none !important;
+}
+.mat-mdc-paginator {
+    background-color: transparent !important;
+}
+
+.mat-mdc-card {
+    background-color: transparent;
+    --mdc-elevated-card-container-elevation: none !important;
 }
 
 .mat-header-cell{
@@ -180,10 +207,21 @@ mat-form-field {
     background-color: #E8EAF6;
 }
 
-.download {
+.mat-mdc-raised-button.list-all-button {
+    background: #f6b308;
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px;
+}
+
+.invoice-excel-download {
     margin: auto;
     background-color: green;
     border: none;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 300px;
 }
 
 /* Styles for tab labels */
@@ -194,8 +232,6 @@ mat-form-field {
     form {
         padding: 0;
     }
-
-    
 }
 
 .mat-mdc-table {
