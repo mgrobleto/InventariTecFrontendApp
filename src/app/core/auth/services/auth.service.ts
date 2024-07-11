@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+import { EnvironmentService } from 'src/environments/environment.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -11,9 +13,11 @@ export class AuthService {
 
   isLoggedIn = false;
 
-  apiURL = environment.apiUrl;
+  apiURL;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private envService: EnvironmentService) {
+    this.apiURL = this.envService.apiUrl
+  }
 
   //private authToken: string | null = null;
   private userData : any = [];

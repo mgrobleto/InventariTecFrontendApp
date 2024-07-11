@@ -2,22 +2,25 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {HttpClient, HttpHeaders, HttpBackend} from '@angular/common/http';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
+import { EnvironmentService } from 'src/environments/environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuppliersService {
 
-  url = environment.apiUrl + '/suppliers';
+  apiUrl;
   token : string | null = null;
 
   constructor (
     private httpClient : HttpClient, 
     handler: HttpBackend , 
-    private authService: AuthService
+    private authService: AuthService,
+    private envService: EnvironmentService
   ) {
     this.httpClient = new HttpClient(handler);
     this.token =  this.authService.getAuthToken();
+    this.apiUrl = this.envService.apiUrl + '/suppliers';
   }
 
   refreshAuthToken() {
@@ -26,14 +29,14 @@ export class SuppliersService {
 
   addNewSupplier (data : any) {
     this.refreshAuthToken();
-    return this.httpClient.post(this.url + '/create-supplier/', data, { headers : new HttpHeaders({
+    return this.httpClient.post(this.apiUrl + '/create-supplier/', data, { headers : new HttpHeaders({
       'Authorization': `Token ${this.token}`,
     })});
   }
 
   updateSupplier (data : any) {
     this.refreshAuthToken();
-    return this.httpClient.put(this.url + '/update-supplier/', data, { headers : new HttpHeaders({
+    return this.httpClient.put(this.apiUrl + '/update-supplier/', data, { headers : new HttpHeaders({
       'Authorization': `Token ${this.token}`,
     })});
   }
@@ -47,12 +50,12 @@ export class SuppliersService {
       }), 
       body: supplier_id
     }
-    return this.httpClient.delete(this.url + '/delete-supplier/', httpOptions);
+    return this.httpClient.delete(this.apiUrl + '/delete-supplier/', httpOptions);
   }
 
   getAllSuppliers () {
     this.refreshAuthToken();
-    return this.httpClient.get(this.url + '/list-suppliers/', { headers : new HttpHeaders({
+    return this.httpClient.get(this.apiUrl + '/list-suppliers/', { headers : new HttpHeaders({
       'Authorization': `Token ${this.token}`,
     })});
   }

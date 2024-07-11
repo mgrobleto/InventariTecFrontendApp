@@ -1,5 +1,7 @@
 import { HttpClient, HttpBackend } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
+import { EnvironmentService } from 'src/environments/environment.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -7,10 +9,11 @@ import { environment } from 'src/environments/environment';
 })
 export class CurrencyService {
 
-  apiUrl = environment.apiUrl
+  apiUrl;
 
-  constructor(private httpClient : HttpClient, handler : HttpBackend) { 
+  constructor(private httpClient : HttpClient, handler : HttpBackend, private envService: EnvironmentService) { 
     this.httpClient = new HttpClient(handler);
+    this.apiUrl = this.envService.apiUrl
   }
 
   getCurrency() {

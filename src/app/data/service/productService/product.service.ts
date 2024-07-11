@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpBackend, HttpRequest } from '@angular/common/http';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
+import { EnvironmentService } from 'src/environments/environment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +10,18 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 export class ProductService {
 
-  url = environment.apiUrl;
+  apiUrl;
   token : string | null = null;
 
-  constructor(private httpClient : HttpClient, handler : HttpBackend ,private authService : AuthService) {
+  constructor(
+    private httpClient : HttpClient, 
+    handler : HttpBackend ,
+    private authService : AuthService,
+    private envService : EnvironmentService
+  ) {
     this.httpClient = new HttpClient(handler);
     this.token = this.authService.getAuthToken();
+    this.apiUrl = this.envService.apiUrl
   }
 
   refreshAuthToken() {
@@ -23,21 +30,21 @@ export class ProductService {
 
   getAllProducts() {
     this.refreshAuthToken();
-    return this.httpClient.get<any>(this.url + '/products/list-products/', {
+    return this.httpClient.get<any>(this.apiUrl + '/products/list-products/', {
       headers : new HttpHeaders().set('Authorization', 'Token ' + this.token)
     });
   }
 
   addNewProduct(data : any) {
     this.refreshAuthToken(); 
-    return this.httpClient.post(this.url + '/products/create-product/', data, {
+    return this.httpClient.post(this.apiUrl + '/products/create-product/', data, {
       headers : new HttpHeaders().set('Authorization', 'Token ' + this.token)
     });
   }
 
   updateProduct(data:any) {
     this.refreshAuthToken();
-    return this.httpClient.put(this.url + '/products/update-product/', data, {
+    return this.httpClient.put(this.apiUrl + '/products/update-product/', data, {
       headers : new HttpHeaders().set('Authorization', 'Token ' + this.token)
     })
   }
@@ -48,7 +55,7 @@ export class ProductService {
       headers : new HttpHeaders().set('Authorization', 'Token ' + this.token),
       body: product_id
     }
-    return this.httpClient.delete(this.url + '/products/delete-product/', httpOptions);
+    return this.httpClient.delete(this.apiUrl + '/products/delete-product/', httpOptions);
   }
 
   /* getProductsByCategory(id:any) {

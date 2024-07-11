@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { environment } from 'src/environments/environment';
-import {Observable} from 'rxjs';
+import { EnvironmentService } from 'src/environments/environment.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,9 +16,11 @@ const httpOptions = {
 
 export class RegisterService {
 
-  apiUrl = environment.apiUrl;
+  apiUrl;
 
-  constructor(private httpClient : HttpClient) { }
+  constructor(private httpClient : HttpClient, private envService: EnvironmentService) { 
+    this.apiUrl = this.envService.apiUrl
+  }
 
   registerUserWithBusiness(user : any, business : any) {
     return this.httpClient.post<any>(this.apiUrl + '/user/register-user-with-business/', {user, business},  httpOptions)

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient, HttpBackend} from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+
+import { environment } from 'src/environments/environment';
+import { EnvironmentService } from 'src/environments/environment.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,15 +21,17 @@ const httpOptions = {
 export class LoginService {
 
   loggedIn = false;
-  apiURL = environment.apiUrl;
+  apiURL;
 
   constructor(
     private http: HttpClient, 
     handler: HttpBackend ,
     private authService : AuthService, 
-    public router: Router
+    public router: Router,
+    private envService: EnvironmentService
   ) {
     this.http = new HttpClient(handler);
+    this.apiURL = this.envService.apiUrl
   }
 
   /*login(username: string, password: string) {
