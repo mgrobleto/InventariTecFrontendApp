@@ -2,6 +2,14 @@ import { EnvironmentPlugin } from 'webpack'
 const Dotenv = require('dotenv-webpack')
 
 module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss?$/,
+      use: ['postcss-loader']
+      }
+    ]
+  },
   plugins: [
     new Dotenv()
   ],

@@ -23,7 +23,7 @@
       "ES2022",
       "dom"
     ],
-    "types": ["sass"],
+    "types": ["sass", "jest"],
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

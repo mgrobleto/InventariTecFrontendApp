@@ -76,7 +76,10 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "tecnorefill:build"
+            "browserTarget": "tecnorefill:build",
+            "customWebpackConfig": {
+              "path": "src/custom-webpack.config.ts"
+            }
           },
           "configurations": {
             "production": {
