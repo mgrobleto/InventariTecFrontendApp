@@ -2,25 +2,23 @@ import { HttpClient, HttpHeaders, HttpBackend} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { EnvironmentService } from 'src/environments/environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceSalesService {
 
-  apiUrl;
+  apiUrl = environment.apiUrl;
   token : string | null = null;
 
   constructor (
     private httpClient: HttpClient, 
     handler : HttpBackend, 
     private authService: AuthService,
-    private envService: EnvironmentService
   ) { 
     this.httpClient = new HttpClient(handler);
     this.token = this.authService.getAuthToken();
-    this.apiUrl = this.envService.apiUrl
+    /* this.apiUrl = this.envService.apiUrl */
   }
 
   refreshAuthToken() {

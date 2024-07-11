@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpBackend } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { EnvironmentService } from 'src/environments/environment.service';
 
 
 @Injectable({
@@ -9,11 +8,11 @@ import { EnvironmentService } from 'src/environments/environment.service';
 })
 export class PaymentMethodService {
 
-  apiUrl;
+  apiUrl = environment.apiUrl;
 
-  constructor(private httpClient: HttpClient, handler : HttpBackend, private envService: EnvironmentService) { 
+  constructor(private httpClient: HttpClient, handler : HttpBackend) { 
     this.httpClient = new HttpClient(handler);
-    this.apiUrl = this.envService.apiUrl
+    /* this.apiUrl = this.envService.apiUrl */
   }
 
   getPaymentType() {

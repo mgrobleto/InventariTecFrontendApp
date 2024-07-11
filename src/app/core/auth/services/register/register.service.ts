@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
-import { EnvironmentService } from 'src/environments/environment.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -16,10 +15,10 @@ const httpOptions = {
 
 export class RegisterService {
 
-  apiUrl;
+  apiUrl = environment.apiUrl;
 
-  constructor(private httpClient : HttpClient, private envService: EnvironmentService) { 
-    this.apiUrl = this.envService.apiUrl
+  constructor(private httpClient : HttpClient) { 
+    /* this.apiUrl = this.envService.apiUrl */
   }
 
   registerUserWithBusiness(user : any, business : any) {

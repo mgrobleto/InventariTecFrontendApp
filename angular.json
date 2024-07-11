@@ -18,9 +18,6 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "src/custom-webpack.config.ts"
-            },
             "outputPath": "dist/tecnorefill",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -74,13 +71,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
-          "options": {
-            "browserTarget": "tecnorefill:build",
-            "customWebpackConfig": {
-              "path": "src/custom-webpack.config.ts"
-            }
-          },
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "browserTarget": "tecnorefill:build:production",
