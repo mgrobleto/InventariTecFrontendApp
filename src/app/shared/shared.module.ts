@@ -26,7 +26,6 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import {NgxPrintModule} from 'ngx-print';
 import { MatStepperModule } from '@angular/material/stepper';
 
-
 @NgModule({
   declarations: [
     ConfirmationDialog,
