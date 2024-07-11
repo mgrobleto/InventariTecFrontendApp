@@ -30,6 +30,8 @@ interface SideNavToggle {
   ]
 })
 export class SidebarComponent implements OnInit {
+  userData: any;
+  userName: any;
 
   constructor(
     public router: Router, 
@@ -54,6 +56,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
+    this.getUserInfo();
   }
 
   toggleCollapsed() : void {
@@ -79,6 +82,11 @@ export class SidebarComponent implements OnInit {
         }
       }
     }
+  }
+
+  getUserInfo() {
+    this.userData = this.authService.getUserInfo();
+    this.userName = this.userData.business.name;
   }
 
   logOut() {

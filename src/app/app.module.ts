@@ -14,6 +14,8 @@ import { ProductCategoryComponent } from './features/productCategory/product-cat
 import { AddEditCustomerFormComponent } from './features/customers/add-edit-customer-form/add-edit-customer-form.component';
 import { AddEditSuppliersFormComponent } from './features/suppliers/add-edit-suppliers-form/add-edit-suppliers-form/add-edit-suppliers-form.component';
 import { TokenInterceptorService } from './data/interceptors/TokenInterceptor.interceptor';
+import { RestorePasswordComponent } from './pages/restore-password-email/restore-password.component';
+import { RestorePasswordPrivatePageComponent } from './pages/restore-password-private-page/restore-password-private-page.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text:'Cargando...',
@@ -33,7 +35,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     RegistrationComponent,
     ProductCategoryComponent,
     AddEditCustomerFormComponent,
-    AddEditSuppliersFormComponent
+    AddEditSuppliersFormComponent,
+    RestorePasswordComponent,
+    RestorePasswordPrivatePageComponent
   ],
   imports: [
     BrowserModule,

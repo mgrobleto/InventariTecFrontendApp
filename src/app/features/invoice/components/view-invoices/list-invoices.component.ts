@@ -16,6 +16,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import swal from'sweetalert2';
+import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.service';
 
 
 @Component({
@@ -32,7 +33,6 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   ];
 
   dataSource = new MatTableDataSource<any>();
-  fileName= 'VentasReporte.xlsx';
   filterBill:any;
   billDetails:any = [];
   items:any = [];
@@ -49,6 +49,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     private ngxService: NgxUiLoaderService,
     private _fb: FormBuilder,
     private datePipe: DatePipe,
+    private excelExportService : ExportToExcelService
   ) { 
 
     this.searchOptionsForm = this._fb.group({
@@ -69,16 +70,11 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
   exportToExcel(): void
   {
-    /* pass here the table id */
-    let element = document.getElementById('sales-details');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
-    XLSX.writeFile(wb, this.fileName);
+    const tableId = 'sales-details';
+    const columnsToInclude = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha']
+    const fileName = 'VentasReporte'
+
+    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
  
   }
 

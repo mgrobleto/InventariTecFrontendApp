@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './core/auth/components/login/login.component';
 import { RegistrationComponent } from './core/auth/components/registration/registration.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { RestorePasswordComponent } from './pages/restore-password-email/restore-password.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
     path: 'dashboard', 
     //component: DashboardComponent, 
     loadChildren: () => import('./modules/dashboard/dashboard.module').then(dashboard => dashboard.DashboardModule),
-    //canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path:'registration',
     component: RegistrationComponent
+  },
+  {
+    path: 'restore-password',
+    component: RestorePasswordComponent
   },
   {
     path: '**', 

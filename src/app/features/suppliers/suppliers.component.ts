@@ -14,6 +14,7 @@ import swal from'sweetalert2';
 import { AddEditSuppliersFormComponent } from './add-edit-suppliers-form/add-edit-suppliers-form/add-edit-suppliers-form.component';
 
 import { SuppliersService } from 'src/app/data/service/suppliersService/suppliers.service';
+import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.service';
 
 @Component({
   templateUrl: './suppliers.component.html',
@@ -24,8 +25,6 @@ export class SuppliersComponent {
   responseMessage:any;
   displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
 
-  fileName= 'InformacionProveedores.xlsx';
-
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   
   constructor
@@ -35,6 +34,7 @@ export class SuppliersComponent {
     private dialog : MatDialog,
     private _coreService : CoreService,
     private ngxService: NgxUiLoaderService,
+    private excelExportService : ExportToExcelService
     ){}
 
   ngOnInit(): void {
@@ -47,16 +47,11 @@ export class SuppliersComponent {
   }
 
   exportToExcel() {
-    /* pass here the table id */
-    let element = document.getElementById('suppliersData');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
-    XLSX.writeFile(wb, this.fileName);
+    const tableId = 'suppliersData';
+    const columnsToInclude = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico', 'Contacto', 'Dirección']
+    const fileName = 'InformacionProveedores'
+
+    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
   }
   
 
@@ -114,9 +109,9 @@ export class SuppliersComponent {
       dialogRef.close();
     });
 
-    /* const sub = dialogRef.componentInstance.onAddCustomer.subscribe((response) => {
-      this.getAllClients();
-    }); */
+    const sub = dialogRef.componentInstance.onAddSupplier.subscribe((response) => {
+      this.getAllSuppliers();
+    });
   }
 
   handleEditAction(values:any) {

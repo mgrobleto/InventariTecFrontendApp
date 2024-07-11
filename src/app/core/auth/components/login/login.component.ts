@@ -58,12 +58,12 @@ export class LoginComponent implements OnInit {
   )
  }
 
-  /* logOut() {
-    this._loginService.logOut();
-  } */
-
   redirectToRegister() {
     this.router.navigate(['/registration']);
+  }
+
+  redirectToRestorePasswordEmail() {
+    this.router.navigate(['/restore-password']);
   }
 
 }

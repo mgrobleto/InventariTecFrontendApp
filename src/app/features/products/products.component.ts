@@ -2,16 +2,20 @@ import {HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
+
 import { ProductService } from 'src/app/data/service/productService/product.service';
+import { ProductCategorieService } from 'src/app/data/service/productCategoryService/productCategories.service';
+import { CoreService } from 'src/app/data/service/snackBar/core.service';
+import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.service';
+
 import { AddEditFormComponent } from './components/add-edit-form/add-edit-form.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { CoreService } from 'src/app/data/service/snackBar/core.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalConstants } from '../../shared/global-constants';
 import { ConfirmationDialog } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { ProductCategorieService } from 'src/app/data/service/productCategoryService/productCategories.service';
+
 import * as XLSX from 'xlsx';
-import { MatPaginator } from '@angular/material/paginator';
 import swal from'sweetalert2';
 
 @Component({
@@ -29,8 +33,6 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   displayedColumns: string[] = ['ID', 'Nombre', 'Descripcion', 'Stock','Costo', 'Precio Total', 'Categoria', 'Editar', 'Eliminar'];
   productStockColumns: string[] = ['ID', 'Nombre', 'Stock','Editar'];
 
-  fileName= 'InventarioProductos.xlsx';
-
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   
   constructor(
@@ -39,7 +41,8 @@ export class ProductsComponent implements OnInit, AfterViewInit{
     private dialog : MatDialog,
     private _coreService : CoreService,
     private ngxService: NgxUiLoaderService,
-    private productCategoryService : ProductCategorieService
+    private productCategoryService : ProductCategorieService,
+    private excelExportService : ExportToExcelService
     ){}
 
   ngOnInit(): void {
@@ -52,16 +55,11 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   }
 
   exportToExcel() {
-    /* pass here the table id */
-    let element = document.getElementById('productsData');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
-    XLSX.writeFile(wb, this.fileName);
+    const tableId = 'productsData';
+    const columnsToInclude = ['ID', 'Nombre', 'Descripcion', 'Stock', 'Costo', 'Precio Total', 'Categoría']
+    const fileName = 'Inventario Productos'
+
+    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
   }
   
 
@@ -133,7 +131,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   handleAddAction() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      action:"Agregar"
+      action:"Guardar"
     };
     dialogConfig.width = "500px";
     const dialogRef = this.dialog.open(AddEditFormComponent, dialogConfig);

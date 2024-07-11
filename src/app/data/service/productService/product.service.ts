@@ -30,24 +30,22 @@ export class ProductService {
 
   addNewProduct(data : any) {
     this.refreshAuthToken(); 
-    return this.httpClient.post(this.url + '/products/create-product/', data, { headers : new HttpHeaders({
-      'Authorization': `Token ${this.token}`,
-    })});
+    return this.httpClient.post(this.url + '/products/create-product/', data, {
+      headers : new HttpHeaders().set('Authorization', 'Token ' + this.token)
+    });
   }
 
   updateProduct(data:any) {
     this.refreshAuthToken();
-    return this.httpClient.put(this.url + '/products/update-product/', data, {headers : new HttpHeaders({
-      'Authorization': `Token ${this.token}`,
-    })})
+    return this.httpClient.put(this.url + '/products/update-product/', data, {
+      headers : new HttpHeaders().set('Authorization', 'Token ' + this.token)
+    })
   }
 
   deleteProduct(product_id:string) {
     this.refreshAuthToken();
     const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Token ${this.token}`,
-      }), 
+      headers : new HttpHeaders().set('Authorization', 'Token ' + this.token),
       body: product_id
     }
     return this.httpClient.delete(this.url + '/products/delete-product/', httpOptions);

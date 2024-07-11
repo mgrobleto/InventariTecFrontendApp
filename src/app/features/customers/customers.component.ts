@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import swal from'sweetalert2';
 
 import { CustomerService } from 'src/app/data/service/customerService/customer.service';
+import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.service';
 
 @Component({
   templateUrl: './customers.component.html',
@@ -24,8 +25,6 @@ export class CustomersComponent {
   responseMessage:any;
   displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
 
-  fileName= 'ClientesInfo.xlsx';
-
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   
   constructor
@@ -35,6 +34,7 @@ export class CustomersComponent {
     private dialog : MatDialog,
     private _coreService : CoreService,
     private ngxService: NgxUiLoaderService,
+    private excelExportService : ExportToExcelService
     ){}
 
   ngOnInit(): void {
@@ -47,16 +47,11 @@ export class CustomersComponent {
   }
 
   exportToExcel() {
-    /* pass here the table id */
-    let element = document.getElementById('ClientsData');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
-    XLSX.writeFile(wb, this.fileName);
+    const tableId = 'ClientsData';
+    const columnsToInclude = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico', 'Contacto', 'Dirección']
+    const fileName = 'ClientesInfo'
+
+    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
   }
   
 

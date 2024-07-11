@@ -42,8 +42,8 @@
 }
 
 .table-header {
-    background: #12043E;
-    opacity: 0.8;
+    background: rgb(51,27,140);
+    background: linear-gradient(61deg, rgba(51,27,140,1) 0%, rgba(79,48,191,1) 48%, rgba(15,7,64,1) 100%);
     color: #ffff;
     display: flex;
     flex-direction: row;
