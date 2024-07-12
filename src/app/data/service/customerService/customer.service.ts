@@ -48,11 +48,12 @@ export class CustomerService {
 
   deleteCustomer(customer_id:string) {
     this.refreshAuthToken();
+    const requestBody = { customer_id: customer_id };
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': `Token ${this.token}`,
       }), 
-      body: customer_id
+      body: requestBody
     }
     return this.httpClient.delete(this.apiUrl + '/customers/delete-customer/', httpOptions);
   }

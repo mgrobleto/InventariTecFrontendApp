@@ -42,11 +42,12 @@ export class SuppliersService {
   // or pass id
   deleteSupplier (supplier_id : any) {
     this.refreshAuthToken();
+    const requestBody = { supplier_id: supplier_id };
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': `Token ${this.token}`,
       }), 
-      body: supplier_id
+      body: requestBody
     }
     return this.httpClient.delete(this.apiUrl + '/suppliers/delete-supplier/', httpOptions);
   }

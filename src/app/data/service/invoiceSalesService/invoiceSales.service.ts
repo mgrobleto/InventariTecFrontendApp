@@ -41,11 +41,12 @@ export class InvoiceSalesService {
 
   deleteInvoice(invoice_id: string) {
     this.refreshAuthToken();
+    const requestBody = { invoice_id: invoice_id };
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': `Token ${this.token}`,
       }),  
-      body: invoice_id
+      body: requestBody
     }
     return this.httpClient.delete(this.apiUrl + '/invoice/delete-invoice/', httpOptions)
   }

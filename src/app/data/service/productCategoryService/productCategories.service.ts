@@ -49,9 +49,10 @@ export class ProductCategorieService {
 
   deleteProductCategory(product_category_id:string) {
     this.refreshAuthToken();
+    const requestBody = { product_category_id: product_category_id };
     const httpOptions = {
       headers : new HttpHeaders().set('Authorization', 'Token ' + this.token),
-      body: product_category_id
+      body: requestBody
     }
     return this.httpClient.delete(this.apiUrl + '/products_category/delete-product-category/', httpOptions);
   }
