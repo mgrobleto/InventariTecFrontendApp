@@ -37,7 +37,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   billDetails:any = [];
   items:any = [];
   responseMessage:any;
-  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   billState: any;
 
@@ -71,7 +71,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   exportToExcel(): void
   {
     const tableId = 'sales-details';
-    const columnsToInclude = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha']
+    const columnsToInclude = ['ID', 'Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha']
     const fileName = 'VentasReporte'
 
     this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);

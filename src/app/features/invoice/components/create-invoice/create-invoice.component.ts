@@ -68,7 +68,7 @@ export class CreateInvoiceComponent implements OnInit {
   currentMonth: any;
   yearValue: any;
 
-
+  isSubmitDisabled: boolean = true;
 
   constructor(
     private _fb : FormBuilder,
@@ -138,6 +138,11 @@ export class CreateInvoiceComponent implements OnInit {
     this.invoiceForm.controls['invoice_date'].setValue(
       this.datePipe.transform(myDate, "YYYY-MM-dd")
     );
+
+    this.invoiceForm.valueChanges.subscribe(() => {
+      this.isSubmitDisabled = this.validateSubmit();
+    });
+    
     //console.log(this.billDate);
   }
 
@@ -339,23 +344,19 @@ export class CreateInvoiceComponent implements OnInit {
     }
   }
 
-  validateSubmit() {
-    if(
-      this.netAmount === 0 ||  
-      this.invoiceForm.controls['customer_name'].value === null ||
-      this.invoiceForm.controls['payment_type'].value === null||
-      this.invoiceForm.controls['category'] .value === null ||
-      this.invoiceForm.controls['product'].value === null ||
-      this.invoiceForm.controls['quantity'].value === null ||
-      this.invoiceForm.controls['sale_price_at_time'] === null ||
-      this.invoiceForm.controls['iva'].value === null ||
-      this.invoiceForm.controls['total'].value === null
-    )
-    {
-      return true;
-    } else {
-      return false;
-    }
+  validateSubmit() : boolean {
+    const formValues = this.invoiceForm.value;
+
+    return !(
+      formValues.customer_name &&
+      formValues.payment_type &&
+      formValues.category &&
+      formValues.product &&
+      formValues.quantity &&
+      formValues.sale_price_at_time &&
+      formValues.iva &&
+      formValues.total
+    );
   }
 
   // ya no se usa

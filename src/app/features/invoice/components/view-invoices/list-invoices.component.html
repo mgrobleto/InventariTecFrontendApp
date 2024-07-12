@@ -100,6 +100,11 @@
         <mat-card class="table">
             <div class="responsive-table" id="sales-details">
                 <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <ng-container matColumnDef="Numero de Factura">
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                      </ng-container>
             
                     <!-- Position Column -->
                     <ng-container matColumnDef="Numero de Factura">
