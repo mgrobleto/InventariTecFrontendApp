@@ -27,14 +27,14 @@ export class SuppliersService {
 
   addNewSupplier (data : any) {
     this.refreshAuthToken();
-    return this.httpClient.post(this.apiUrl + '/create-supplier/', data, { headers : new HttpHeaders({
+    return this.httpClient.post(this.apiUrl + '/suppliers/create-supplier/', data, { headers : new HttpHeaders({
       'Authorization': `Token ${this.token}`,
     })});
   }
 
   updateSupplier (data : any) {
     this.refreshAuthToken();
-    return this.httpClient.put(this.apiUrl + '/update-supplier/', data, { headers : new HttpHeaders({
+    return this.httpClient.put(this.apiUrl + '/suppliers/update-supplier/', data, { headers : new HttpHeaders({
       'Authorization': `Token ${this.token}`,
     })});
   }
@@ -48,12 +48,12 @@ export class SuppliersService {
       }), 
       body: supplier_id
     }
-    return this.httpClient.delete(this.apiUrl + '/delete-supplier/', httpOptions);
+    return this.httpClient.delete(this.apiUrl + '/suppliers/delete-supplier/', httpOptions);
   }
 
   getAllSuppliers () {
     this.refreshAuthToken();
-    return this.httpClient.get(this.apiUrl + '/list-suppliers/', { headers : new HttpHeaders({
+    return this.httpClient.get(this.apiUrl + '/suppliers/list-suppliers/', { headers : new HttpHeaders({
       'Authorization': `Token ${this.token}`,
     })});
   }
