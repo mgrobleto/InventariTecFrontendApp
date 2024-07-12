@@ -294,7 +294,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   validateAddProduct() {
-    this.validateSubmit();
+    
     if( this.invoiceForm.controls['sale_price_at_time'].value === 0 || this.invoiceForm.controls['cost_price_at_time'].value === null || 
         this.invoiceForm.controls['quantity'].value <= 0) {
      return true;
@@ -343,6 +343,7 @@ export class CreateInvoiceComponent implements OnInit {
     {
       this._coreService.openSuccessSnackBar(GlobalConstants.productExistError, GlobalConstants.error);
     }
+    this.validateSubmit();
   }
 
   validateForm() {
