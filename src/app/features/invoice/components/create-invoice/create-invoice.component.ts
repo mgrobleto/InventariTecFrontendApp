@@ -344,19 +344,12 @@ export class CreateInvoiceComponent implements OnInit {
     }
   }
 
-  validateSubmit() : boolean {
-    const formValues = this.invoiceForm.value;
+  validateForm() {
+    return this.netAmount !== 0 && this.invoiceForm.valid;
+  }
 
-    return !(
-      formValues.customer_name &&
-      formValues.payment_type &&
-      formValues.category &&
-      formValues.product &&
-      formValues.quantity &&
-      formValues.sale_price_at_time &&
-      formValues.iva &&
-      formValues.total
-    );
+  validateSubmit() {
+    this.isSubmitDisabled = !this.validateForm();
   }
 
   // ya no se usa
