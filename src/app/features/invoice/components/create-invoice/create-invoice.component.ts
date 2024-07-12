@@ -68,7 +68,7 @@ export class CreateInvoiceComponent implements OnInit {
   currentMonth: any;
   yearValue: any;
 
-  isSubmitDisabled: boolean = true;
+  isSubmitDisabled = true;
 
   constructor(
     private _fb : FormBuilder,
@@ -140,7 +140,7 @@ export class CreateInvoiceComponent implements OnInit {
     );
 
     this.invoiceForm.valueChanges.subscribe(() => {
-      this.isSubmitDisabled = this.validateSubmit();
+      this.validateSubmit();
     });
     
     //console.log(this.billDate);
