@@ -340,9 +340,19 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   validateSubmit() {
-    if(this.netAmount === 0 ||  this.invoiceForm.controls['customer_name'].value === null ||
-      this.invoiceForm.controls['payment_type'].value === null) {
-        return true;
+    if(
+      this.netAmount === 0 ||  
+      this.invoiceForm.controls['customer_name'].value === null ||
+      this.invoiceForm.controls['payment_type'].value === null||
+      this.invoiceForm.controls['category'] .value === null ||
+      this.invoiceForm.controls['product'].value === null ||
+      this.invoiceForm.controls['quantity'].value === null ||
+      this.invoiceForm.controls['sale_price_at_time'] === null ||
+      this.invoiceForm.controls['iva'].value === null ||
+      this.invoiceForm.controls['total'].value === null
+    )
+    {
+      return true;
     } else {
       return false;
     }
