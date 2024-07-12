@@ -335,6 +335,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.dataSource = [...this.dataSource]
       //this._coreService.openSuccessSnackBar(GlobalConstants.productAdded, "con exito");
       //this.productQuantity = 0;
+      this.validateSubmit();
 
     } else if(this.productQuantity > this.productStockQuantity) {
       this._coreService.openSuccessSnackBar(GlobalConstants.stock, GlobalConstants.error);
@@ -399,6 +400,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.dataSource = [...this.dataSource]
     this.invoiceForm.controls['sale_price_at_time'].reset();
     this.invoiceForm.controls['total'].reset();
+    this.validateSubmit();
   }
 
   submitAction() {
