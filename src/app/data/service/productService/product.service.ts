@@ -49,9 +49,10 @@ export class ProductService {
 
   deleteProduct(product_id:string) {
     this.refreshAuthToken();
+    const requestBody = { product_id: product_id };
     const httpOptions = {
       headers : new HttpHeaders().set('Authorization', 'Token ' + this.token),
-      body: product_id
+      body: requestBody
     }
     return this.httpClient.delete(this.apiUrl + '/products/delete-product/', httpOptions);
   }
