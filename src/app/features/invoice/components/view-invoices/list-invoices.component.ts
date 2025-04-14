@@ -14,7 +14,7 @@ import { EditInvoiceStatusComponent } from '../edit-invoice-status/edit-invoice-
 import { MatPaginator } from '@angular/material/paginator';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import * as XLSX from 'xlsx';
+
 import swal from'sweetalert2';
 import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.service';
 

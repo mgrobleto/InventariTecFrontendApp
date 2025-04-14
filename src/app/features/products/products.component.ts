@@ -15,7 +15,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GlobalConstants } from '../../shared/global-constants';
 import { ConfirmationDialog } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
-import * as XLSX from 'xlsx';
 import swal from'sweetalert2';
 
 @Component({
