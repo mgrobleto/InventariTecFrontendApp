@@ -1,3 +1,4 @@
+import { commonTestsModules } from 'src/test/test-utils';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddEditCustomerFormComponent } from './add-edit-customer-form.component';
@@ -6,11 +7,13 @@ describe('AddEditCustomerFormComponent', () => {
   let component: AddEditCustomerFormComponent;
   let fixture: ComponentFixture<AddEditCustomerFormComponent>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [AddEditCustomerFormComponent]
+      declarations: [AddEditCustomerFormComponent],
+      imports:[...commonTestsModules]
     });
-    fixture = TestBed.createComponent(AddEditCustomerFormComponent);
+        await TestBed.compileComponents();
+fixture = TestBed.createComponent(AddEditCustomerFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

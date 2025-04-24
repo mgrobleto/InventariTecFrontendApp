@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+    import { Csrf-tokenService } from './csrf-token.service';
+    import { commonTestsModules } from 'src/test/test-utils';
 
-import { CsrfTokenService } from './csrf-token.service';
+    describe('Csrf-tokenService', () => {
+    let service: Csrf-tokenService;
 
-describe('CsrfTokenService', () => {
-  let service: CsrfTokenService;
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            providers: [Csrf-tokenService],
+            imports: [commonTestsModules]
+        });
+        await TestBed.compileComponents();
+        service = TestBed.inject(Csrf-tokenService);
+    });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(CsrfTokenService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+    it('should be created', () => {
+            expect(service).toBeTruthy();
+        });
+        });

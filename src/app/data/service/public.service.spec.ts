@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+    import { PublicService } from './public.service';
+    import { commonTestsModules } from 'src/test/test-utils';
 
-import { PublicService } from '../data/service/public.service';
+    describe('PublicService', () => {
+    let service: PublicService;
 
-describe('PublicService', () => {
-  let service: PublicService;
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            providers: [PublicService],
+            imports: [commonTestsModules]
+        });
+        await TestBed.compileComponents();
+        service = TestBed.inject(PublicService);
+    });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(PublicService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

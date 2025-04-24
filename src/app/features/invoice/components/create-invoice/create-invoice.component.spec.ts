@@ -1,3 +1,4 @@
+import { commonTestsModules } from 'src/test/test-utils';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateInvoiceComponent } from './create-invoice.component';
@@ -6,11 +7,13 @@ describe('CreateInvoiceComponent', () => {
   let component: CreateInvoiceComponent;
   let fixture: ComponentFixture<CreateInvoiceComponent>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [CreateInvoiceComponent]
+      declarations: [CreateInvoiceComponent],
+      imports: [...commonTestsModules]
     });
-    fixture = TestBed.createComponent(CreateInvoiceComponent);
+        await TestBed.compileComponents();
+fixture = TestBed.createComponent(CreateInvoiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

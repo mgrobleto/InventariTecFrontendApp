@@ -1,14 +1,29 @@
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
+
+/*Es un archivo de configuración de TypeScript que define cómo se deben compilar los archivos de prueba (*.spec.ts) en un proyecto Angular.
+Angular usa este archivo cuando ejecutás pruebas con herramientas como Karma o Jest. Básicamente le dice al compilador de TypeScript:
+
+Qué archivos incluir o excluir.
+
+Qué reglas de compilación seguir para los tests.*/
+
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
     "types": [
-      "jasmine"
-    ]
+      "jest"
+    ],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
+  "files": ["setup-jest.ts"],
   "include": [
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "src/main.ts",
+    "src/polyfills.ts"
   ]
 }

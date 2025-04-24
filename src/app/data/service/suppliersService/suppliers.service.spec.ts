@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+    import { SuppliersService } from './suppliers.service';
+    import { commonTestsModules } from 'src/test/test-utils';
 
-import { SuppliersService } from './suppliers.service';
+    describe('SuppliersService', () => {
+    let service: SuppliersService;
 
-describe('SuppliersService', () => {
-  let service: SuppliersService;
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            providers: [SuppliersService],
+            imports: [commonTestsModules]
+        });
+        await TestBed.compileComponents();
+        service = TestBed.inject(SuppliersService);
+    });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(SuppliersService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

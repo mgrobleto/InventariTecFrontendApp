@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+    import { PlanTypeService } from './plan-type-service.service';
+    import { commonTestsModules } from 'src/test/test-utils';
 
-import { PlanTypeServiceService } from './plan-type-service.service';
+    describe('Plan-type-serviceService', () => {
+    let service: PlanTypeService;
 
-describe('PlanTypeServiceService', () => {
-  let service: PlanTypeServiceService;
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            providers: [PlanTypeService],
+            imports: [commonTestsModules]
+        });
+        await TestBed.compileComponents();
+        service = TestBed.inject(PlanTypeService);
+    });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(PlanTypeServiceService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+import { CurrencyService } from './currency-service.service';
+import { commonTestsModules } from 'src/test/test-utils';
 
-import { CurrencyServiceService } from './currency-service.service';
+    describe('Currency-serviceService', () => {
+    let service: CurrencyService;
 
-describe('CurrencyServiceService', () => {
-  let service: CurrencyServiceService;
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            providers: [CurrencyService],
+            imports: [commonTestsModules]
+        });
+        await TestBed.compileComponents();
+        service = TestBed.inject(CurrencyService);
+    });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(CurrencyServiceService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });

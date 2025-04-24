@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ProductCategorieService } from './productCategories.service';
+import { commonTestsModules } from 'src/test/test-utils';
 
-describe('ProductCategorieService', () => {
-  let service: ProductCategorieService;
+    describe('ProductCategoriesService', () => {
+    let service: ProductCategorieService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ProductCategorieService);
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            providers: [ProductCategorieService],
+            imports: [commonTestsModules]
+        });
+        await TestBed.compileComponents();
+        service = TestBed.inject(ProductCategorieService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });
