@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {PublicService} from './data/service/public.service';
 import {HttpClient} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { CsrfTokenService } from './core/auth/services/csrf-token.service';
 
 
 @Component({

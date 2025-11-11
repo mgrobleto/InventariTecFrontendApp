@@ -1,35 +1,53 @@
 <div class="bg">
-    <div class="login">
-        <mat-spinner *ngIf="loading" diameter="50"></mat-spinner>
-        <form *ngIf="!loading" [formGroup]="form">
-            <!-- <div class="image-section">
+  <div class="login">
+    <mat-spinner *ngIf="loading" diameter="50"></mat-spinner>
+    <form *ngIf="!loading" [formGroup]="form">
+      <!-- <div class="image-section">
                 <img src="../../../assets/img/logoInventariaTec.png" width="100%">
             </div> -->
-            <div class="login-title my-4">
-                <h1 class="">MiPyme</h1>
-            </div>
-            <div class="login-welcome mb-4">
+      <div class="login-title my-4">
+        <h1 class="">Iniciar sesión</h1>
+      </div>
+      <!-- <div class="login-welcome">
                 <h3 class="">¡Bienvenido de nuevo!</h3>
-            </div>
-            <mat-form-field appearance="outline">
-                <mat-label>Nombre de usuario</mat-label>
-                <input matInput autocomplete="off" formControlName="username">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Contraseña</mat-label>
-                <input matInput [type]="hide ? 'password' : 'text'" autocomplete="off" formControlName="password">
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
-            </mat-form-field>
-            <div class="new-password-section my-4 fs-6 text-center">
-                <a (click)="redirectToRestorePasswordEmail()">¿Olvidaste tu contraseña?</a>
-            </div>    
-            <button type="submit" mat-raised-button color="primary" (click)="login()"> Ingresar</button>
-            <div class="register-section my-4 fs-6 d-flex justify-content-center">
-                <p class="mx-2">¿No tienes una cuenta?</p>
-                <a (click)="redirectToRegister()">Regístrate</a>
-            </div>        
-        </form>
-    </div>
+            </div> -->
+      <div class="div">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre de usuario</mat-label>
+          <input matInput autocomplete="off" formControlName="username" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            autocomplete="off"
+            formControlName="password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="new-password-section my-4 fs-6 text-center">
+        <a (click)="redirectToRestorePasswordEmail()"
+          >¿Olvidaste tu contraseña?</a
+        >
+      </div>
+      <button type="submit" mat-raised-button color="primary" (click)="login()">
+        Ingresar
+      </button>
+      <div class="register-section my-4 fs-6 d-flex justify-content-center">
+        <p class="mx-2">¿No tienes una cuenta?</p>
+        <a (click)="redirectToRegister()">Regístrate</a>
+      </div>
+    </form>
+  </div>
 </div>

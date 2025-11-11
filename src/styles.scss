@@ -61,6 +61,36 @@
     border: none;
 }
 
+/* Prevent Angular Material theme colors from showing on focus */
+
+/* Remove theme-based color when focused */
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #b5ffc9 !important;  /* your custom green */
+  border-color: #b5ffc9 !important;
+}
+
+/* Also make sure the outline segments use your color */
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-start,
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-gap,
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-end {
+  border-color: #b5ffc9 !important;
+}
+
+/* Focused label color */
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #b5ffc9 !important;
+}
+
+/* Input caret color */
+.mat-input-element {
+  caret-color: #b5ffc9 !important;
+}
+
+/* Optional: disable Angular Material ripple focus highlight */
+.mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

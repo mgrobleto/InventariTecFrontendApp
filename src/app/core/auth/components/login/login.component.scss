@@ -6,57 +6,88 @@
 }*/
 
 .bg {
-  height: unset;
-  background: #2c0076;
-  background: linear-gradient(331deg, rgba(44,0,118,1) 0%, rgba(90,55,154,1) 38%, rgba(127,99,184,1) 58%, rgba(217,206,255,1) 100%);
-  background-size: cover;
-  background-position: center center;
+  background: linear-gradient(135deg, #01403a 0%, #4f7352 70%, #b6c4b8 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.login {
+/* .login {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
+} */
 
 .login form {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  width: 100%;
-  /*max-width: 500px;*/
+  align-items: center;
+  gap: 1.2rem;
+
+  width: 90%;
+  max-width: 450px;
+  max-height: 30rem;
+
   text-align: center;
-  max-width: 500px;
-  margin: 0px auto;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 2rem 3rem;
   margin: auto;
-  border-radius: 2.5rem;
-  background-color: #ecf0f3;
-  /* box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #ffffff; */
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  color: black;
+  padding: 2rem;
+  border-radius: 1.5rem;
+
+  /* Glass effect */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  /* Soft shadow */
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+  color: white;
+}
+
+/* .login form .div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+} */
+
+.login form mat-form-field {
+  width: 100%;
+}
+
+/* revisar si afecta en otras partes*/
+.mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #01403a;
+  --mdc-protected-button-label-text-color: #fff;
+}
+
+.mat-form-field-label {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .login button {
   border: none;
-  border-radius: 1rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  border-radius: 0.8rem;
 }
 
 .login-title h1 {
-  color: #5E49B0;
+  color: #f2f2f2;
   font-weight: bolder;
 }
 
 .login-welcome h3 {
-  color: #ff5a7b;
+  color: #f2f2f2;
   font-weight: lighter;
 }
 
 .new-password-section {
-  color: #ff5a7b;
+  color: #f2f2f2;
 }
 
 .new-password-section a:hover {
@@ -65,11 +96,11 @@
 }
 
 .register-section a {
-  color: #ff5a7b;
+  color: #f2f2f2;
 }
 
 .register-section p {
-  color: #271b4b;
+  color: #f2f2f2;
   opacity: 0.8;
 }
 
@@ -79,5 +110,5 @@
 }
 
 .mat-focused .mat-form-field-required-marker {
-  color: pink;
+  color: #01403a;
 }
