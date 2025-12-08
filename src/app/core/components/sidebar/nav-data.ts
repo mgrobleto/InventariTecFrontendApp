@@ -14,12 +14,12 @@ export const navbarData : INavbarData[] = [
         items: [
             {
                 routeLink: 'invoice/createNewInvoice',
-                //icon: 'fas fa-laptop',
+                icon: 'fas fa-plus-circle',
                 label: 'Nueva Factura',
             },
             {
                 routeLink: 'invoice/allInvoices',
-                //icon: 'fas fa-laptop',
+                icon: 'fas fa-list-alt',
                 label: 'Todas las Facturas',
             },
         ]

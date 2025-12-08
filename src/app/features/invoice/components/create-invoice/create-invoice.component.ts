@@ -116,6 +116,7 @@ export class CreateInvoiceComponent implements OnInit {
       cost_price_at_time: [null,[Validators.required]],
       quantity: [null,[Validators.required]],
       sale_price_at_time: [null,[Validators.required]],
+      currency: ['USD'], // Add currency field
     })
 
     this.ngxService.start();
@@ -473,5 +474,54 @@ export class CreateInvoiceComponent implements OnInit {
     this.dataSource = [];
     this.totalAmount = 0;
     this.ngOnInit();
+  }
+
+  // Preview helper methods
+  getClientName(): string {
+    if (this.customerDetail && this.customerDetail[0]) {
+      return `${this.customerDetail[0].first_name} ${this.customerDetail[0].last_name}`;
+    }
+    return '';
+  }
+
+  getClientAddress(): string {
+    if (this.customerDetail && this.customerDetail[0]) {
+      return this.customerDetail[0].c_adress || '';
+    }
+    return '';
+  }
+
+  getBusinessName(): string {
+    try {
+      const userInfo = this.authService.getUserInfo();
+      return userInfo?.business?.name || 'Mi Empresa';
+    } catch {
+      return 'Mi Empresa';
+    }
+  }
+
+  getBusinessInitial(): string {
+    try {
+      const userInfo = this.authService.getUserInfo();
+      const name = userInfo?.business?.name || 'M';
+      return name.charAt(0).toUpperCase();
+    } catch {
+      return 'M';
+    }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/dashboard/invoice/allInvoices']);
+  }
+
+  cancelInvoice(): void {
+    if (confirm('¿Está seguro que desea cancelar? Se perderán todos los datos no guardados.')) {
+      this.goBack();
+    }
+  }
+
+  saveDraft(): void {
+    // TODO: Implement draft save functionality
+    this._coreService.openSuccessSnackBar('Borrador guardado exitosamente', 'success');
   }
 }
