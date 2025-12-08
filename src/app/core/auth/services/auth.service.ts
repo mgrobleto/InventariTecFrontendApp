@@ -16,10 +16,35 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     /* this.apiURL = this.envService.apiUrl */
+    // Restore authentication state on service initialization (page reload)
+    this.restoreAuthState();
   }
 
   //private authToken: string | null = null;
   private userData : any = [];
+  
+  /**
+   * Restore authentication state from localStorage on page reload
+   */
+  private restoreAuthState(): void {
+    const token = localStorage.getItem('token');
+    const currentUser = localStorage.getItem('currentUser');
+    
+    if (token) {
+      this.isLoggedIn = true;
+      // Restore user data if it exists in localStorage
+      if (currentUser) {
+        try {
+          this.userData = JSON.parse(currentUser);
+        } catch (e) {
+          console.error('Error parsing user data from localStorage:', e);
+          this.userData = [];
+        }
+      }
+    } else {
+      this.isLoggedIn = false;
+    }
+  }
   
   setAuthToken(token: string) {
     this.isLoggedIn = true;
@@ -33,6 +58,8 @@ export class AuthService {
   clearAuthToken() : void {
     this.isLoggedIn = false;
     localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    this.userData = [];
   }
 
   login(userCredentials : any) : Observable<any> {

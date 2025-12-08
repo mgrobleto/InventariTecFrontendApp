@@ -25,6 +25,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import {NgxPrintModule} from 'ngx-print';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     NgxMaskDirective,
     NgxMaskPipe,
     NgxPrintModule,
-    MatStepperModule
+    MatStepperModule,
+    MatCheckboxModule
   ],
   exports: [
     FormsModule,
@@ -83,7 +85,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     NgxMaskDirective,
     NgxMaskPipe,
     NgxPrintModule,
-    MatStepperModule
+    MatStepperModule,
+    MatCheckboxModule
   ],
   providers: [
     provideNgxMask(),

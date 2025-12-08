@@ -13,7 +13,15 @@ export class AuthGuard implements CanActivate {
 
  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):boolean {
   
-  if(this.authService.isLoggedIn === true){
+  // Check both isLoggedIn flag and token in localStorage as fallback
+  const token = this.authService.getAuthToken();
+  const isAuthenticated = this.authService.isLoggedIn === true || (token !== null && token !== undefined);
+  
+  if(isAuthenticated){
+    // Ensure isLoggedIn flag is set if token exists
+    if (token && !this.authService.isLoggedIn) {
+      this.authService.isLoggedIn = true;
+    }
     console.log('Usuario autenticado')
     return true;
   }

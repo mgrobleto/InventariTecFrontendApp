@@ -38,24 +38,35 @@ export class LoginComponent implements OnInit {
  }
 
  login() {
+  // Mark all fields as touched to show validation errors
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
+
+  // Set loading state
+  this.loading = true;
+
   this._loginService.login(this.form.value.username, this.form.value.password)
-  .pipe(first())
-  .subscribe(
-    data => {
-      this.loading = true;
-      console.log(data);
-      this.router.navigate(['dashboard']);
-    },
-    error => {
-      this._snackBar.open("Usuario o contraseña incorrectas",'',{
-        duration: 5000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
-      });
-      this.form.reset();
-      console.log(error);
-    }
-  )
+    .pipe(first())
+    .subscribe({
+      next: (data) => {
+        console.log(data);
+        this.loading = false;
+        this.router.navigate(['dashboard']);
+      },
+      error: (error) => {
+        this.loading = false;
+        this._snackBar.open("Usuario o contraseña incorrectas", '', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom'
+        });
+        // Reset password field only, keep username
+        this.form.get('password')?.reset();
+        console.log(error);
+      }
+    });
  }
 
   redirectToRegister() {

@@ -1,13 +1,12 @@
 .sidenav {
-    background: rgb(45,19,128);
-    background: linear-gradient(153deg, rgba(45,19,128,1) 0%, rgba(70,33,162,1) 97%);
+    background: #001F3F;
     transition: all .5s ease;
     position: fixed;
     z-index: 1;
     top: 0;
     width: 5rem;
     height: 100vh;
-    box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
+    box-shadow: 0.063rem 0 1.25rem 0 rgba(0, 31, 63, 0.3);
 
     .logo-container {
         display: flex;
