@@ -14,6 +14,7 @@ import { EditInvoiceStatusComponent } from '../edit-invoice-status/edit-invoice-
 import { MatPaginator } from '@angular/material/paginator';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { SelectionModel } from '@angular/cdk/collections';
 
 import swal from'sweetalert2';
 import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.service';
@@ -33,13 +34,24 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   ];
 
   dataSource = new MatTableDataSource<any>();
+  originalData: any[] = []; // Store original data for filtering
   filterBill:any;
   billDetails:any = [];
   items:any = [];
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
+  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
+  displayedColumnsWithSelect: string[] = ['select', 'Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   billState: any;
+
+  // Selection
+  selection = new SelectionModel<any>(true, []);
+
+  // Filter properties
+  selectedCategory: string = 'all';
+  selectedPriceRange: string = 'all';
+  selectedShowOption: string = 'all';
+  selectedSortOption: string = 'default';
 
   constructor(
     private _billService : InvoiceSalesService, 
@@ -154,7 +166,8 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       (data: any) => {
         console.log(data);
         this.ngxService.stop();
-        this.dataSource.data = data.data;
+        this.originalData = data.data || [];
+        this.dataSource.data = this.originalData;
         //this.productDetails = response;
       }, (error : any) => {
         this.ngxService.stop();
@@ -188,7 +201,38 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   applyFilter(event: Event){
     const filterValue = (event.target as HTMLInputElement).value;
     //this.productDetails.filter((value:any) => value.productsCategories.category).breadcrumb[0].replace()
-    this.billDetails.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  // Selection methods
+  isAllSelected(): boolean {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows && numRows > 0;
+  }
+
+  isSomeSelected(): boolean {
+    return this.selection.selected.length > 0 && !this.isAllSelected();
+  }
+
+  toggleSelectAll(event: any): void {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.dataSource.data.forEach(row => this.selection.select(row));
+    }
+  }
+
+  toggleSelection(row: any): void {
+    this.selection.toggle(row);
+  }
+
+  // Helper method for client initial
+  getClientInitial(customer: any): string {
+    if (!customer) return '?';
+    const first = customer.first_name?.charAt(0) || '';
+    const last = customer.last_name?.charAt(0) || '';
+    return (first + last).toUpperCase() || '?';
   }
 
   /* getBillItemsDetails(values: any) {

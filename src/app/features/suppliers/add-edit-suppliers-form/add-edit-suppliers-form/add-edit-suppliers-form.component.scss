@@ -1,53 +1,275 @@
-.mat-toolbar {
-  margin: 24px;
-  margin-bottom: 10px;
-  width: auto;
-  background: #12043E;
-  opacity: 0.8;;
-  color: #ffff;  
-  border-radius: 10px;
+// Dialog Container - Applied to mat-dialog-container via panelClass
+::ng-deep .supplier-dialog .mat-mdc-dialog-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 600px;
+    max-width: 800px;
+    height: auto !important;
+    max-height: 95vh;
+    overflow: visible;
+    padding: 0 !important;
 }
 
-.mat-dialog-content {
-  padding-left:1rem ;
-}
-
-.mat-form-field {
-  padding: 1rem;
-  
-  input {
-    color: #29296a;
-  }
-}
-
-.btn {
-  margin: 7px;
-}
-
-.dialog-buttons {
-  padding-left: 24px;
-  padding-right: 24px;
-}
-
-.mat-mdc-raised-button.save-button {
-  background: #12043E;
-  opacity: 0.8;
-  color: #ffff;  
-  padding: 20px;
-  border: none;
-  max-width: 300px;
-  /* border-radius: 50px; */
-}
-
-.mat-mdc-raised-button.save-button:hover {
-  opacity: 0.6;
-} 
-
-.mat-mdc-raised-button.cancel-button {
-    background-color: #e23030;
-    /* opacity: 0.8; */
-    padding: 20px;
+// Dialog Header
+.dialog-header {
+    background: linear-gradient(135deg, #001F3F 0%, #1E488F 100%);
+    padding: 1.5rem 2rem;
     color: white;
-    border: none;
-    max-width: 300px;
+    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.2);
+    flex-shrink: 0;
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .dialog-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+
+            .title-icon {
+                font-size: 28px;
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        .close-button {
+            color: white;
+            
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+}
+
+// Dialog Content
+::ng-deep .mat-mdc-dialog-content {
+    padding: 2rem !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.dialog-content {
+    background: #F6F7ED;
+    flex: 1 1 auto;
+    overflow: visible;
+    min-height: 0;
+}
+
+.supplier-form {
+    width: 100%;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    width: 100%;
+
+    .form-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .form-field-half {
+        grid-column: span 1;
+    }
+}
+
+// Form Field Wrapper - For static labels above fields
+.form-field-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    
+    .field-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+        display: block;
+        
+        .required-asterisk {
+            color: #f44336;
+            margin-left: 2px;
+        }
+    }
+    
+    &.form-field-full {
+        grid-column: 1 / -1;
+    }
+    
+    &.form-field-half {
+        grid-column: span 1;
+    }
+}
+
+// Form Field Styling
+::ng-deep mat-form-field {
+    width: 100%;
+
+    .mat-mdc-form-field {
+        width: 100%;
+        
+        // Hide floating labels completely (we use static labels above)
+        .mdc-floating-label {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+        }
+        
+        // Required marker - Red color (always)
+        .mat-mdc-form-field-required-marker {
+            color: #f44336 !important;
+        }
+        
+        // Remove notch since we don't use floating labels
+        .mdc-notched-outline__notch {
+            border: none !important;
+            width: 0 !important;
+            max-width: 0 !important;
+        }
+        
+        .mdc-text-field {
+            padding: 0 !important;
+            min-height: 64px;
+            background-color: white;
+            border-radius: 8px;
+            
+            .mdc-text-field__input {
+                padding: 20px 64px 20px 64px !important;
+                font-size: 1.05rem;
+                line-height: 1.6;
+                color: #1a1a1a;
+                height: 100%;
+                box-sizing: border-box;
+                text-align: center !important;
+                width: 100%;
+                margin: 0;
+                
+                &::placeholder {
+                    color: #999 !important;
+                    opacity: 1 !important;
+                    text-align: center !important;
+                    font-size: 1.05rem;
+                }
+                
+                &:not(:placeholder-shown) {
+                    text-align: center !important;
+                }
+            }
+        }
+
+        // Notched outline
+        .mdc-notched-outline {
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+                border-color: #ddd !important;
+                border-width: 1.5px !important;
+                border-radius: 8px;
+            }
+        }
+
+        &.mat-focused .mdc-notched-outline {
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+                border-color: #1E488F !important;
+                border-width: 2px !important;
+            }
+        }
+
+        // Input text color
+        .mat-mdc-form-field-input-control {
+            input {
+                color: #1a1a1a !important;
+                font-size: 1.05rem;
+                line-height: 1.6;
+                text-align: center !important;
+            }
+        }
+
+        // Prefix icons - Green color
+        .mat-mdc-form-field-icon-prefix {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        // Force green color on all prefix icons
+        mat-icon[matPrefix],
+        .mat-mdc-form-field-icon-prefix mat-icon,
+        .mat-icon[matPrefix] {
+            color: #74C365 !important;
+            --mat-icon-color: #74C365 !important;
+        }
+
+        // Error Messages - Red color
+        .mat-mdc-form-field-error-wrapper {
+            padding: 0 20px;
+            margin-top: 4px;
+        }
+
+        .mat-mdc-form-field-error {
+            color: #f44336 !important;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        mat-error span {
+            color: #f44336 !important;
+        }
+    }
+}
+
+// Dialog Actions
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: #F6F7ED;
+    border-top: 1px solid rgba(0, 31, 63, 0.1);
+    flex-shrink: 0;
+
+    .cancel-button {
+        color: #666;
+        border-color: #ddd;
+        
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+    }
+
+    .save-button {
+        background: linear-gradient(135deg, #001F3F 0%, #1E488F 100%);
+        color: white;
+        font-weight: 500;
+        
+        &:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 31, 63, 0.3);
+        }
+        
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
 }

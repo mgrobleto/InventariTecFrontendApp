@@ -1,21 +1,26 @@
-<mat-toolbar>
-    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-        <span>{{dialogData.action}} Categoría Producto </span>
-        <span class="spacer"></span>
-        <button class="mat-dialog-close" mat-icon-button mat-dialog-close>
+<!-- Dialog Header -->
+<div class="dialog-header">
+    <div class="header-content">
+        <h2 class="dialog-title">
+            <mat-icon class="title-icon">{{dialogData?.action === 'Editar' ? 'edit' : 'add_circle'}}</mat-icon>
+            {{dialogData?.action === 'Editar' ? 'Editar Categoría' : 'Agregar Categoría'}}
+        </h2>
+        <button mat-icon-button class="close-button" mat-dialog-close aria-label="Cerrar">
             <mat-icon>close</mat-icon>
         </button>
-    </mat-toolbar-row>
-</mat-toolbar>
+    </div>
+</div>
 
-<mat-dialog-content>
-    <form [formGroup]="productCategoryForm" (ngSubmit)="handleSubmit()">
-        <div fxLayout="column" fxLayoutAlign="space-evenly-center">
+<!-- Dialog Content -->
+<mat-dialog-content class="dialog-content">
+    <form [formGroup]="productCategoryForm" (ngSubmit)="handleSubmit()" class="category-form">
+        <div class="form-field-wrapper">
+            <label class="field-label">Nombre<span class="required-asterisk">*</span></label>
             <mat-form-field appearance="outline">
-                <mat-label>Nombre</mat-label>
-                <input matInput type="text" formControlName="name" required="">
+                <input matInput type="text" formControlName="name" placeholder="Nombre*" required>
+                <mat-icon matPrefix>category</mat-icon>
                 <mat-error *ngIf="productCategoryForm.controls['name'].touched && productCategoryForm.controls['name'].invalid">
-                    <span *ngIf="productCategoryForm.controls['name'].errors?.['required']">Debe rellenar este campo</span>
+                    <span *ngIf="productCategoryForm.controls['name'].errors?.['required']">Este campo es requerido</span>
                     <span *ngIf="productCategoryForm.controls['name'].errors?.['pattern']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
@@ -23,17 +28,14 @@
     </form>
 </mat-dialog-content>
 
-<mat-dialog-actions class="dialog-buttons" align="end">
-    <button mat-raised-button class="save-button" type="submit" (click)="handleSubmit()">
-        <mat-icon>save</mat-icon> {{action}}
-    </button>
-    <button mat-raised-button mat-dialog-close class="cancel-button" type="button">
+<!-- Dialog Actions -->
+<mat-dialog-actions class="dialog-actions">
+    <button mat-stroked-button type="button" mat-dialog-close class="cancel-button">
+        <mat-icon>close</mat-icon>
         Cancelar
     </button>
-    <!-- <button type="submit" class="btn btn-success" (click)="handleSubmit()">
+    <button mat-raised-button type="submit" (click)="handleSubmit()" class="save-button" [disabled]="productCategoryForm.invalid">
+        <mat-icon>{{dialogData?.action === 'Editar' ? 'update' : 'save'}}</mat-icon>
         {{action}}
-    </button> -->
-    <!-- <button class="btn btn-danger" type="button" mat-dialog-close>
-       Cancelar
-    </button> -->
+    </button>
 </mat-dialog-actions>

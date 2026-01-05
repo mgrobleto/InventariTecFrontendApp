@@ -26,6 +26,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import {NgxPrintModule} from 'ngx-print';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     NgxMaskPipe,
     NgxPrintModule,
     MatStepperModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    TextFieldModule
   ],
   exports: [
     FormsModule,
@@ -86,7 +88,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     NgxMaskPipe,
     NgxPrintModule,
     MatStepperModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    TextFieldModule
   ],
   providers: [
     provideNgxMask(),

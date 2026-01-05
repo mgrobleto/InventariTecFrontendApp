@@ -1,53 +1,303 @@
-.mat-toolbar {
-  margin: 24px;
-  margin-bottom: 10px;
-  width: auto;
-  background: #12043E;
-  opacity: 0.8;;
-  color: #ffff;  
-  border-radius: 10px;
+// Dialog Container - Applied to mat-dialog-container via panelClass
+::ng-deep .product-dialog .mat-mdc-dialog-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 600px;
+    max-width: 700px;
+    height: auto !important;
+    max-height: 95vh;
+    overflow: visible;
+    padding: 0 !important;
 }
 
-.mat-dialog-content {
-  padding-left:1rem ;
-}
-
-.mat-form-field {
-  padding: 1rem;
-  
-  input {
-    color: #29296a;
-  }
-}
-
-.btn {
-  margin: 7px;
-}
-
-.dialog-buttons {
-  padding-left: 24px;
-  padding-right: 24px;
-}
-
-.mat-mdc-raised-button.save-button {
-  background: #12043E;
-  opacity: 0.8;
-  color: #ffff;  
-  padding: 20px;
-  border: none;
-  max-width: 300px;
-  /* border-radius: 50px; */
-}
-
-.mat-mdc-raised-button.save-button:hover {
-  opacity: 0.6;
-} 
-
-.mat-mdc-raised-button.cancel-button {
-    background-color: #e23030;
-    /* opacity: 0.8; */
-    padding: 20px;
+// Dialog Header
+.dialog-header {
+    background: linear-gradient(135deg, #001F3F 0%, #1E488F 100%);
+    padding: 1.5rem 2rem;
     color: white;
-    border: none;
-    max-width: 300px;
+    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.2);
+    flex-shrink: 0;
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .dialog-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+
+            .title-icon {
+                font-size: 28px;
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        .close-button {
+            color: white;
+            
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
 }
+
+// Dialog Content
+::ng-deep .mat-mdc-dialog-content {
+    padding: 2rem !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.dialog-content {
+    background: #F6F7ED;
+    flex: 1 1 auto;
+    overflow: visible;
+    min-height: 0;
+}
+
+.product-form {
+    width: 100%;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    width: 100%;
+
+    .form-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .form-field-half {
+        grid-column: span 1;
+    }
+}
+
+// Form Field Wrapper - For static labels above fields
+.form-field-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    
+    .field-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+        display: block;
+        
+        .required-asterisk {
+            color: #f44336;
+            margin-left: 2px;
+        }
+    }
+    
+    &.form-field-full {
+        grid-column: 1 / -1;
+    }
+    
+    &.form-field-half {
+        grid-column: span 1;
+    }
+    
+    // Price fields - Reduced height
+    &.price-field {
+        ::ng-deep .mat-mdc-form-field {
+            .mdc-text-field {
+                min-height: 56px !important; // Reduced height for price inputs
+                
+                .mdc-text-field__input {
+                    padding: 16px 16px 16px 60px !important; // Left padding for icon (20px icon pos + 32px currency icon + 8px gap)
+                    min-height: 56px !important;
+                    line-height: 1.5;
+                    text-align: center !important;
+                }
+            }
+        }
+    }
+}
+
+// Form Field Styling - Fixed Input Boxes
+
+
+// Description field - Aligned same as input fields
+
+
+
+
+// Dialog Actions
+::ng-deep .mat-mdc-dialog-actions {
+    padding: 1.5rem 2rem !important;
+    margin: 0 !important;
+    background: white;
+    border-top: 1px solid rgba(30, 72, 143, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.dialog-actions {
+    .cancel-button {
+        color: #666;
+        border-color: #ddd;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        min-height: 44px;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            border-color: #999;
+        }
+
+        mat-icon {
+            margin-right: 0.5rem;
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .save-button {
+        background-color: #1E488F;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(30, 72, 143, 0.2);
+        transition: all 0.3s ease;
+        min-height: 44px;
+
+        &:hover:not(:disabled) {
+            background-color: #001F3F;
+            box-shadow: 0 4px 8px rgba(0, 31, 63, 0.3);
+            transform: translateY(-2px);
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        &:disabled {
+  opacity: 0.6;
+            cursor: not-allowed;
+            background-color: rgba(30, 72, 143, 0.5);
+        }
+
+        mat-icon {
+            margin-right: 0.5rem;
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+
+// Material Dialog Container Override
+::ng-deep .mat-mdc-dialog-container {
+    padding: 0 !important;
+    border-radius: 12px !important;
+    overflow: visible !important;
+    box-shadow: 0 8px 24px rgba(0, 31, 63, 0.2) !important;
+}
+
+
+
+// Price field wrapper - Reduced height, centered
+::ng-deep .form-field-wrapper.price-field {
+    .mat-mdc-form-field {
+        .mdc-text-field {
+            min-height: 56px !important; // Reduced height for price inputs
+        }
+        
+        .mdc-text-field__input {
+            padding: 16px 16px 16px 16px !important; // Left padding for icon (20px icon pos + 32px currency icon + 8px gap)
+            min-height: 56px !important;
+            line-height: 1.5;
+            text-align: left !important;
+        }
+    }
+}
+
+// Global icon color fix - More specific selectors
+::ng-deep mat-form-field {
+    // Form field flex container - Centers icon and text (global)
+    .mat-mdc-form-field-flex {
+        display: inline-flex !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+    }
+    
+    mat-icon[matPrefix],
+    .mat-mdc-form-field-icon-prefix mat-icon,
+    .mat-icon[matPrefix] {
+        color: #74C365 !important;
+        --mat-icon-color: #74C365 !important;
+    }
+    
+    // Ensure SVG icons are green
+    mat-icon[matPrefix] svg,
+    .mat-mdc-form-field-icon-prefix mat-icon svg {
+        fill: #74C365 !important;
+    }
+    
+    // Ensure currency icon is green
+    .currency-icon {
+        color: #74C365 !important;
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    ::ng-deep .product-dialog .mat-mdc-dialog-container {
+        min-width: 90vw;
+        max-width: 95vw;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+
+        .form-field-half {
+            grid-column: 1 / -1;
+        }
+    }
+
+    .dialog-header {
+        padding: 1rem 1.5rem;
+
+        .header-content {
+            .dialog-title {
+                font-size: 1.25rem;
+            }
+        }
+    }
+
+    ::ng-deep .mat-mdc-dialog-content {
+        padding: 1.5rem !important;
+    }
+
+    ::ng-deep .mat-mdc-dialog-actions {
+        padding: 1rem 1.5rem !important;
+        flex-direction: column-reverse;
+
+        button {
+            width: 100%;
+        }
+    }
+}
+

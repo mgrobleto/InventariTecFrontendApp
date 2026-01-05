@@ -25,6 +25,10 @@ export class SuppliersComponent {
   responseMessage:any;
   displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
 
+  // Filter properties
+  selectedShowOption: string = 'all';
+  selectedSortOption: string = 'default';
+
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   
   constructor
@@ -103,7 +107,11 @@ export class SuppliersComponent {
     dialogConfig.data = {
       action:"Agregar"
     };
-    dialogConfig.width = "500px";
+    dialogConfig.width = "auto";
+    dialogConfig.maxWidth = "90vw";
+    dialogConfig.panelClass = 'supplier-dialog';
+    dialogConfig.disableClose = false;
+    dialogConfig.hasBackdrop = true;
     const dialogRef = this.dialog.open(AddEditSuppliersFormComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
@@ -120,7 +128,11 @@ export class SuppliersComponent {
       action:"Editar",
       data:values
     };
-    dialogConfig.width = "500px";
+    dialogConfig.width = "auto";
+    dialogConfig.maxWidth = "90vw";
+    dialogConfig.panelClass = 'supplier-dialog';
+    dialogConfig.disableClose = false;
+    dialogConfig.hasBackdrop = true;
     const dialogRef = this.dialog.open(AddEditSuppliersFormComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();

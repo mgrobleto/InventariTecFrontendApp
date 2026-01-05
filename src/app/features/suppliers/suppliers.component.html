@@ -1,126 +1,203 @@
 <div class="suppliers-container">
-    <div class="suppliers-header-container">
-        <div class="suppliers-title">  
-            <h2>Proveedores</h2>
+    <!-- Top Navigation Bar -->
+    <div class="suppliers-top-bar">
+        <div class="top-bar-left">
+            <button mat-icon-button class="view-toggle" matTooltip="Vista de cuadrícula">
+                <mat-icon>grid_view</mat-icon>
+            </button>
+            <button mat-icon-button class="view-toggle" matTooltip="Vista de lista">
+                <mat-icon>view_list</mat-icon>
+            </button>
+            
+            <div class="search-container">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    (keyup)="applyFilter($event)" 
+                    #input 
+                    placeholder="Buscar proveedores..." 
+                    aria-label="Buscar proveedores">
+            </div>
         </div>
-        <div class="add-suppliers-button">
-            <button mat-raised-button (click)="handleAddAction()">
-                <mat-icon>add</mat-icon> Añadir nuevo proveedor
+
+        <div class="top-bar-right">
+            <mat-form-field appearance="outline" class="show-select">
+                <mat-label>Mostrar</mat-label>
+                <mat-select [(value)]="selectedShowOption" panelClass="custom-select-panel">
+                    <mat-option value="all">Todos los Proveedores</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="sort-select">
+                <mat-label>Ordenar por</mat-label>
+                <mat-select [(value)]="selectedSortOption" panelClass="custom-select-panel">
+                    <mat-option value="default">Por defecto</mat-option>
+                    <mat-option value="name">Nombre</mat-option>
+                    <mat-option value="id">ID</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-stroked-button class="filter-button">
+                <mat-icon>filter_list</mat-icon>
+                Filtro
+            </button>
+
+            <button mat-raised-button class="add-supplier-button" (click)="handleAddAction()">
+                <mat-icon>add</mat-icon>
+                Agregar Proveedor
             </button>
         </div>
     </div>
 
-    <nav class="navbar">
-        <form class="container-fluid">
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#657789" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </span>
-            <input type="text" class="form-control" (keyup)="applyFilter($event)" #input placeholder="Buscar proveedor..." aria-label="Username" aria-describedby="basic-addon1">
-          </div>
-        </form>
-    </nav>
-
-    <div class="suppliers-table mt-5">
-        <mat-toolbar class="table-header">
-            <mat-icon>
-                inventory_2
-            </mat-icon>
-            <div class="mx-2">
-                <h2>Proveedores</h2>
+    <!-- Suppliers Table -->
+    <div class="suppliers-table-container">
+        <mat-card class="table-card">
+            <div class="table-header-section">
+                <div class="table-title">
+                    <h3>Proveedores</h3>
+                </div>
+                <div class="export-button-container">
+                    <button 
+                        mat-stroked-button
+                        class="export-excel-button"
+                        (click)="exportToExcel()"
+                        matTooltip="Exportar a Excel">
+                        <mat-icon>file_download</mat-icon>
+                        Exportar Excel
+                    </button>
+                </div>
             </div>
-        </mat-toolbar>
 
-        <mat-card class="table">
-            <div class="responsive-table" id="suppliersData">     
-                <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            
-                    <!-- Position Column -->
+            <div class="responsive-table" id="suppliersData">
+                <mat-table [dataSource]="dataSource" class="suppliers-table">
+                    <!-- ID Column -->
                     <ng-container matColumnDef="ID">
-                      <th mat-header-cell *matHeaderCellDef> ID </th>
-                      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div class="header-cell">
+                                ID
+                                <mat-icon class="info-icon" matTooltip="Identificador único">info</mat-icon>
+                            </div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">{{element.id}}</td>
                     </ng-container>
-                  
-                    <!-- Weight Column -->
+
+                    <!-- First Name Column -->
                     <ng-container matColumnDef="Nombre">
-                      <th mat-header-cell *matHeaderCellDef> Nombre</th>
-                      <td mat-cell *matCellDef="let element">  <b>{{element.first_name}}</b> </td>
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div class="header-cell">
+                                Nombre
+                                <mat-icon class="info-icon" matTooltip="Nombre del proveedor">info</mat-icon>
+                            </div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="supplier-name-cell">
+                                <div class="supplier-icon-placeholder">
+                                    <mat-icon>person</mat-icon>
+                                </div>
+                                <div class="supplier-info">
+                                    <div class="supplier-name"><b>{{element.first_name}}</b></div>
+                                </div>
+                            </div>
+                        </td>
                     </ng-container>
-        
+
+                    <!-- Last Name Column -->
                     <ng-container matColumnDef="Apellido">
-                        <th mat-header-cell *matHeaderCellDef> Apellido</th>
-                        <td mat-cell *matCellDef="let element">  <b>{{element.last_name}}</b> </td>
-                      </ng-container>
-        
-                    <ng-container matColumnDef="Correo Electrónico">
-                        <th mat-header-cell *matHeaderCellDef> Correo Electrónico </th>
-                        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-                      </ng-container>
-            
-                       <!-- Symbol Column -->
-                    <ng-container matColumnDef="Contacto">
-                        <th mat-header-cell *matHeaderCellDef> Contacto </th>
-                        <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
-                      </ng-container>
-                
-                    <ng-container matColumnDef="Dirección">
-                        <th mat-header-cell *matHeaderCellDef> Dirección </th>
-                        <td mat-cell *matCellDef="let element"> {{element.s_address}} </td>
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div class="header-cell">
+                                Apellido
+                                <mat-icon class="info-icon" matTooltip="Apellido del proveedor">info</mat-icon>
+                            </div>
+                        </th>
+                        <td mat-cell *matCellDef="let element"><b>{{element.last_name}}</b></td>
                     </ng-container>
-                
+
+                    <!-- Email Column -->
+                    <ng-container matColumnDef="Correo Electrónico">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div class="header-cell">
+                                Correo Electrónico
+                                <mat-icon class="info-icon" matTooltip="Correo electrónico">info</mat-icon>
+                            </div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">{{element.email}}</td>
+                    </ng-container>
+
+                    <!-- Phone Column -->
+                    <ng-container matColumnDef="Contacto">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div class="header-cell">
+                                Contacto
+                                <mat-icon class="info-icon" matTooltip="Número de teléfono">info</mat-icon>
+                            </div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">{{element.phone}}</td>
+                    </ng-container>
+
+                    <!-- Address Column -->
+                    <ng-container matColumnDef="Dirección">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div class="header-cell">
+                                Dirección
+                                <mat-icon class="info-icon" matTooltip="Dirección del proveedor">info</mat-icon>
+                            </div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">{{element.s_address}}</td>
+                    </ng-container>
+
                     <!-- Edit Column -->
                     <ng-container matColumnDef="Editar">
-                        <th mat-header-cell *matHeaderCellDef> Editar </th>
-                        <td mat-cell *matCellDef="let element" class="action-link"> 
-                            <button mat-icon-button color="primary" matTooltip="Editar" (click)="handleEditAction(element)">
-                                <mat-icon> edit </mat-icon>
+                        <th mat-header-cell *matHeaderCellDef>Editar</th>
+                        <td mat-cell *matCellDef="let element" class="action-cell">
+                            <button 
+                                mat-raised-button 
+                                class="edit-button"
+                                (click)="handleEditAction(element)"
+                                matTooltip="Editar proveedor">
+                                <mat-icon>edit</mat-icon>
+                                Editar
                             </button>
                         </td>
                     </ng-container>
-                
+
                     <!-- Delete Column -->
                     <ng-container matColumnDef="Eliminar">
-                        <th mat-header-cell *matHeaderCellDef> Eliminar </th>
-                        <td mat-cell *matCellDef="let element" class="action-link"> 
-                            <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="handleDeleteAction(element)">
-                                <mat-icon> delete </mat-icon>
+                        <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+                        <td mat-cell *matCellDef="let element" class="action-cell">
+                            <button 
+                                mat-icon-button 
+                                color="warn" 
+                                class="delete-button"
+                                (click)="handleDeleteAction(element)"
+                                matTooltip="Eliminar proveedor">
+                                <mat-icon>delete</mat-icon>
                             </button>
-                           <!--  <mat-slide-toggle (change)="onChange($event.checked, element.id)"
-                            matTooltip="Activar o desactivar producto" [checked]="element.status">
-                            </mat-slide-toggle> -->
                         </td>
                     </ng-container>
-                  
+
                     <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            
-                     <!-- Row shown when there is no matching data. -->
+
+                    <!-- No data row -->
                     <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4"> No hay datos que coincidan con el filtro "{{input.value}}"</td>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <div class="no-data-message">
+                                <mat-icon>person</mat-icon>
+                                <p>No hay datos que coincidan con el filtro "{{input.value}}"</p>
+                            </div>
+                        </td>
                     </tr>
-            
                 </mat-table>
-            
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                showFirstLastButtons
-                [length]="100"
-                [pageSize]="5">
+
+                <mat-paginator 
+                    [pageSizeOptions]="[10, 20, 50, 100]"
+                    showFirstLastButtons
+                    [length]="dataSource.data.length"
+                    [pageSize]="10"
+                    class="suppliers-paginator">
                 </mat-paginator>
             </div>
         </mat-card>
-
-        <div class="download-excel-button d-flex flex-row-reverse my-2">
-            <div>
-                <button 
-                type="button" 
-                class="btn btn-primary download" 
-                matTooltip="Descargar"  
-                (click)="exportToExcel()"
-                >
-                <i class="far fa-file-spreadsheet"></i>
-                Exportar Excel
-                </button>
-            </div>
-        </div>
     </div>
 </div>

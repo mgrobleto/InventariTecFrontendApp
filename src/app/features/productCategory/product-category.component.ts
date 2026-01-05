@@ -11,6 +11,7 @@ import { GlobalConstants } from '../../shared/global-constants';
 import { ConfirmationDialog } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProductCategorieService } from 'src/app/data/service/productCategoryService/productCategories.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.service';
 
 import swal from'sweetalert2';
 
@@ -26,6 +27,9 @@ export class ProductCategoryComponent {
   responseMessage:any;
   displayedColumns: string[] = ['ID', 'Nombre', 'Editar', 'Eliminar'];
 
+  // Filter properties
+  selectedShowOption: string = 'all';
+  selectedSortOption: string = 'default';
 
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   
@@ -34,7 +38,8 @@ export class ProductCategoryComponent {
     private dialog : MatDialog,
     private _coreService : CoreService,
     private ngxService: NgxUiLoaderService,
-    private _categoryService : ProductCategorieService
+    private _categoryService : ProductCategorieService,
+    private excelExportService : ExportToExcelService
     ){}
 
   ngOnInit(): void {
@@ -83,12 +88,24 @@ export class ProductCategoryComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  exportToExcel() {
+    const tableId = 'categoriesData';
+    const columnsToInclude = ['ID', 'Nombre'];
+    const fileName = 'CategoriasProductos';
+
+    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
+  }
+
   handleAddAction() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action:"Agregar"
     };
-    dialogConfig.width = "500px";
+    dialogConfig.width = "auto";
+    dialogConfig.maxWidth = "90vw";
+    dialogConfig.panelClass = 'category-dialog';
+    dialogConfig.disableClose = false;
+    dialogConfig.hasBackdrop = true;
     const dialogRef = this.dialog.open(AddEditProductCategoryFormComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
@@ -105,7 +122,11 @@ export class ProductCategoryComponent {
       action:"Editar",
       data:values
     };
-    dialogConfig.width = "500px";
+    dialogConfig.width = "auto";
+    dialogConfig.maxWidth = "90vw";
+    dialogConfig.panelClass = 'category-dialog';
+    dialogConfig.disableClose = false;
+    dialogConfig.hasBackdrop = true;
     const dialogRef = this.dialog.open(AddEditProductCategoryFormComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();

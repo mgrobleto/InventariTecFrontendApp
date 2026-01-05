@@ -1,80 +1,97 @@
-<mat-toolbar>
-    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-        <span>{{dialogData.action}} Proveedor </span>
-        <span class="spacer"></span>
-        <button class="mat-dialog-close" mat-icon-button mat-dialog-close>
+<!-- Dialog Header -->
+<div class="dialog-header">
+    <div class="header-content">
+        <h2 class="dialog-title">
+            <mat-icon class="title-icon">{{dialogData?.action === 'Editar' ? 'edit' : 'add_circle'}}</mat-icon>
+            {{dialogData?.action === 'Editar' ? 'Editar Proveedor' : 'Agregar Proveedor'}}
+        </h2>
+        <button mat-icon-button class="close-button" mat-dialog-close aria-label="Cerrar">
             <mat-icon>close</mat-icon>
         </button>
-    </mat-toolbar-row>
-</mat-toolbar>
+    </div>
+</div>
 
-<mat-dialog-content>
-    <form [formGroup]="supplierForm" (ngSubmit)="handleSubmit()">
-        <div fxLayout="column" fxLayoutAlign="space-evenly-center">
+<!-- Dialog Content -->
+<mat-dialog-content class="dialog-content">
+    <form [formGroup]="supplierForm" (ngSubmit)="handleSubmit()" class="supplier-form">
+        <div class="form-grid">
+            <div class="form-field-wrapper form-field-half">
+                <label class="field-label">Nombres<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline">
+                    <input matInput type="text" formControlName="first_name" placeholder="Nombres*" required>
+                    <mat-icon matPrefix>person</mat-icon>
+                    <mat-error *ngIf="supplierForm.controls['first_name'].touched && supplierForm.controls['first_name'].invalid">
+                        <span *ngIf="supplierForm.controls['first_name'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['first_name'].errors?.['pattern']">Información invalida</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Nombres</mat-label>
-                <input matInput type="text" formControlName="first_name" required="">
-                <mat-error *ngIf="supplierForm.controls['first_name'].touched && supplierForm.controls['first_name'].invalid">
-                    <span *ngIf="supplierForm.controls['first_name'].errors?.['required']">Debe rellenar este campo</span>
-                    <span *ngIf="supplierForm.controls['first_name'].errors?.['pattern']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
+            <div class="form-field-wrapper form-field-half">
+                <label class="field-label">Apellidos<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline">
+                    <input matInput type="text" formControlName="last_name" placeholder="Apellidos*" required>
+                    <mat-icon matPrefix>person_outline</mat-icon>
+                    <mat-error *ngIf="supplierForm.controls['last_name'].touched && supplierForm.controls['last_name'].invalid">
+                        <span *ngIf="supplierForm.controls['last_name'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['last_name'].errors?.['pattern']">Información invalida</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Apellidos</mat-label>
-                <input matInput type="text" formControlName="last_name" required="">
-                <mat-error *ngIf="supplierForm.controls['last_name'].touched && supplierForm.controls['last_name'].invalid">
-                    <span *ngIf="supplierForm.controls['last_name'].errors?.['required']">Debe rellenar este campo</span>
-                    <span *ngIf="supplierForm.controls['last_name'].errors?.['pattern']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
+            <div class="form-field-wrapper form-field-full">
+                <label class="field-label">Correo Electrónico<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline">
+                    <input matInput type="email" formControlName="email" placeholder="ejemplo@gmail.com*" required>
+                    <mat-icon matPrefix>email</mat-icon>
+                    <mat-error *ngIf="supplierForm.controls['email'].touched && supplierForm.controls['email'].invalid">
+                        <span *ngIf="supplierForm.controls['email'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['email'].errors?.['email']">Información invalida</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Correo Electrónico</mat-label>
-                <input matInput type="email" formControlName="email" required="" placeholder="ejemplo@gmail.com">
-                <mat-error *ngIf="supplierForm.controls['email'].touched && supplierForm.controls['email'].invalid">
-                    <span *ngIf="supplierForm.controls['email'].errors?.['email']">Debe rellenar este campo</span>
-                    <span *ngIf="supplierForm.controls['email'].errors?.['email']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
+            <div class="form-field-wrapper form-field-half">
+                <label class="field-label">Número de Contacto<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline">
+                    <input 
+                        matInput 
+                        type='text' 
+                        mask="9999 9999" 
+                        formControlName="phone" 
+                        placeholder="Número de Contacto*"
+                        required>
+                    <mat-icon matPrefix>phone</mat-icon>
+                    <mat-error *ngIf="supplierForm.controls['phone'].touched && supplierForm.controls['phone'].invalid">
+                        <span *ngIf="supplierForm.controls['phone'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['phone'].errors?.['pattern']">Información invalida</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Numero de contacto</mat-label>
-                <input 
-                matInput 
-                type='text' mask="9999 9999" 
-                formControlName="phone" 
-                required>
-                <mat-error *ngIf="supplierForm.controls['phone'].touched && supplierForm.controls['phone'].invalid">
-                    <span *ngIf="supplierForm.controls['phone'].errors?.['required']">Debe rellenar este campo</span>
-                    <span *ngIf="supplierForm.controls['phone'].errors?.['pattern']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Direccion</mat-label>
-                <input matInput type="text" formControlName="s_address" required>
-                <mat-error *ngIf="supplierForm.controls['s_address'].touched && supplierForm.controls['s_address'].invalid">
-                    <span *ngIf="supplierForm.controls['s_address'].errors?.['s_address']">Debe rellenar este campo</span>
-                    <span *ngIf="supplierForm.controls['s_address'].errors?.['s_address']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
+            <div class="form-field-wrapper form-field-half">
+                <label class="field-label">Dirección<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline">
+                    <input matInput type="text" formControlName="s_address" placeholder="Dirección*" required>
+                    <mat-icon matPrefix>location_on</mat-icon>
+                    <mat-error *ngIf="supplierForm.controls['s_address'].touched && supplierForm.controls['s_address'].invalid">
+                        <span *ngIf="supplierForm.controls['s_address'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['s_address'].errors?.['pattern']">Información invalida</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
         </div>
     </form>
 </mat-dialog-content>
 
-<mat-dialog-actions class="dialog-buttons" align="end">
-    <button mat-raised-button class="save-button" type="submit" (click)="handleSubmit()">
-        <mat-icon>save</mat-icon> {{action}}
-    </button>
-    <button mat-raised-button mat-dialog-close class="cancel-button" type="button">
+<!-- Dialog Actions -->
+<mat-dialog-actions class="dialog-actions">
+    <button mat-stroked-button type="button" mat-dialog-close class="cancel-button">
+        <mat-icon>close</mat-icon>
         Cancelar
     </button>
-    <!-- <button type="submit" class="btn btn-success" (click)="handleSubmit()">
+    <button mat-raised-button type="submit" (click)="handleSubmit()" class="save-button" [disabled]="supplierForm.invalid">
+        <mat-icon>{{dialogData?.action === 'Editar' ? 'update' : 'save'}}</mat-icon>
         {{action}}
     </button>
-    <button class="btn btn-danger" type="button" mat-dialog-close>
-       Cancelar
-    </button> -->
 </mat-dialog-actions>

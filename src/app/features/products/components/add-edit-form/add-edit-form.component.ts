@@ -37,35 +37,50 @@ export class AddEditFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private _coreService: CoreService,
   ) {
-    /* this.productForm = this._fb.group({
-      'name': '',
-      'description': '',
-      'stock': '',
-      'cost': '',
-      'price': '',
-      'id_category': '',
-    }); */
+    // Ensure dialogData is always an object
+    if (!this.dialogData) {
+      this.dialogData = { action: 'Guardar' };
+    }
   }
 
   ngOnInit(): void {
-    //this.productForm.patchValue(this.data);
+    console.log('AddEditFormComponent ngOnInit - dialogData:', this.dialogData);
+    
+    // Initialize form
     this.productForm = this._fb.group({
-      name: [null,[Validators.required]],
-      description: [null,[Validators.required]],
-      stock: [null,[Validators.required]],
-      cost_price: [null,[Validators.required]],
-      sale_price: [null,[Validators.required]],
-      category: [null,[Validators.required]]
+      name: [null, [Validators.required]],
+      description: [null, [Validators.required]],
+      stock: [null, [Validators.required, Validators.min(0)]],
+      cost_price: [null, [Validators.required, Validators.min(0)]],
+      sale_price: [null, [Validators.required, Validators.min(0)]],
+      category: [null, [Validators.required]]
     });
-    //console.log(this.data);
 
-    if(this.dialogData.action === "Editar") {
+    // Set dialog action and title
+    if (this.dialogData && this.dialogData.action === "Editar") {
       this.dialogAction = "Editar";
       this.action = "Actualizar";
-      this.productForm.patchValue(this.dialogData.data);
+      
+      // Patch form values for edit mode
+      if (this.dialogData.data) {
+        const productData = this.dialogData.data;
+        this.productForm.patchValue({
+          name: productData.name || null,
+          description: productData.description || null,
+          stock: productData.stock || null,
+          cost_price: productData.cost_price || null,
+          sale_price: productData.sale_price || null,
+          category: productData.category?.id || productData.category || null
+        });
+      }
+    } else {
+      this.dialogAction = "Guardar";
+      this.action = "Guardar";
     }
 
-    this.getProductsCategories() ;
+    // Load categories
+    this.getProductsCategories();
+    console.log('AddEditFormComponent initialized');
   }
 
   getProductsCategories() {

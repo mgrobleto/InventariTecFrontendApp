@@ -1,85 +1,119 @@
-<mat-toolbar>
-    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-        <span>{{dialogData.action}} Producto </span>
-        <span class="spacer"></span>
-        <button class="mat-dialog-close" mat-icon-button mat-dialog-close>
+<!-- Dialog Header -->
+<div class="dialog-header">
+    <div class="header-content">
+        <h2 class="dialog-title">
+            <mat-icon class="title-icon">{{dialogData?.action === 'Editar' ? 'edit' : 'add_circle'}}</mat-icon>
+            {{dialogData?.action === 'Editar' ? 'Editar Producto' : 'Agregar Producto'}}
+        </h2>
+        <button mat-icon-button class="close-button" mat-dialog-close aria-label="Cerrar">
             <mat-icon>close</mat-icon>
         </button>
-    </mat-toolbar-row>
-</mat-toolbar>
+    </div>
+</div>
 
-<mat-dialog-content>
-    <form [formGroup]="productForm" (ngSubmit)="handleSubmit()">
-        <div fxLayout="column" fxLayoutAlign="space-evenly-center">
-            <mat-form-field appearance="outline">
-                <mat-label>Nombre</mat-label>
-                <input matInput type="text" formControlName="name" required="">
-                <mat-error *ngIf="productForm.controls['name'].touched && productForm.controls['name'].invalid">
-                    <span *ngIf="productForm.controls['name'].errors?.['required']">Debe rellenar este campo</span>
-                    <span *ngIf="productForm.controls['name'].errors?.['pattern']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
+<!-- Dialog Content -->
+<mat-dialog-content class="dialog-content">
+    <form [formGroup]="productForm" (ngSubmit)="handleSubmit()" class="product-form">
+        <div class="form-grid">
+            <!-- Product Name -->
+            <div class="form-field-wrapper form-field-full">
+                <label class="field-label">Nombre del Producto<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline" class="form-field-full">
+                    <input matInput type="text" formControlName="name" placeholder="Nombre del Producto*" required>
+                    <mat-icon matPrefix>inventory_2</mat-icon>
+                    <mat-error *ngIf="productForm.controls['name'].touched && productForm.controls['name'].invalid">
+                        <span *ngIf="productForm.controls['name'].errors?.['required']">Este campo es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Descripcion</mat-label>
-                <input matInput type="text" formControlName="description" required="">
-                <mat-error *ngIf="productForm.controls['description'].touched && productForm.controls['description'].invalid">
-                    <span *ngIf="productForm.controls['description'].errors?.['description']">Debe rellenar este campo</span>
-                    <span *ngIf="productForm.controls['description'].errors?.['description']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
+            <!-- Description -->
+            <div class="form-field-wrapper form-field-full description-field">
+                <label class="field-label">Descripción<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline" class="form-field-full">
+                    <textarea 
+                        matInput 
+                        formControlName="description" 
+                        rows="3" 
+                        placeholder="Descripción*" 
+                        required
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="3"
+                        cdkAutosizeMaxRows="10">
+                    </textarea>
+                    <mat-icon matPrefix>description</mat-icon>
+                    <mat-error *ngIf="productForm.controls['description'].touched && productForm.controls['description'].invalid">
+                        <span *ngIf="productForm.controls['description'].errors?.['required']">Este campo es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Categoria</mat-label>
-                <mat-select formControlName="category">
-                    <mat-option *ngFor="let category of productsCategories" [value]="category.id">
-                        {{category.name}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+            <!-- Category -->
+            <div class="form-field-wrapper form-field-half">
+                <label class="field-label">Categoría<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline" class="form-field-half">
+                    <mat-select formControlName="category" panelClass="custom-select-panel" required>
+                        <mat-option *ngFor="let category of productsCategories" [value]="category.id">
+                            {{category.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matPrefix>category</mat-icon>
+                    <mat-error *ngIf="productForm.controls['category'].touched && productForm.controls['category'].invalid">
+                        <span *ngIf="productForm.controls['category'].errors?.['required']">Este campo es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Stock</mat-label>
-                <input matInput type="number" min="0" formControlName="stock" required="">
-                <mat-error *ngIf="productForm.controls['stock'].touched && productForm.controls['stock'].invalid">
-                    <span *ngIf="productForm.controls['stock'].errors?.['stock']">Debe rellenar este campo</span>
-                    <span *ngIf="productForm.controls['stock'].errors?.['stock']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
+            <!-- Stock -->
+            <div class="form-field-wrapper form-field-half">
+                <label class="field-label">Stock<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline" class="form-field-half">
+                    <input matInput type="number" min="0" formControlName="stock" placeholder="Stock*" required>
+                    <mat-icon matPrefix>inventory</mat-icon>
+                    <mat-error *ngIf="productForm.controls['stock'].touched && productForm.controls['stock'].invalid">
+                        <span *ngIf="productForm.controls['stock'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['stock'].errors?.['min']">El stock no puede ser negativo</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Costo</mat-label>
-                <input matInput type="number" min="0" formControlName="cost_price" required="">
-                <mat-error *ngIf="productForm.controls['cost_price'].touched && productForm.controls['cost_price'].invalid">
-                    <span *ngIf="productForm.controls['cost_price'].errors?.['cost_price']">Debe rellenar este campo</span>
-                    <span *ngIf="productForm.controls['cost_price'].errors?.['cost_price']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
+            <!-- Cost Price -->
+            <div class="form-field-wrapper form-field-half price-field">
+                <label class="field-label">Precio de Compra<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline" class="form-field-half">
+                    <input matInput type="number" min="0" step="0.01" formControlName="cost_price" placeholder="Precio de Compra*" required>
+                    <span matPrefix class="currency-icon">C$</span>
+                    <mat-error *ngIf="productForm.controls['cost_price'].touched && productForm.controls['cost_price'].invalid">
+                        <span *ngIf="productForm.controls['cost_price'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['cost_price'].errors?.['min']">El precio no puede ser negativo</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Precio Total</mat-label>
-                <input matInput type="number" min="0" formControlName="sale_price" required="">
-                <mat-error *ngIf="productForm.controls['sale_price'].touched && productForm.controls['sale_price'].invalid">
-                    <span *ngIf="productForm.controls['sale_price'].errors?.['sale_price']">Debe rellenar este campo</span>
-                    <span *ngIf="productForm.controls['sale_price'].errors?.['sale_price']">Información invalida</span>
-                </mat-error>
-            </mat-form-field>
-
+            <!-- Sale Price -->
+            <div class="form-field-wrapper form-field-half price-field">
+                <label class="field-label">Precio de Venta<span class="required-asterisk">*</span></label>
+                <mat-form-field appearance="outline" class="form-field-half">
+                    <input matInput type="number" min="0" step="0.01" formControlName="sale_price" placeholder="Precio de Venta*" required>
+                    <span matPrefix class="currency-icon">C$</span>
+                    <mat-error *ngIf="productForm.controls['sale_price'].touched && productForm.controls['sale_price'].invalid">
+                        <span *ngIf="productForm.controls['sale_price'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['sale_price'].errors?.['min']">El precio no puede ser negativo</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
         </div>
     </form>
 </mat-dialog-content>
 
-<mat-dialog-actions class="dialog-buttons" align="end">
-    <button mat-raised-button class="save-button" type="submit" (click)="handleSubmit()">
-        <mat-icon>save</mat-icon> {{action}}
-    </button>
-    <button mat-raised-button mat-dialog-close class="cancel-button" type="button">
+<!-- Dialog Actions -->
+<mat-dialog-actions class="dialog-actions">
+    <button mat-stroked-button type="button" mat-dialog-close class="cancel-button">
+        <mat-icon>close</mat-icon>
         Cancelar
     </button>
-   <!--  <button type="submit" class="btn btn-success" (click)="handleSubmit()">
+    <button mat-raised-button type="submit" (click)="handleSubmit()" class="save-button" [disabled]="productForm.invalid">
+        <mat-icon>{{dialogData?.action === 'Editar' ? 'update' : 'save'}}</mat-icon>
         {{action}}
     </button>
-    <button class="btn btn-danger" type="button" mat-dialog-close>
-       Cancelar
-    </button> -->
 </mat-dialog-actions>

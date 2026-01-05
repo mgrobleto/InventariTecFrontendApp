@@ -3,6 +3,7 @@ import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
+import { SelectionModel } from '@angular/cdk/collections';
 
 import { ProductService } from 'src/app/data/service/productService/product.service';
 import { ProductCategorieService } from 'src/app/data/service/productCategoryService/productCategories.service';
@@ -25,12 +26,25 @@ import swal from'sweetalert2';
 export class ProductsComponent implements OnInit, AfterViewInit{
 
   dataSource = new MatTableDataSource<any>();
+  originalData: any[] = []; // Store original data for filtering
   //productDetails:any;
   productsCategories:any;
   productStocks:any;
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Descripcion', 'Stock','Costo', 'Precio Total', 'Categoria', 'Editar', 'Eliminar'];
+  displayedColumns: string[] = ['Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Estado', 'Acción'];
+  displayedColumnsWithSelect: string[] = ['select', 'Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Estado', 'Acción'];
   productStockColumns: string[] = ['ID', 'Nombre', 'Stock','Editar'];
+
+  // Selection
+  selection = new SelectionModel<any>(true, []);
+
+  // Filter properties
+  selectedCategory: string = 'all';
+  selectedStatus: string = 'all';
+  selectedPriceRange: string = 'all';
+  selectedStore: string = 'all';
+  selectedShowOption: string = 'all';
+  selectedSortOption: string = 'default';
 
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   
@@ -47,6 +61,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.ngxService.start();
     this.getAllProducts();
+    this.getProductsCategories();
   }
 
   ngAfterViewInit() {
@@ -82,7 +97,8 @@ export class ProductsComponent implements OnInit, AfterViewInit{
 
         console.log(response);
         this.ngxService.stop();
-        this.dataSource.data = response.data;
+        this.originalData = response.data || [];
+        this.dataSource.data = this.originalData;
         //this.productDetails = response;
 
       }, (error : any) => {
@@ -128,35 +144,73 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   }
 
   handleAddAction() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      action:"Guardar"
-    };
-    dialogConfig.width = "500px";
-    const dialogRef = this.dialog.open(AddEditFormComponent, dialogConfig);
-    this.router.events.subscribe(() => {
-      dialogRef.close();
-    });
+    try {
+      console.log('Opening add product dialog...');
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        action: "Guardar"
+      };
+      dialogConfig.width = "auto";
+      dialogConfig.maxWidth = "90vw";
+      dialogConfig.disableClose = false;
+      dialogConfig.hasBackdrop = true;
+      dialogConfig.panelClass = 'product-dialog';
+      dialogConfig.autoFocus = true;
+      dialogConfig.restoreFocus = true;
+      
+      const dialogRef = this.dialog.open(AddEditFormComponent, dialogConfig);
+      console.log('Dialog opened:', dialogRef);
+      
+      // Check if dialog element exists in DOM
+      /* setTimeout(() => {
+        const dialogElement = document.querySelector('.cdk-overlay-pane.product-dialog');
+        const dialogContainer = document.querySelector('.mat-mdc-dialog-container');
+        console.log('Dialog element in DOM:', dialogElement);
+        console.log('Dialog container in DOM:', dialogContainer);
+        if (dialogElement) {
+          console.log('Dialog element styles:', window.getComputedStyle(dialogElement));
+        }
+      }, 100); */
+      
+      if (dialogRef) {
+        this.router.events.subscribe(() => {
+          dialogRef.close();
+        });
 
-    const sub = dialogRef.componentInstance.onAddProduct.subscribe((response) => {
-      this.getAllProducts();
-    });
+        const sub = dialogRef.componentInstance.onAddProduct.subscribe((response) => {
+          this.getAllProducts();
+          sub.unsubscribe();
+        });
+      } else {
+        console.error('Dialog reference is null');
+      }
+    } catch (error) {
+      console.error('Error opening dialog:', error);
+      this._coreService.openSuccessSnackBar('Error al abrir el formulario', GlobalConstants.error);
+    }
   }
 
   handleEditAction(values:any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      action:"Editar",
-      data:values
+      action: "Editar",
+      data: values
     };
-    dialogConfig.width = "500px";
+    dialogConfig.width = "auto";
+    dialogConfig.maxWidth = "90vw";
+    dialogConfig.disableClose = false;
+    dialogConfig.hasBackdrop = true;
+    dialogConfig.panelClass = 'product-dialog';
+    
     const dialogRef = this.dialog.open(AddEditFormComponent, dialogConfig);
+    
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
 
     const sub = dialogRef.componentInstance.onEditProduct.subscribe((response) => {
       this.getAllProducts();
+      sub.unsubscribe();
     });
   }
 
@@ -212,5 +266,99 @@ export class ProductsComponent implements OnInit, AfterViewInit{
     );
   }
 
+  // Selection methods
+  isAllSelected(): boolean {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows && numRows > 0;
+  }
+
+  isSomeSelected(): boolean {
+    return this.selection.selected.length > 0 && !this.isAllSelected();
+  }
+
+  toggleSelectAll(event: any): void {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.dataSource.data.forEach(row => this.selection.select(row));
+    }
+  }
+
+  toggleSelection(row: any): void {
+    this.selection.toggle(row);
+  }
+
+  // Filter methods
+  filterByCategory(categoryId: string): void {
+    this.selectedCategory = categoryId;
+    this.applyFilters();
+  }
+
+  filterByStatus(status: string): void {
+    this.selectedStatus = status;
+    this.applyFilters();
+  }
+
+  filterByPrice(priceRange: string): void {
+    this.selectedPriceRange = priceRange;
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    let filteredData = [...this.originalData];
+
+    // Category filter
+    if (this.selectedCategory !== 'all') {
+      filteredData = filteredData.filter(product => product.category?.id === this.selectedCategory);
+    }
+
+    // Status filter
+    if (this.selectedStatus !== 'all') {
+      // Assuming products have a status field, adjust based on your data structure
+      filteredData = filteredData.filter(product => {
+        const status = this.getProductStatus(product);
+        return status === this.selectedStatus;
+      });
+    }
+
+    // Price filter
+    if (this.selectedPriceRange !== 'all') {
+      const [min, max] = this.selectedPriceRange.split('-').map(v => v === '+' ? Infinity : parseFloat(v));
+      filteredData = filteredData.filter(product => {
+        const price = parseFloat(product.sale_price) || 0;
+        if (this.selectedPriceRange === '200+') {
+          return price >= 200;
+        }
+        return price >= min && price <= max;
+      });
+    }
+
+    this.dataSource.data = filteredData;
+  }
+
+  getCategoryCount(categoryId: number): number {
+    return this.originalData.filter(p => p.category?.id === categoryId).length;
+  }
+
+  // Status methods
+  getProductStatus(product: any): string {
+    // Adjust based on your product data structure
+    // For now, assuming all products are active if no status field exists
+    return product.status || 'active';
+  }
+
+  updateStatus(product: any, status: string): void {
+    // TODO: Implement status update API call
+    product.status = status;
+    this._coreService.openSuccessSnackBar(`Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`, 'success');
+  }
+
+  getStockClass(stock: number): string {
+    if (stock === 0) return 'stock-empty';
+    if (stock < 10) return 'stock-low';
+    if (stock < 50) return 'stock-medium';
+    return 'stock-high';
+  }
 
 }
