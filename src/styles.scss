@@ -76,6 +76,26 @@
   border-color: #b5ffc9 !important;
 }
 
+/* Ensure mat-select panels are visible in dialogs */
+.cdk-overlay-container {
+    z-index: 1000 !important;
+}
+
+.cdk-overlay-pane {
+    z-index: 1000 !important;
+}
+
+.mat-mdc-select-panel,
+.custom-select-panel {
+    background: white !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    z-index: 1001 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 /* Focused label color */
 .mat-form-field.mat-focused .mat-form-field-label {
   color: #b5ffc9 !important;
@@ -141,12 +161,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 }
 
-.mat-mdc-select-panel.custom-select-panel {
+.mat-mdc-select-panel.custom-select-panel,
+.mat-mdc-select-panel {
     padding: 8px 0 !important;
+    background: white !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    z-index: 10002 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     
     .mat-mdc-option {
         padding: 12px 16px !important;
         min-height: 44px !important;
+        color: #1a1a1a !important;
         
         &:hover:not(.mdc-list-item--disabled) {
             background-color: rgba(30, 72, 143, 0.08) !important;
@@ -165,6 +194,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         .mdc-list-item__primary-text {
             color: inherit !important;
         }
+    }
+}
+
+// Ensure select panel overlay appears above dialogs
+.cdk-overlay-pane:has(.mat-mdc-select-panel),
+.cdk-overlay-pane:has(.custom-select-panel),
+.cdk-overlay-pane .mat-mdc-select-panel,
+.cdk-overlay-pane .custom-select-panel {
+    z-index: 10002 !important;
+    pointer-events: auto !important;
+}
+
+// Additional fix for select panels in dialogs
+.cdk-overlay-container .cdk-overlay-pane {
+    &.mat-select-panel-overlay,
+    &[class*="select"] {
+        z-index: 10002 !important;
     }
 }
 

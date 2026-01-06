@@ -86,12 +86,24 @@ export class AddEditFormComponent implements OnInit {
   getProductsCategories() {
     this.productCategorieService.getProductsCategories().subscribe(
       (resp : any) => {
-        console.log(resp);
-        this.productsCategories = resp.data;
+        console.log('Categories response:', resp);
+        // Handle different response structures
+        if (resp && resp.data) {
+          this.productsCategories = resp.data;
+        } else if (Array.isArray(resp)) {
+          this.productsCategories = resp;
+        } else if (resp && Array.isArray(resp.results)) {
+          this.productsCategories = resp.results;
+        } else {
+          this.productsCategories = [];
+          console.warn('Unexpected response structure:', resp);
+        }
+        console.log('Loaded categories:', this.productsCategories);
       }, (err : any) => {
-        console.log(err);
-        if(err.message?.message){
-          this.responseMessage = err.message?.message;
+        console.error('Error loading categories:', err);
+        this.productsCategories = [];
+        if(err.error?.message || err.message?.message){
+          this.responseMessage = err.error?.message || err.message?.message;
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }

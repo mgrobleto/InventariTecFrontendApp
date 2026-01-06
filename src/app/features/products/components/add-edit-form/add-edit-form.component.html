@@ -52,12 +52,22 @@
             <div class="form-field-wrapper form-field-half">
                 <label class="field-label">Categoría<span class="required-asterisk">*</span></label>
                 <mat-form-field appearance="outline" class="form-field-half">
-                    <mat-select formControlName="category" panelClass="custom-select-panel" required>
+                    <mat-label>Seleccione una categoría</mat-label>
+                    <mat-icon matPrefix>category</mat-icon>
+                    <mat-select 
+                        formControlName="category" 
+                        panelClass="custom-select-panel" 
+                        [disableOptionCentering]="true"
+                        placeholder=""
+                        required>
                         <mat-option *ngFor="let category of productsCategories" [value]="category.id">
                             {{category.name}}
                         </mat-option>
+                        <mat-option *ngIf="productsCategories.length === 0" disabled>
+                            No hay categorías disponibles ({{productsCategories.length}})
+                        </mat-option>
                     </mat-select>
-                    <mat-icon matPrefix>category</mat-icon>
+                    <mat-hint *ngIf="productsCategories.length > 0">{{productsCategories.length}} categorías disponibles</mat-hint>
                     <mat-error *ngIf="productForm.controls['category'].touched && productForm.controls['category'].invalid">
                         <span *ngIf="productForm.controls['category'].errors?.['required']">Este campo es requerido</span>
                     </mat-error>
