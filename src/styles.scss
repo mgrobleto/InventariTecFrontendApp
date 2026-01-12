@@ -148,6 +148,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100%;
 }
 
+// Ensure select dropdown backdrop allows closing
+// Material select uses transparent backdrop that should allow clicks to close
+.cdk-overlay-backdrop.cdk-overlay-transparent-backdrop {
+    pointer-events: auto !important;
+    
+    z-index: 10001 !important;
+}
+
+// Select dropdown backdrop should allow closing when clicking outside
+.cdk-overlay-container:has(.mat-mdc-select-panel) .cdk-overlay-backdrop,
+.cdk-overlay-container:has(.custom-select-panel) .cdk-overlay-backdrop {
+    pointer-events: auto !important;
+    
+    z-index: 10001 !important;
+}
+
+// Ensure select panel is above backdrop but backdrop can still receive clicks
+.cdk-overlay-pane:has(.mat-mdc-select-panel),
+.cdk-overlay-pane:has(.custom-select-panel) {
+    z-index: 10002 !important;
+    pointer-events: auto !important;
+}
+
 .cdk-overlay-pane {
     position: fixed !important;
     pointer-events: auto;
@@ -211,6 +234,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     &.mat-select-panel-overlay,
     &[class*="select"] {
         z-index: 10002 !important;
+    }
+}
+
+// Ensure select dropdown can be closed by clicking outside
+.cdk-overlay-pane:has(.mat-mdc-select-panel),
+.cdk-overlay-pane:has(.custom-select-panel) {
+    pointer-events: auto !important;
+    
+    // Allow backdrop clicks to close
+    & + .cdk-overlay-backdrop {
+        pointer-events: auto !important;
+        background: transparent !important;
     }
 }
 

@@ -31,7 +31,7 @@
             gap: 0.75rem;
             margin: 0;
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 500;
             color: white;
 
             .title-icon {
@@ -142,8 +142,9 @@
         }
         
         .mat-mdc-select-placeholder {
-            color: transparent !important;
+            display: none !important;
             opacity: 0 !important;
+            visibility: hidden !important;
         }
         
         .mat-mdc-select-arrow {
@@ -161,27 +162,65 @@
         }
     }
     
-    // Hide placeholder when value is selected
+    // Hide placeholder completely when value is selected
     &.mat-form-field-has-value {
-        .mat-mdc-select-placeholder {
+        .mat-mdc-select-placeholder,
+        .mat-mdc-select .mat-mdc-select-placeholder,
+        .mat-mdc-select-value .mat-mdc-select-placeholder {
             display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
         }
         
         .mat-mdc-select-value-text {
             color: #1a1a1a !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        .mat-mdc-select-value {
+            .mat-mdc-select-placeholder {
+                display: none !important;
+            }
         }
     }
     
-    // Ensure label floats up when value is selected
-    &.mat-form-field-has-value .mdc-floating-label,
-    &.mat-focused .mdc-floating-label {
-        transform: translateY(-28px) scale(0.75) !important;
-        color: #1E488F !important;
+    // Always hide placeholder when there's a value in select
+    .mat-mdc-select-value {
+        .mat-mdc-select-placeholder {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
     }
     
-    // Hide label text when value is selected (label should be in notch)
-    &.mat-form-field-has-value .mdc-floating-label--float-above {
-        opacity: 1 !important;
+    // Hide placeholder when select has a selected value
+    .mat-mdc-select:not(.mat-mdc-select-empty) {
+        .mat-mdc-select-placeholder {
+            display: none !important;
+        }
+    }
+    
+    // Ensure floating label is hidden since we use custom label outside
+    .mdc-floating-label {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+    
+    // Remove padding from mat-hint
+    .mat-mdc-form-field-hint-wrapper {
+        padding: 0 !important;
+        
+        .mat-mdc-form-field-hint {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
     }
     
     // Ensure border is visible and styled correctly
@@ -210,6 +249,43 @@
     }
 }
 
+// Error message styling - Ensure red color
+::ng-deep .mat-mdc-form-field-error,
+::ng-deep .mat-mdc-form-field-error-wrapper {
+    color: #f44336 !important;
+    
+    .mat-mdc-form-field-error {
+        color: #f44336 !important;
+    }
+    
+    span {
+        color: #f44336 !important;
+    }
+}
+
+// Error text styling
+::ng-deep mat-form-field {
+    .mat-mdc-form-field-error {
+        color: #f44336 !important;
+        font-size: 0.875rem !important;
+        
+        span {
+            color: #f44336 !important;
+        }
+    }
+}
+
+// Remove padding from all mat-hint elements globally in this component
+::ng-deep .mat-mdc-form-field-hint-wrapper {
+    padding: 0 !important;
+    margin-top: 5px !important;
+    
+    .mat-mdc-form-field-hint {
+        padding: 0 !important;
+        /* margin: 0 !important; */
+    }
+}
+
 // Essential: Make select dropdown panel visible
 ::ng-deep .mat-mdc-select-panel,
 ::ng-deep .custom-select-panel {
@@ -221,11 +297,15 @@
     opacity: 1 !important;
     border-radius: 8px !important;
     box-shadow: 0 4px 12px rgba(0, 31, 63, 0.15) !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 10002 !important;
     
     .mat-mdc-option {
         min-height: 48px !important;
         padding: 12px 16px !important;
         color: #1a1a1a !important;
+        pointer-events: auto !important;
         
         &:hover:not(.mdc-list-item--disabled) {
             background-color: rgba(30, 72, 143, 0.08) !important;
@@ -237,6 +317,13 @@
             font-weight: 500 !important;
         }
     }
+}
+
+// Ensure overlay pane for select allows closing
+::ng-deep .cdk-overlay-pane:has(.mat-mdc-select-panel),
+::ng-deep .cdk-overlay-pane:has(.custom-select-panel) {
+    pointer-events: auto !important;
+    z-index: 10002 !important;
 }
 
 // Dialog Actions
@@ -343,9 +430,61 @@
         fill: #74C365 !important;
     }
     
-    // Ensure currency icon is green
+    // Ensure currency icon is green and add margin-left
     .currency-icon {
         color: #74C365 !important;
+        margin-left: 8px !important;
+    }
+    
+}
+
+// Align textarea prefix icon with textarea text content
+::ng-deep mat-form-field {
+    
+    // When form field contains textarea, align prefix icon to top
+    &:has(textarea) {
+        .mat-mdc-form-field-icon-prefix {
+            align-self: flex-start !important;
+            /* padding-top: 16px !important; */
+            
+            mat-icon {
+                margin-top: 0 !important;
+                align-self: flex-start !important;
+            }
+        }
+    }
+    
+    // More specific targeting for textarea prefix icons
+    .mat-mdc-text-field-wrapper {
+        
+        &:has(textarea) {
+            .mat-mdc-form-field-icon-prefix {
+                align-self: flex-start !important;
+                /* padding-top: 16px !important; */
+                
+                mat-icon {
+                    margin-top: 0 !important;
+                }
+            }
+        }
+    }
+}
+
+// Textarea wrapper styling for description field
+::ng-deep .description-field mat-form-field {
+    .textarea-wrapper {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 8px;
+        padding-top: 8px;
+        padding-left: 8px;
+        position: relative;
+    }
+
+    textarea {
+        margin-left: 8px;
     }
 }
 
@@ -371,7 +510,7 @@
 
         .header-content {
             .dialog-title {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
             }
         }
     }

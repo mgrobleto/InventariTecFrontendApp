@@ -1,5 +1,5 @@
 import { Component, OnInit , Inject, EventEmitter} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductService } from 'src/app/data/service/productService/product.service';
 import { CoreService } from 'src/app/data/service/snackBar/core.service';
@@ -43,6 +43,90 @@ export class AddEditFormComponent implements OnInit {
     }
   }
 
+  // Custom validator for integer numbers only
+  integerValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value && control.value !== 0) {
+        return null; // Don't validate empty values (handled by required)
+      }
+      const value = control.value;
+      
+      // Prevent invalid strings like "--", "++", etc.
+      if (typeof value === 'string' && (value.includes('--') || value.includes('++') || value.includes('+-') || value.includes('-+'))) {
+        return { invalidFormat: true };
+      }
+      
+      // Check if it's a valid integer (no decimals)
+      const numValue = Number(value);
+      if (Number.isInteger(numValue) && numValue >= 0 && !isNaN(numValue)) {
+        return null;
+      }
+      return { integer: true };
+    };
+  }
+
+  // Custom validator for decimal numbers with max 2 decimal places
+  decimalValidator(maxDecimals: number = 2): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value && control.value !== 0) {
+        return null; // Don't validate empty values (handled by required)
+      }
+      const value = control.value;
+      
+      // Prevent invalid strings like "--", "++", etc.
+      if (typeof value === 'string' && (value.includes('--') || value.includes('++') || value.includes('+-') || value.includes('-+'))) {
+        return { invalidFormat: true };
+      }
+      
+      const numValue = Number(value);
+      
+      // Check if it's a valid number
+      if (isNaN(numValue)) {
+        return { decimal: true };
+      }
+      
+      // Check if it's negative
+      if (numValue < 0) {
+        return null; // min(0) validator will handle this
+      }
+      
+      // Check decimal places
+      const decimalPart = value.toString().split('.')[1];
+      if (decimalPart && decimalPart.length > maxDecimals) {
+        return { decimalPlaces: { maxDecimals } };
+      }
+      
+      return null;
+    };
+  }
+
+  // Prevent invalid characters in number inputs
+  onNumberInput(event: any, controlName: string): void {
+    const input = event.target;
+    let value = input.value;
+    
+    if (value === null || value === undefined || value === '') {
+      return;
+    }
+    
+    const valueStr = value.toString();
+    
+    // Remove invalid patterns like "--", "++", "+-", "-+"
+    if (valueStr.includes('--') || valueStr.includes('++') || valueStr.includes('+-') || valueStr.includes('-+')) {
+      // Remove all invalid patterns
+      value = valueStr.replace(/--+/g, '').replace(/\+\++/g, '').replace(/\+-/g, '').replace(/-\+/g, '');
+      
+      // If value becomes empty or only contains invalid chars, set to null
+      if (!value || value === '' || value === '-' || value === '+') {
+        value = null;
+      }
+      
+      // Update the control value
+      this.productForm.get(controlName)?.setValue(value, { emitEvent: false });
+      input.value = value || '';
+    }
+  }
+
   ngOnInit(): void {
     console.log('AddEditFormComponent ngOnInit - dialogData:', this.dialogData);
     
@@ -50,9 +134,9 @@ export class AddEditFormComponent implements OnInit {
     this.productForm = this._fb.group({
       name: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      stock: [null, [Validators.required, Validators.min(0)]],
-      cost_price: [null, [Validators.required, Validators.min(0)]],
-      sale_price: [null, [Validators.required, Validators.min(0)]],
+      stock: [null, [Validators.required, Validators.min(0), this.integerValidator()]],
+      cost_price: [null, [Validators.required, Validators.min(0), this.decimalValidator(2)]],
+      sale_price: [null, [Validators.required, Validators.min(0), this.decimalValidator(2)]],
       category: [null, [Validators.required]]
     });
 
@@ -86,24 +170,12 @@ export class AddEditFormComponent implements OnInit {
   getProductsCategories() {
     this.productCategorieService.getProductsCategories().subscribe(
       (resp : any) => {
-        console.log('Categories response:', resp);
-        // Handle different response structures
-        if (resp && resp.data) {
-          this.productsCategories = resp.data;
-        } else if (Array.isArray(resp)) {
-          this.productsCategories = resp;
-        } else if (resp && Array.isArray(resp.results)) {
-          this.productsCategories = resp.results;
-        } else {
-          this.productsCategories = [];
-          console.warn('Unexpected response structure:', resp);
-        }
-        console.log('Loaded categories:', this.productsCategories);
+        console.log(resp);
+        this.productsCategories = resp.data;
       }, (err : any) => {
-        console.error('Error loading categories:', err);
-        this.productsCategories = [];
-        if(err.error?.message || err.message?.message){
-          this.responseMessage = err.error?.message || err.message?.message;
+        console.log(err);
+        if(err.message?.message){
+          this.responseMessage = err.message?.message;
         }else{
           this.responseMessage = GlobalConstants.genericError;
         }

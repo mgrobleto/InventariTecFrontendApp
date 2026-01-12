@@ -57,14 +57,33 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         this.loading = false;
-        this._snackBar.open("Usuario o contraseña incorrectas", '', {
+        console.error('Login error:', error);
+        
+        let errorMessage = "Error al iniciar sesión";
+        
+        // Handle different error types
+        if (error.status === 500) {
+          errorMessage = "Error del servidor. Por favor, intenta de nuevo en unos momentos.";
+          console.error('Server error (500):', error);
+        } else if (error.status === 0 || error.status === 504) {
+          errorMessage = "No se pudo conectar al servidor. Verifica tu conexión a internet.";
+          console.error('Connection error:', error);
+        } else if (error.status === 401 || error.status === 403) {
+          errorMessage = "Usuario o contraseña incorrectas";
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        this._snackBar.open(errorMessage, '', {
           duration: 5000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom'
         });
+        
         // Reset password field only, keep username
         this.form.get('password')?.reset();
-        console.log(error);
       }
     });
  }
