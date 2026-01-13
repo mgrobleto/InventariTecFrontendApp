@@ -107,9 +107,9 @@
 }
 
 /* Optional: disable Angular Material ripple focus highlight */
-.mat-mdc-form-field-focus-overlay {
+/* .mat-mdc-form-field-focus-overlay {
   background-color: transparent !important;
-}
+} */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -150,11 +150,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 // Ensure select dropdown backdrop allows closing
 // Material select uses transparent backdrop that should allow clicks to close
-.cdk-overlay-backdrop.cdk-overlay-transparent-backdrop {
+/* .cdk-overlay-backdrop.cdk-overlay-transparent-backdrop {
     pointer-events: auto !important;
     
     z-index: 10001 !important;
-}
+} */
 
 // Select dropdown backdrop should allow closing when clicking outside
 .cdk-overlay-container:has(.mat-mdc-select-panel) .cdk-overlay-backdrop,
@@ -238,7 +238,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 // Ensure select dropdown can be closed by clicking outside
-.cdk-overlay-pane:has(.mat-mdc-select-panel),
+/* .cdk-overlay-pane:has(.mat-mdc-select-panel),
 .cdk-overlay-pane:has(.custom-select-panel) {
     pointer-events: auto !important;
     
@@ -248,11 +248,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         background: transparent !important;
     }
 }
-
+ */
 // Dialog Styling - Must be very specific (for all dialogs)
 .cdk-overlay-pane.product-dialog,
 .cdk-overlay-pane.category-dialog,
-.cdk-overlay-pane.supplier-dialog {
+.cdk-overlay-pane.supplier-dialog,
+.cdk-overlay-pane.customer-dialog {
     z-index: 10001 !important;
     display: flex !important;
     align-items: center !important;
@@ -267,7 +268,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .cdk-overlay-pane.product-dialog .mat-mdc-dialog-container,
 .cdk-overlay-pane.category-dialog .mat-mdc-dialog-container,
-.cdk-overlay-pane.supplier-dialog .mat-mdc-dialog-container {
+.cdk-overlay-pane.supplier-dialog .mat-mdc-dialog-container,
+.cdk-overlay-pane.customer-dialog .mat-mdc-dialog-container {
     padding: 0 !important;
     border-radius: 12px !important;
     overflow: visible !important;

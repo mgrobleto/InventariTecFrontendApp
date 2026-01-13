@@ -23,6 +23,8 @@ export class CustomersComponent {
   dataSource = new MatTableDataSource<any>();
   responseMessage:any;
   displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
+  selectedShowOption: string = 'all';
+  selectedSortOption: string = 'default';
 
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   
@@ -55,7 +57,11 @@ export class CustomersComponent {
   
 
   openEditClientForm(data : any) {
-    const dialogRef = this.dialog.open(AddEditCustomerFormComponent, { data });
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = data;
+    dialogConfig.width = "650px";
+    dialogConfig.panelClass = "customer-dialog";
+    const dialogRef = this.dialog.open(AddEditCustomerFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if(val){
@@ -102,7 +108,8 @@ export class CustomersComponent {
     dialogConfig.data = {
       action:"Agregar"
     };
-    dialogConfig.width = "500px";
+    dialogConfig.width = "650px";
+    dialogConfig.panelClass = "customer-dialog";
     const dialogRef = this.dialog.open(AddEditCustomerFormComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
@@ -119,7 +126,8 @@ export class CustomersComponent {
       action:"Editar",
       data:values
     };
-    dialogConfig.width = "500px";
+    dialogConfig.width = "650px";
+    dialogConfig.panelClass = "customer-dialog";
     const dialogRef = this.dialog.open(AddEditCustomerFormComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();

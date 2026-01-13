@@ -31,19 +31,17 @@
             <div class="form-field-wrapper form-field-full description-field">
                 <label class="field-label">Descripción<span class="required-asterisk">*</span></label>
                 <mat-form-field appearance="outline" class="form-field-full">
-                    <div class="textarea-wrapper">
-                        <mat-icon matPrefix>description</mat-icon>
-                        <textarea 
-                            matInput 
-                            formControlName="description" 
-                            rows="3" 
-                            placeholder="Detalle del producto" 
-                            required
-                            cdkTextareaAutosize
-                            cdkAutosizeMinRows="3"
-                            cdkAutosizeMaxRows="10">
-                        </textarea>
-                    </div>
+                    <textarea 
+                        matInput 
+                        formControlName="description" 
+                        rows="3" 
+                        placeholder="Detalle del producto" 
+                        required
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="3"
+                        cdkAutosizeMaxRows="10">
+                    </textarea>
+                    <mat-icon matPrefix>description</mat-icon>
                     <mat-error *ngIf="productForm.controls['description'].touched && productForm.controls['description'].invalid">
                         <span *ngIf="productForm.controls['description'].errors?.['required']">Este campo es requerido</span>
                     </mat-error>
@@ -78,13 +76,11 @@
             <div class="form-field-wrapper form-field-half">
                 <label class="field-label">Stock<span class="required-asterisk">*</span></label>
                 <mat-form-field appearance="outline" class="form-field-half">
-                    <input matInput type="number" min="0" step="1" formControlName="stock" placeholder="Stock*" required (input)="onNumberInput($event, 'stock')">
+                    <input matInput type="number" min="0" formControlName="stock" placeholder="Stock*" required>
                     <mat-icon matPrefix>inventory</mat-icon>
                     <mat-error *ngIf="productForm.controls['stock'].touched && productForm.controls['stock'].invalid">
                         <span *ngIf="productForm.controls['stock'].errors?.['required']">Este campo es requerido</span>
                         <span *ngIf="productForm.controls['stock'].errors?.['min']">El stock no puede ser negativo</span>
-                        <span *ngIf="productForm.controls['stock'].errors?.['integer']">El stock debe ser un número entero</span>
-                        <span *ngIf="productForm.controls['stock'].errors?.['invalidFormat']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -93,13 +89,11 @@
             <div class="form-field-wrapper form-field-half price-field">
                 <label class="field-label">Precio de Compra<span class="required-asterisk">*</span></label>
                 <mat-form-field appearance="outline" class="form-field-half">
-                    <input matInput type="number" min="0" step="0.01" formControlName="cost_price" placeholder="Precio de Compra*" required (input)="onNumberInput($event, 'cost_price')">
+                    <input matInput type="number" min="0" step="0.01" formControlName="cost_price" placeholder="Precio de Compra*" required>
                     <span matPrefix class="currency-icon">C$</span>
                     <mat-error *ngIf="productForm.controls['cost_price'].touched && productForm.controls['cost_price'].invalid">
                         <span *ngIf="productForm.controls['cost_price'].errors?.['required']">Este campo es requerido</span>
                         <span *ngIf="productForm.controls['cost_price'].errors?.['min']">El precio no puede ser negativo</span>
-                        <span *ngIf="productForm.controls['cost_price'].errors?.['decimalPlaces']">El precio puede tener máximo 2 decimales</span>
-                        <span *ngIf="productForm.controls['cost_price'].errors?.['invalidFormat']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -108,13 +102,11 @@
             <div class="form-field-wrapper form-field-half price-field">
                 <label class="field-label">Precio de Venta<span class="required-asterisk">*</span></label>
                 <mat-form-field appearance="outline" class="form-field-half">
-                    <input matInput type="number" min="0" step="0.01" formControlName="sale_price" placeholder="Precio de Venta*" required (input)="onNumberInput($event, 'sale_price')">
+                    <input matInput type="number" min="0" step="0.01" formControlName="sale_price" placeholder="Precio de Venta*" required>
                     <span matPrefix class="currency-icon">C$</span>
                     <mat-error *ngIf="productForm.controls['sale_price'].touched && productForm.controls['sale_price'].invalid">
                         <span *ngIf="productForm.controls['sale_price'].errors?.['required']">Este campo es requerido</span>
                         <span *ngIf="productForm.controls['sale_price'].errors?.['min']">El precio no puede ser negativo</span>
-                        <span *ngIf="productForm.controls['sale_price'].errors?.['decimalPlaces']">El precio puede tener máximo 2 decimales</span>
-                        <span *ngIf="productForm.controls['sale_price'].errors?.['invalidFormat']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>
             </div>

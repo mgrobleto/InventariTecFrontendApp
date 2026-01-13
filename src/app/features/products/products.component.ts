@@ -31,8 +31,8 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   productsCategories:any;
   productStocks:any;
   responseMessage:any;
-  displayedColumns: string[] = ['Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Estado', 'Acción'];
-  displayedColumnsWithSelect: string[] = ['select', 'Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Estado', 'Acción'];
+  displayedColumns: string[] = ['Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Estado', 'Editar', 'Eliminar'];
+  displayedColumnsWithSelect: string[] = ['select', 'Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Estado', 'Editar', 'Eliminar'];
   productStockColumns: string[] = ['ID', 'Nombre', 'Stock','Editar'];
 
   // Selection
@@ -98,7 +98,8 @@ export class ProductsComponent implements OnInit, AfterViewInit{
         console.log(response);
         this.ngxService.stop();
         this.originalData = response.data || [];
-        this.dataSource.data = this.originalData;
+        // Map category IDs to category objects (this also updates dataSource.data)
+        this.mapCategoriesToProducts();
         //this.productDetails = response;
 
       }, (error : any) => {
@@ -124,6 +125,8 @@ export class ProductsComponent implements OnInit, AfterViewInit{
 
         console.log(resp);
         this.productsCategories = resp;
+        // Map categories after categories are loaded
+        this.mapCategoriesToProducts();
 
       }, (err : any) => {
         console.log(err);
@@ -135,6 +138,38 @@ export class ProductsComponent implements OnInit, AfterViewInit{
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
+  }
+
+  mapCategoriesToProducts() {
+    // Only map if both products and categories are loaded
+    if (!this.originalData || !this.productsCategories?.data) {
+      return;
+    }
+
+    // Create a map of category ID to category object for quick lookup
+    const categoryMap = new Map();
+    this.productsCategories.data.forEach((cat: any) => {
+      categoryMap.set(cat.id, cat);
+    });
+
+    // Map category IDs to category objects in products
+    this.originalData.forEach((product: any) => {
+      // If category is just an ID (number or string), map it to the full category object
+      if (product.category && typeof product.category !== 'object') {
+        const categoryId = typeof product.category === 'string' ? parseInt(product.category) : product.category;
+        product.category = categoryMap.get(categoryId) || null;
+      }
+      // If category is already an object but missing name, try to enrich it
+      else if (product.category && product.category.id && !product.category.name) {
+        const enrichedCategory = categoryMap.get(product.category.id);
+        if (enrichedCategory) {
+          product.category = enrichedCategory;
+        }
+      }
+    });
+
+    // Update the data source
+    this.dataSource.data = [...this.originalData];
   }
 
   applyFilter(event: Event){
@@ -359,6 +394,22 @@ export class ProductsComponent implements OnInit, AfterViewInit{
     if (stock < 10) return 'stock-low';
     if (stock < 50) return 'stock-medium';
     return 'stock-high';
+  }
+
+  getCategoryName(product: any): string {
+    // If category is an object with name property
+    if (product.category && typeof product.category === 'object' && product.category.name) {
+      return product.category.name;
+    }
+    // If category is just an ID, try to find it in categories list
+    if (product.category && this.productsCategories?.data) {
+      const categoryId = typeof product.category === 'string' ? parseInt(product.category) : product.category;
+      const category = this.productsCategories.data.find((cat: any) => cat.id === categoryId);
+      if (category) {
+        return category.name;
+      }
+    }
+    return 'Sin categoría';
   }
 
 }

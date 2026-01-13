@@ -1,58 +1,59 @@
-<section>
-    <mat-toolbar class="table-header">
-        <mat-icon>
-            <span class="material-symbols-outlined">
-                person
-                </span>
-        </mat-icon>
-        <div class="mx-2">
-            <h2 class="text-capitalized">Bienvenido, {{userName}}</h2>
-        </div>
-    </mat-toolbar>
-    <div class="d-flex flex-row-reverse my-4">
-        <button mat-raised-button (click)="redirectToAddNewInvoice()">
-            <mat-icon>add</mat-icon> Facturar nueva venta
-        </button>
-        <button mat-raised-button (click)="redirectToAddNewClient()">
-            <mat-icon>add</mat-icon> Agregar nuevo cliente
-        </button>
-        <button mat-raised-button (click)="redirectToAddNewProduct()">
-            <mat-icon>add</mat-icon> Agregar nuevo producto
-        </button>
-    </div>
-    <div class="container p-3">
-        <div class="row align-items-stretch">
-            <div class="c-dashboardInfo inventory-item col-lg-3 col-md-6" (click)="redirectToProductsInventory()">
-                <div class="wrap" matTooltip="Ver Inventario">
-                <i class="fas fa-boxes-alt" style="font-size: 40px; margin-bottom: 1rem;"></i>
-                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Productos
-                    </h4><span class="hind-font caption-12 c-dashboardInfo__count">{{totalProducts}}</span>
-                    
-                </div>
-            </div>
-            <div class="c-dashboardInfo col-lg-3 col-md-6">
-                <div class="wrap">
-                <i class="fas fa-calendar-check" style="font-size: 40px; margin-bottom: 1rem;"></i>
-                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Ventas | {{monthReturned}}</h4><span class="hind-font caption-12 c-dashboardInfo__count">{{totalSales}}</span>
-                </div>
-            </div>
-            <div class="c-dashboardInfo col-lg-3 col-md-6">
-                <div class="wrap">
-                    <i class="fas fa-hands-usd" style="font-size: 40px; margin-bottom: 1rem;"></i>
-                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">Total Ingresos</h4><span class="hind-font caption-12 c-dashboardInfo__count">M./${{totalIncome}}</span>
-                </div>
-            </div>
-        </div>
+<section class="dashboard-container">
+    <!-- Header Section -->
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Hola, {{userName}}! Aquí está tu resumen semanal.</h1>
     </div>
 
-    <div class="container p-3 dashboard-statistics">
-        <mat-card style="margin-top: 15px; margin-bottom: auto; margin-left: auto; margin-right: auto;">
-            <mat-card-title style="padding: 1rem;">
-                <h1>Ventas mes de {{monthReturned}}</h1>
-            </mat-card-title>
+    <!-- Summary Cards Row -->
+    <div class="summary-cards-row">
+        <div class="summary-card inventory-item" (click)="redirectToProductsInventory()" matTooltip="Ver Inventario">
+            <div class="card-icon">
+                <i class="fas fa-boxes-alt"></i>
+            </div>
+            <div class="card-content">
+                <span class="card-count">{{totalProducts || 0}}</span>
+                <span class="card-label">Productos en Inventario</span>
+            </div>
+        </div>
 
-            <mat-card-content>
-                <form [formGroup]="monthSelect">
+        <div class="summary-card">
+            <div class="card-icon card-icon-purple">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="card-content">
+                <span class="card-count">{{totalSales || 0}}</span>
+                <span class="card-label">Ventas Completadas</span>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="card-icon card-icon-hourglass">
+                <i class="fas fa-hands-usd"></i>
+            </div>
+            <div class="card-content">
+                <span class="card-count">M./${{totalIncome || 0}}</span>
+                <span class="card-label">Total Ingresos</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Main Content Row -->
+    <div class="main-content-row">
+        <!-- Sales Chart Section -->
+        <div class="chart-section">
+            <div class="section-header">
+                <h2 class="section-title">Ventas del Mes</h2>
+                <span class="section-subtitle">Ventas diarias de {{monthReturned || 'este mes'}}</span>
+            </div>
+            <div class="chart-stats">
+                <div class="stat-item">
+                    <span class="stat-value">M./${{totalIncome || 0}}</span>
+                    <span class="stat-label">Ingresos este mes</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <form [formGroup]="monthSelect" class="month-select-form">
                     <mat-form-field appearance="outline">
                         <mat-label>Seleccionar mes</mat-label>
                         <mat-select formControlName="id_month" (selectionChange)="getMonthValues($event.value); getTotalSales($event.value); getTotalIncomeByMonth($event.value)" required>
@@ -62,11 +63,53 @@
                         </mat-select>
                     </mat-form-field>
                 </form>
-
-                <div style="width: 100%; height: 400px;">
+                <div class="chart-wrapper">
                     <canvas id="barChart"></canvas>
                 </div>
-            </mat-card-content>
-        </mat-card>
+            </div>
+        </div>
+
+        <!-- Products vs Sales Balance Section -->
+        <div class="balance-section">
+            <div class="section-header">
+                <h2 class="section-title">Balance Productos vs Ventas</h2>
+            </div>
+            <div class="balance-chart-container">
+                <div class="donut-chart-wrapper">
+                    <svg class="donut-chart" viewBox="0 0 200 200">
+                        <circle class="donut-ring" cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="30"></circle>
+                        <circle class="donut-segment" cx="100" cy="100" r="80" fill="none" 
+                            [attr.stroke-dasharray]="getProductsDashArray()"
+                            stroke="#9EC4FE" stroke-width="30" stroke-dashoffset="125.66"></circle>
+                        <circle class="donut-segment-sales" cx="100" cy="100" r="80" fill="none" 
+                            [attr.stroke-dasharray]="getSalesDashArray()"
+                            stroke="#1E488F" stroke-width="30" 
+                            [attr.stroke-dashoffset]="getSalesDashOffset()"></circle>
+                    </svg>
+                    <div class="donut-center">
+                        <span class="donut-label">Balance</span>
+                        <span class="donut-value">Este mes</span>
+                    </div>
+                </div>
+                <div class="balance-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #1E488F;"></div>
+                        <div class="legend-content">
+                            <span class="legend-label">Ventas</span>
+                            <span class="legend-count">{{totalSales || 0}} ventas</span>
+                            <span class="legend-percent">{{getSalesPercent() | number:'1.0-0'}}%</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #9EC4FE;"></div>
+                        <div class="legend-content">
+                            <span class="legend-label">Productos</span>
+                            <span class="legend-count">{{totalProducts || 0}} productos</span>
+                            <span class="legend-percent">{{getProductsPercent() | number:'1.0-0'}}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

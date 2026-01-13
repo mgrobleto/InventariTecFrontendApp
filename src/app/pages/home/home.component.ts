@@ -51,11 +51,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    /* this.getMonth();
-    this.getTotalProducts();
-    this.userInfo(); */
-
     this.getUserInfo();
+    this.getTotalProducts();
+    this.initializeMonths();
 
     this.monthSelect = this._fb.group({
         id_month: [null,[Validators.required]],
@@ -63,19 +61,33 @@ export class HomeComponent implements OnInit {
 
     this.currentMonth = new Date().getMonth();
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    //console.log(monthNames[this.currentMonth]);
     const value = monthNames[this.currentMonth];
     console.log(value);
-
-   /*  this.getTotalSales(value);
-    this.getTotalIncomeByMonth(value); */
-    
 
     if(this.monthSelect.controls['id_month'].value === null) {
       this.monthSelect.controls['id_month'].setValue(value);
       var initialValue = this.monthSelect.controls['id_month'].value;
-      //this.getMonthValues(initialValue);
+      this.getMonthValues(initialValue);
+      this.getTotalSales(initialValue);
+      this.getTotalIncomeByMonth(initialValue);
     }
+  }
+
+  initializeMonths() {
+    this.month = [
+      { name: "Enero" },
+      { name: "Febrero" },
+      { name: "Marzo" },
+      { name: "Abril" },
+      { name: "Mayo" },
+      { name: "Junio" },
+      { name: "Julio" },
+      { name: "Agosto" },
+      { name: "Septiembre" },
+      { name: "Octubre" },
+      { name: "Noviembre" },
+      { name: "Diciembre" }
+    ];
   }
 
   getUserInfo() {
@@ -256,25 +268,91 @@ export class HomeComponent implements OnInit {
           label:"Total",
           data: graphicData,
           backgroundColor:[
-            'rgba(255, 99, 132, 0.2)',
+            '#1E488F',
+            '#9EC4FE',
+            '#1E488F',
+            '#9EC4FE',
+            '#1E488F',
+            '#9EC4FE',
+            '#1E488F',
           ],
           borderColor: [
-            'rgb(255, 99, 132)',
+            '#001F3F',
+            '#1E488F',
+            '#001F3F',
+            '#1E488F',
+            '#001F3F',
+            '#1E488F',
+            '#001F3F',
           ],
-          borderWidth: 1
+          borderWidth: 2,
+          borderRadius: 8
         }]
       },
       options: {
         maintainAspectRatio: false,
         responsive:true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            ticks: {
+              color: '#1E488F'
+            },
+            grid: {
+              color: 'rgba(30, 72, 143, 0.1)'
+            }
+          },
+          x: {
+            ticks: {
+              color: '#1E488F'
+            },
+            grid: {
+              color: 'rgba(30, 72, 143, 0.1)'
+            }
           }
         }
       }
     });
 
+  }
+
+  getProductsPercent(): number {
+    const total = (this.totalProducts || 0) + (this.totalSales || 0);
+    if (total === 0) return 50;
+    return ((this.totalProducts || 0) / total) * 100;
+  }
+
+  getSalesPercent(): number {
+    const total = (this.totalProducts || 0) + (this.totalSales || 0);
+    if (total === 0) return 50;
+    return ((this.totalSales || 0) / total) * 100;
+  }
+
+  getProductsDashArray(): string {
+    const circumference = 2 * Math.PI * 80; // ≈ 502.65
+    const productsPercent = this.getProductsPercent();
+    const dashLength = (productsPercent / 100) * circumference;
+    return `${dashLength} ${circumference}`;
+  }
+
+  getSalesDashArray(): string {
+    const circumference = 2 * Math.PI * 80; // ≈ 502.65
+    const salesPercent = this.getSalesPercent();
+    const dashLength = (salesPercent / 100) * circumference;
+    return `${dashLength} ${circumference}`;
+  }
+
+  getSalesDashOffset(): number {
+    const circumference = 2 * Math.PI * 80; // ≈ 502.65
+    const productsPercent = this.getProductsPercent();
+    const productsDashLength = (productsPercent / 100) * circumference;
+    // Start sales segment after products segment
+    return 125.66 - productsDashLength; // 125.66 is 1/4 of circumference (starting at top)
   }
   
 }

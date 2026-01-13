@@ -102,6 +102,34 @@
                         </td>
                     </ng-container>
 
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="Estado">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div class="header-cell">
+                                Estado
+                                <mat-icon class="info-icon" matTooltip="Estado de la categoría">info</mat-icon>
+                            </div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field appearance="outline" class="status-select">
+                                <mat-select [value]="getCategoryStatus(element)" (selectionChange)="updateStatus(element, $event.value)">
+                                    <mat-option value="active">
+                                        <span class="status-option">
+                                            <span class="status-dot active"></span>
+                                            Activo
+                                        </span>
+                                    </mat-option>
+                                    <mat-option value="inactive">
+                                        <span class="status-option">
+                                            <span class="status-dot inactive"></span>
+                                            Inactivo
+                                        </span>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
                     <!-- Edit Column -->
                     <ng-container matColumnDef="Editar">
                         <th mat-header-cell *matHeaderCellDef>Editar</th>

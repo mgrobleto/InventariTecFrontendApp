@@ -25,7 +25,7 @@ export class ProductCategoryComponent {
   dataSource = new MatTableDataSource<any>();
   productsCategories:any;
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Estado', 'Editar', 'Eliminar'];
 
   // Filter properties
   selectedShowOption: string = 'all';
@@ -90,7 +90,7 @@ export class ProductCategoryComponent {
 
   exportToExcel() {
     const tableId = 'categoriesData';
-    const columnsToInclude = ['ID', 'Nombre'];
+    const columnsToInclude = ['ID', 'Nombre', 'Estado'];
     const fileName = 'CategoriasProductos';
 
     this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
@@ -185,5 +185,18 @@ export class ProductCategoryComponent {
         //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
       }
     );
+  }
+
+  // Status methods
+  getCategoryStatus(category: any): string {
+    // Adjust based on your category data structure
+    // For now, assuming all categories are active if no status field exists
+    return category.status || 'active';
+  }
+
+  updateStatus(category: any, status: string): void {
+    // TODO: Implement status update API call
+    category.status = status;
+    this._coreService.openSuccessSnackBar(`Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`, 'success');
   }
 }
