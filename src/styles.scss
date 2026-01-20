@@ -120,6 +120,44 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+/* Status chip styles */
+.status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    line-height: 1;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-chip--active {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status-chip--active .status-dot {
+    background: #43A047;
+}
+
+.status-chip--inactive {
+    background: #FDECEC;
+    color: #D32F2F;
+}
+
+.status-chip--inactive .status-dot {
+    background: #EF5350;
+}
+
 /* Global form-field alignment and size */
 ::ng-deep .mat-mdc-form-field {
     .mat-mdc-text-field-wrapper {

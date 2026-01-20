@@ -22,7 +22,7 @@ export class CustomersComponent {
 
   dataSource = new MatTableDataSource<any>();
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección', 'Estado', 'Editar', 'Eliminar'];
   selectedShowOption: string = 'all';
   selectedSortOption: string = 'default';
 
@@ -49,10 +49,14 @@ export class CustomersComponent {
 
   exportToExcel() {
     const tableId = 'ClientsData';
-    const columnsToInclude = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico', 'Contacto', 'Dirección']
+    const columnsToInclude = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico', 'Contacto', 'Dirección', 'Estado']
     const fileName = 'ClientesInfo'
 
     this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
+  }
+
+  getCustomerStatus(customer: any): 'active' | 'inactive' {
+    return customer?.status === 'inactive' ? 'inactive' : 'active';
   }
   
 

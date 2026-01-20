@@ -39,12 +39,16 @@ export class AddEditCustomerFormComponent {
       email: [null,[Validators.required]],
       phone: [null,[Validators.required]],
       c_address: [null,[Validators.required]],
+      status: ['active',[Validators.required]],
     });
 
     if(this.dialogData.action === "Editar") {
       this.dialogAction = "Editar";
       this.action = "Actualizar";
-      this.customerForm.patchValue(this.dialogData.data);
+      this.customerForm.patchValue({
+        ...this.dialogData.data,
+        status: this.dialogData.data?.status ?? 'active',
+      });
     }
   }
 
@@ -67,7 +71,8 @@ export class AddEditCustomerFormComponent {
       email: formData.email,
       phone: formData.phone,
       c_address : formData.c_address,
-      business: businessId
+      business: businessId,
+      status: formData.status
     }
     console.log(data);
 
@@ -112,6 +117,7 @@ export class AddEditCustomerFormComponent {
       email: formData.email,
       phone: formData.phone,
       c_address : formData.c_address,
+      status: formData.status,
       // id business
     }
 

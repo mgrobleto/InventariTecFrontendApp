@@ -145,6 +145,24 @@
                         </th>
                         <td mat-cell *matCellDef="let element">{{element.c_address}}</td>
                     </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="Estado">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <div class="header-cell">
+                                Estado
+                                <mat-icon class="info-icon" matTooltip="Estado del cliente">info</mat-icon>
+                            </div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span
+                                class="status-chip"
+                                [ngClass]="getCustomerStatus(element) === 'active' ? 'status-chip--active' : 'status-chip--inactive'">
+                                <span class="status-dot"></span>
+                                {{ getCustomerStatus(element) === 'active' ? 'Activo' : 'Inactivo' }}
+                            </span>
+                        </td>
+                    </ng-container>
                 
                     <!-- Edit Column -->
                     <ng-container matColumnDef="Editar">

@@ -39,13 +39,17 @@ export class AddEditProductCategoryFormComponent implements OnInit {
   ngOnInit(): void {
     this.productCategoryForm = this._fb.group({
       name: [null,[Validators.required]],
+      status: ['active',[Validators.required]],
     });
 
     if(this.dialogData.action === "Editar") 
     {
       this.dialogAction = "Editar";
       this.action = "Actualizar";
-      this.productCategoryForm.patchValue(this.dialogData.data);
+      this.productCategoryForm.patchValue({
+        name: this.dialogData.data?.name ?? null,
+        status: this.dialogData.data?.status ?? 'active',
+      });
     }
 
     //this.getProductsCategories() ;
@@ -65,7 +69,8 @@ export class AddEditProductCategoryFormComponent implements OnInit {
 
     var data = {
       name: formData.name,
-      business: businessId
+      business: businessId,
+      status: formData.status
     }
     console.log(data);
 
@@ -107,6 +112,7 @@ export class AddEditProductCategoryFormComponent implements OnInit {
     var data = {
       product_category_id : this.dialogData.data.id,
       name: formData.name,
+      status: formData.status,
     }
 
     this.productCategorieService.updateProductCategory(data)

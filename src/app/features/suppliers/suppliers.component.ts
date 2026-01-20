@@ -23,7 +23,7 @@ import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.ser
 export class SuppliersComponent {
   dataSource = new MatTableDataSource<any>();
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección','Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección', 'Estado', 'Editar', 'Eliminar'];
 
   // Filter properties
   selectedShowOption: string = 'all';
@@ -52,10 +52,14 @@ export class SuppliersComponent {
 
   exportToExcel() {
     const tableId = 'suppliersData';
-    const columnsToInclude = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico', 'Contacto', 'Dirección']
+    const columnsToInclude = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico', 'Contacto', 'Dirección', 'Estado']
     const fileName = 'InformacionProveedores'
 
     this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
+  }
+
+  getSupplierStatus(supplier: any): 'active' | 'inactive' {
+    return supplier?.status === 'inactive' ? 'inactive' : 'active';
   }
   
 
