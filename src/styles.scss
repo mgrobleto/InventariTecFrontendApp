@@ -37,28 +37,34 @@
     }
 }
 
-.green-snackbar {
-    --mdc-snackbar-container-color: #4CAF50;
-    .mat-simple-snackbar-action {
-        color: white;
-      }
+/* Centered snackbar layout */
+.cdk-global-overlay-wrapper:has(.snackbar-card-overlay) {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
-.red-snackbar {
-    max-width: max-content !important;
-    color: white;
-    --mdc-snackbar-container-color:  #dc3545;
-    border-color: #f5c6cb;
-  
-    .mat-simple-snackbar-action {
-      color: white;
-    }
+.cdk-overlay-pane:has(.snackbar-card-overlay) {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
 }
 
-.red-snackbar button {
-    background-color: #F44336;
-    color: white !important;
-    border: none;
+.mat-mdc-snack-bar-container.snackbar-card-overlay {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.mat-mdc-snack-bar-container.snackbar-card-overlay .mdc-snackbar__surface {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 
 /* Prevent Angular Material theme colors from showing on focus */
@@ -113,6 +119,95 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Global form-field alignment and size */
+::ng-deep .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+        background-color: #ffffff;
+        height: 52px;
+    }
+
+    .mdc-text-field {
+        height: 52px;
+        align-items: center;
+    }
+
+    .mdc-notched-outline {
+        height: 52px;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+        border-color: #9EC4FE !important;
+        border-width: 1.5px !important;
+    }
+
+    &.mat-focused {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+            border-color: #1E488F !important;
+            border-width: 2px !important;
+        }
+    }
+
+    .mat-mdc-select,
+    .mat-mdc-input-element,
+    .mdc-text-field__input {
+        align-items: center;
+    }
+}
+
+/* Mat-select sizing for feature pages */
+.products-container,
+.customers-container,
+.suppliers-container,
+.categories-container,
+.invoices-list-container,
+.invoice-form-section {
+    .mat-mdc-form-field {
+        .mat-mdc-text-field-wrapper {
+            background-color: #ffffff;
+            height: 52px;
+        }
+
+        .mdc-text-field {
+            height: 52px;
+            align-items: center;
+        }
+
+        .mdc-notched-outline {
+            height: 52px;
+        }
+
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+            border-color: #9EC4FE !important;
+            border-width: 1.5px !important;
+        }
+
+        &.mat-focused {
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+                border-color: #1E488F !important;
+                border-width: 2px !important;
+            }
+        }
+
+        .mat-mdc-select-value,
+        .mat-mdc-input-element,
+        .mdc-text-field__input {
+            color: #001F3F !important;
+        }
+
+        .mdc-floating-label {
+            color: #1E488F !important;
+        }
+    }
+}
 
 /* body {
     margin: 0; 

@@ -21,7 +21,7 @@
                     <input matInput type="text" formControlName="first_name" placeholder="Nombres*" required>
                     <mat-icon matPrefix>person</mat-icon>
                     <mat-error *ngIf="supplierForm.controls['first_name'].touched && supplierForm.controls['first_name'].invalid">
-                        <span *ngIf="supplierForm.controls['first_name'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['first_name'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="supplierForm.controls['first_name'].errors?.['pattern']">Información invalida</span>
                     </mat-error>
                 </mat-form-field>
@@ -33,7 +33,7 @@
                     <input matInput type="text" formControlName="last_name" placeholder="Apellidos*" required>
                     <mat-icon matPrefix>person_outline</mat-icon>
                     <mat-error *ngIf="supplierForm.controls['last_name'].touched && supplierForm.controls['last_name'].invalid">
-                        <span *ngIf="supplierForm.controls['last_name'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['last_name'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="supplierForm.controls['last_name'].errors?.['pattern']">Información invalida</span>
                     </mat-error>
                 </mat-form-field>
@@ -45,7 +45,7 @@
                     <input matInput type="email" formControlName="email" placeholder="ejemplo@gmail.com*" required>
                     <mat-icon matPrefix>email</mat-icon>
                     <mat-error *ngIf="supplierForm.controls['email'].touched && supplierForm.controls['email'].invalid">
-                        <span *ngIf="supplierForm.controls['email'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['email'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="supplierForm.controls['email'].errors?.['email']">Información invalida</span>
                     </mat-error>
                 </mat-form-field>
@@ -63,7 +63,7 @@
                         required>
                     <mat-icon matPrefix>phone</mat-icon>
                     <mat-error *ngIf="supplierForm.controls['phone'].touched && supplierForm.controls['phone'].invalid">
-                        <span *ngIf="supplierForm.controls['phone'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['phone'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="supplierForm.controls['phone'].errors?.['pattern']">Información invalida</span>
                     </mat-error>
                 </mat-form-field>
@@ -75,7 +75,7 @@
                     <input matInput type="text" formControlName="s_address" placeholder="Dirección*" required>
                     <mat-icon matPrefix>location_on</mat-icon>
                     <mat-error *ngIf="supplierForm.controls['s_address'].touched && supplierForm.controls['s_address'].invalid">
-                        <span *ngIf="supplierForm.controls['s_address'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="supplierForm.controls['s_address'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="supplierForm.controls['s_address'].errors?.['pattern']">Información invalida</span>
                     </mat-error>
                 </mat-form-field>
@@ -95,3 +95,5 @@
         {{action}}
     </button>
 </mat-dialog-actions>
+
+

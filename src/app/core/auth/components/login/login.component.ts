@@ -59,17 +59,19 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         console.error('Login error:', error);
         
-        let errorMessage = "Error al iniciar sesión";
+        let errorMessage = "No pudimos iniciar sesión. Intenta nuevamente.";
         
         // Handle different error types
         if (error.status === 500) {
-          errorMessage = "Error del servidor. Por favor, intenta de nuevo en unos momentos.";
+          errorMessage = "El servidor no respondió. Intenta nuevamente en unos minutos.";
           console.error('Server error (500):', error);
         } else if (error.status === 0 || error.status === 504) {
-          errorMessage = "No se pudo conectar al servidor. Verifica tu conexión a internet.";
+          errorMessage = "No se pudo conectar al servidor. Revisa tu conexión a internet.";
           console.error('Connection error:', error);
         } else if (error.status === 401 || error.status === 403) {
-          errorMessage = "Usuario o contraseña incorrectas";
+          errorMessage = "Credenciales incorrectas. Verifica tu usuario y contraseña.";
+        } else if (error.status === 429) {
+          errorMessage = "Demasiados intentos. Espera un momento e intenta de nuevo.";
         } else if (error.error?.message) {
           errorMessage = error.error.message;
         } else if (error.message) {
@@ -97,3 +99,4 @@ export class LoginComponent implements OnInit {
   }
 
 }
+

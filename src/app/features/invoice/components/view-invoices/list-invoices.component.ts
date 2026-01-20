@@ -341,7 +341,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
         swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Algo salió mal!',
+          text: 'No pudimos completar la acción.',
           footer: this.responseMessage
         })
       //this._coreService.openFailureSnackBar(this.responseMessage,GlobalConstants.error);
@@ -349,3 +349,4 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     );
   }
 }
+

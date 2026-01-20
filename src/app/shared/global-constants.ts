@@ -1,7 +1,7 @@
 export class GlobalConstants {
 
     //Message
-    public static genericError : string = "Sucedió un error. Por favor, intente de nuevo";
+    public static genericError : string = "No pudimos completar la operación. Intenta nuevamente.";
 
     //Regex
     public static nameRegex : string = "[a-zA-Z0-9]";

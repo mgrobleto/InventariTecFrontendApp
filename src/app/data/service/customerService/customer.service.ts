@@ -62,3 +62,4 @@ export class CustomerService {
     return this.httpClient.get<any>(this.url + '/typeCustomer/');
   } */
 }
+

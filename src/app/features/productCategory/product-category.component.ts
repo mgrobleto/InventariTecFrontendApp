@@ -179,7 +179,7 @@ export class ProductCategoryComponent {
           swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Algo salió mal!',
+            text: 'No pudimos completar la acción.',
             footer: this.responseMessage
           })
         //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
@@ -200,3 +200,4 @@ export class ProductCategoryComponent {
     this._coreService.openSuccessSnackBar(`Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`, 'success');
   }
 }
+

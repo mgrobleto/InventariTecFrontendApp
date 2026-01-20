@@ -94,3 +94,4 @@ export class SidebarComponent implements OnInit {
     this._loginService.logOut();
   }
 }
+

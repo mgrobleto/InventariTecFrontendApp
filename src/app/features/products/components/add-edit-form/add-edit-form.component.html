@@ -22,7 +22,7 @@
                     <input matInput type="text" formControlName="name" placeholder="Nombre del Producto*" required>
                     <mat-icon matPrefix>inventory_2</mat-icon>
                     <mat-error *ngIf="productForm.controls['name'].touched && productForm.controls['name'].invalid">
-                        <span *ngIf="productForm.controls['name'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['name'].errors?.['required']">Campo obligatorio</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -43,7 +43,7 @@
                     </textarea>
                     <mat-icon matPrefix>description</mat-icon>
                     <mat-error *ngIf="productForm.controls['description'].touched && productForm.controls['description'].invalid">
-                        <span *ngIf="productForm.controls['description'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['description'].errors?.['required']">Campo obligatorio</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -67,7 +67,7 @@
                     </mat-select>
                     <mat-hint *ngIf="productsCategories.length > 0">{{productsCategories.length}} categorías disponibles</mat-hint>
                     <mat-error *ngIf="productForm.controls['category'].touched && productForm.controls['category'].invalid">
-                        <span *ngIf="productForm.controls['category'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['category'].errors?.['required']">Campo obligatorio</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -79,7 +79,7 @@
                     <input matInput type="number" min="0" formControlName="stock" placeholder="Stock*" required>
                     <mat-icon matPrefix>inventory</mat-icon>
                     <mat-error *ngIf="productForm.controls['stock'].touched && productForm.controls['stock'].invalid">
-                        <span *ngIf="productForm.controls['stock'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['stock'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="productForm.controls['stock'].errors?.['min']">El stock no puede ser negativo</span>
                     </mat-error>
                 </mat-form-field>
@@ -92,7 +92,7 @@
                     <input matInput type="number" min="0" step="0.01" formControlName="cost_price" placeholder="Precio de Compra*" required>
                     <span matPrefix class="currency-icon">C$</span>
                     <mat-error *ngIf="productForm.controls['cost_price'].touched && productForm.controls['cost_price'].invalid">
-                        <span *ngIf="productForm.controls['cost_price'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['cost_price'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="productForm.controls['cost_price'].errors?.['min']">El precio no puede ser negativo</span>
                     </mat-error>
                 </mat-form-field>
@@ -105,7 +105,7 @@
                     <input matInput type="number" min="0" step="0.01" formControlName="sale_price" placeholder="Precio de Venta*" required>
                     <span matPrefix class="currency-icon">C$</span>
                     <mat-error *ngIf="productForm.controls['sale_price'].touched && productForm.controls['sale_price'].invalid">
-                        <span *ngIf="productForm.controls['sale_price'].errors?.['required']">Este campo es requerido</span>
+                        <span *ngIf="productForm.controls['sale_price'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="productForm.controls['sale_price'].errors?.['min']">El precio no puede ser negativo</span>
                     </mat-error>
                 </mat-form-field>
@@ -125,3 +125,5 @@
         {{action}}
     </button>
 </mat-dialog-actions>
+
+

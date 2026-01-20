@@ -22,8 +22,8 @@
                     <input matInput type="text" formControlName="first_name" placeholder="Nombres*" required>
                     <mat-icon matPrefix>person</mat-icon>
                     <mat-error *ngIf="customerForm.controls['first_name'].touched && customerForm.controls['first_name'].invalid">
-                        <span *ngIf="customerForm.controls['first_name'].errors?.['required']">Este campo es requerido</span>
-                        <span *ngIf="customerForm.controls['first_name'].errors?.['pattern']">Información inválida</span>
+                        <span *ngIf="customerForm.controls['first_name'].errors?.['required']">Campo obligatorio</span>
+                        <span *ngIf="customerForm.controls['first_name'].errors?.['pattern']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -35,8 +35,8 @@
                     <input matInput type="text" formControlName="last_name" placeholder="Apellidos*" required>
                     <mat-icon matPrefix>person_outline</mat-icon>
                     <mat-error *ngIf="customerForm.controls['last_name'].touched && customerForm.controls['last_name'].invalid">
-                        <span *ngIf="customerForm.controls['last_name'].errors?.['required']">Este campo es requerido</span>
-                        <span *ngIf="customerForm.controls['last_name'].errors?.['pattern']">Información inválida</span>
+                        <span *ngIf="customerForm.controls['last_name'].errors?.['required']">Campo obligatorio</span>
+                        <span *ngIf="customerForm.controls['last_name'].errors?.['pattern']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -48,8 +48,8 @@
                     <input matInput type="email" formControlName="email" placeholder="ejemplo@gmail.com" required>
                     <mat-icon matPrefix>email</mat-icon>
                     <mat-error *ngIf="customerForm.controls['email'].touched && customerForm.controls['email'].invalid">
-                        <span *ngIf="customerForm.controls['email'].errors?.['required']">Este campo es requerido</span>
-                        <span *ngIf="customerForm.controls['email'].errors?.['email']">Correo electrónico inválido</span>
+                        <span *ngIf="customerForm.controls['email'].errors?.['required']">Campo obligatorio</span>
+                        <span *ngIf="customerForm.controls['email'].errors?.['email']">Ingresa un correo válido</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -67,8 +67,8 @@
                         required>
                     <mat-icon matPrefix>phone</mat-icon>
                     <mat-error *ngIf="customerForm.controls['phone'].touched && customerForm.controls['phone'].invalid">
-                        <span *ngIf="customerForm.controls['phone'].errors?.['required']">Este campo es requerido</span>
-                        <span *ngIf="customerForm.controls['phone'].errors?.['pattern']">Información inválida</span>
+                        <span *ngIf="customerForm.controls['phone'].errors?.['required']">Campo obligatorio</span>
+                        <span *ngIf="customerForm.controls['phone'].errors?.['pattern']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -80,8 +80,8 @@
                     <input matInput type="text" formControlName="c_address" placeholder="Dirección*" required>
                     <mat-icon matPrefix>home</mat-icon>
                     <mat-error *ngIf="customerForm.controls['c_address'].touched && customerForm.controls['c_address'].invalid">
-                        <span *ngIf="customerForm.controls['c_address'].errors?.['required']">Este campo es requerido</span>
-                        <span *ngIf="customerForm.controls['c_address'].errors?.['pattern']">Información inválida</span>
+                        <span *ngIf="customerForm.controls['c_address'].errors?.['required']">Campo obligatorio</span>
+                        <span *ngIf="customerForm.controls['c_address'].errors?.['pattern']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -100,3 +100,5 @@
         {{action}}
     </button>
 </mat-dialog-actions>
+
+

@@ -25,3 +25,4 @@ import { EditInvoiceStatusComponent } from './components/edit-invoice-status/edi
   ]
 })
 export class InvoiceModule { }
+

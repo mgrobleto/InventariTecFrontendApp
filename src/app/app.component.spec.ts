@@ -28,3 +28,4 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('.content span')?.textContent).toContain('tecnorefill app is running!');
   });
 });
+

@@ -180,10 +180,11 @@ export class CustomersComponent {
           swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Algo salió mal!',
+            text: 'No pudimos completar la acción.',
             footer: this.responseMessage
           })
       }
     );
   }
 }
+

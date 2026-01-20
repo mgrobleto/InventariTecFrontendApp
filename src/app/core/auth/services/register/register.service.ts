@@ -25,3 +25,4 @@ export class RegisterService {
     return this.httpClient.post<any>(this.apiUrl + '/user/register-user-with-business/', {user, business},  httpOptions)
   }
 }
+

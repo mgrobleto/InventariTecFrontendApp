@@ -20,7 +20,7 @@
                 <input matInput type="text" formControlName="name" placeholder="Nombre*" required>
                 <mat-icon matPrefix>category</mat-icon>
                 <mat-error *ngIf="productCategoryForm.controls['name'].touched && productCategoryForm.controls['name'].invalid">
-                    <span *ngIf="productCategoryForm.controls['name'].errors?.['required']">Este campo es requerido</span>
+                    <span *ngIf="productCategoryForm.controls['name'].errors?.['required']">Campo obligatorio</span>
                     <span *ngIf="productCategoryForm.controls['name'].errors?.['pattern']">Información invalida</span>
                 </mat-error>
             </mat-form-field>
@@ -39,3 +39,5 @@
         {{action}}
     </button>
 </mat-dialog-actions>
+
+

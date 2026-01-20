@@ -13,6 +13,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatDialogModule} from '@angular/material/dialog'; 
 import { ConfirmationDialog } from './components/confirmation-dialog/confirmation-dialog.component';
+import { SnackbarCardComponent } from './components/snackbar-card/snackbar-card.component';
 import {MatSelectModule} from '@angular/material/select'; 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -31,6 +32,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 @NgModule({
   declarations: [
     ConfirmationDialog,
+    SnackbarCardComponent,
   ],
   imports: [
     CommonModule,
@@ -96,3 +98,4 @@ import { TextFieldModule } from '@angular/cdk/text-field';
   ]
 })
 export class SharedModule { }
+

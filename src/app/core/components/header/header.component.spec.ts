@@ -22,3 +22,4 @@ fixture = TestBed.createComponent(HeaderComponent);
     expect(component).toBeTruthy();
   });
 });
+

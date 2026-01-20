@@ -57,3 +57,4 @@ export class ProductCategorieService {
     return this.httpClient.delete(this.apiUrl + '/products_category/delete-product-category/', httpOptions);
   }
 }
+

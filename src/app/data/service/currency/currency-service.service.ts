@@ -19,3 +19,4 @@ export class CurrencyService {
     return this.httpClient.get(this.apiUrl + '/api/currencies/');
   }
 }
+

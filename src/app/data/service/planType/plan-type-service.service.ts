@@ -18,3 +18,4 @@ export class PlanTypeService {
     return this.httpClient.get(this.apiUrl + '/api/plan-types/');
   }
 }
+

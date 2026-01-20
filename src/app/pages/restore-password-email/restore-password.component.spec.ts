@@ -24,3 +24,4 @@ fixture = TestBed.createComponent(RestorePasswordComponent);
     expect(component).toBeTruthy();
   });
 });
+

@@ -79,3 +79,4 @@ export class InvoiceSalesService {
     return this.httpClient.get<any>(this.apiUrl + '/sale/');
   }
 }
+

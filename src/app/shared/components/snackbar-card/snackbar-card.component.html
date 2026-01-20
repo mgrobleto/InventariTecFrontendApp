@@ -1,0 +1,13 @@
+<div class="snackbar-card" [ngClass]="data.type">
+  <div class="snackbar-icon" aria-hidden="true">
+    <span *ngIf="data.type === 'success'">✓</span>
+    <span *ngIf="data.type === 'error'">✕</span>
+  </div>
+
+  <div class="snackbar-title">{{ data.title }}</div>
+  <div class="snackbar-message">{{ data.message }}</div>
+
+  <button type="button" class="snackbar-action" (click)="close()">
+    {{ data.action }}
+  </button>
+</div>

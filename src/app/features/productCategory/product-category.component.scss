@@ -274,29 +274,6 @@
     }
 }
 
-// Status Select
-.status-select {
-    width: 140px;
-
-    ::ng-deep .mat-mdc-form-field {
-        .mdc-notched-outline {
-            .mdc-notched-outline__leading,
-            .mdc-notched-outline__notch,
-            .mdc-notched-outline__trailing {
-                border-color: #ddd !important;
-            }
-        }
-
-        &.mat-focused .mdc-notched-outline {
-            .mdc-notched-outline__leading,
-            .mdc-notched-outline__notch,
-            .mdc-notched-outline__trailing {
-                border-color: #1E488F !important;
-            }
-        }
-    }
-}
-
 .status-option {
     display: flex;
     align-items: center;

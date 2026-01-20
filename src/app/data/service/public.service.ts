@@ -16,3 +16,4 @@ export class PublicService {
     return this.http.get(this.api_url)
   }
 }
+

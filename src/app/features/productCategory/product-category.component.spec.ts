@@ -24,3 +24,4 @@ fixture = TestBed.createComponent(ProductCategoryComponent);
     expect(component).toBeTruthy();
   });
 });
+

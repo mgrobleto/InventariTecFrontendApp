@@ -164,7 +164,7 @@ export class ListProductsComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Algo salió mal!',
+          text: 'No pudimos completar la acción.',
           footer: this.responseMessage
         })
         //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
@@ -182,3 +182,4 @@ export class ListProductsComponent implements OnInit {
     this.router.navigate(['dashboard/products/addNewProduct'])
   }
 }
+

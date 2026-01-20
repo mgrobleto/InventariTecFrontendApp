@@ -22,3 +22,4 @@ fixture = TestBed.createComponent(ListInvoicesComponent);
     expect(component).toBeTruthy();
   });
 });
+

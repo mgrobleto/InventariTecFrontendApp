@@ -19,13 +19,14 @@ import { SettingsComponent } from '../../pages/settings/settings.component';
 import { AddEditProductCategoryFormComponent } from 'src/app/features/productCategory/components/add-edit-form/add-edit-productCategory-form.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
-  text:'Cargando...',
-  textColor: '#0e073e',
+  text: 'Cargando, por favor espera...',
+  textColor: '#F6F7ED',
   textPosition: 'center-center',
-  bgsColor: '#7b1fa2',
-  fgsColor: '#7b1fa2',
+  overlayColor: 'rgba(0, 31, 63, 0.45)',
+  bgsColor: '#1E488F',
+  fgsColor: '#74C365',
   fgsType: SPINNER.circle,
-  fgsSize: 100,
+  fgsSize: 90,
   hasProgressBar: false,
 }
 
@@ -52,3 +53,4 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   ]
 })
 export class DashboardModule { }
+
