@@ -85,12 +85,6 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Almacén</mat-label>
-            <mat-select [(value)]="selectedStore" panelClass="custom-select-panel">
-                <mat-option value="all">Todos los Almacenes</mat-option>
-            </mat-select>
-        </mat-form-field>
     </div>
 
     <!-- Products Table -->
@@ -222,19 +216,19 @@
                                         <span
                                             class="status-chip"
                                             [ngClass]="getProductStatus(element) === 'active' ? 'status-chip--active' : 'status-chip--inactive'">
-                                            <span class="status-dot"></span>
+                                            <span class="status-checkbox"></span>
                                             {{ getProductStatus(element) === 'active' ? 'Activo' : 'Inactivo' }}
                                         </span>
                                     </mat-select-trigger>
                                     <mat-option value="active">
                                         <span class="status-chip status-chip--active">
-                                            <span class="status-dot"></span>
+                                            <span class="status-checkbox"></span>
                                             Activo
                                         </span>
                                     </mat-option>
                                     <mat-option value="inactive">
                                         <span class="status-chip status-chip--inactive">
-                                            <span class="status-dot"></span>
+                                            <span class="status-checkbox"></span>
                                             Inactivo
                                         </span>
                                     </mat-option>

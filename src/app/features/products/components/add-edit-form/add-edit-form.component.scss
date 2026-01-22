@@ -206,13 +206,6 @@
         }
     }
     
-    // Ensure floating label is hidden since we use custom label outside
-    .mdc-floating-label {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-    
     // Remove padding from mat-hint
     .mat-mdc-form-field-hint-wrapper {
         padding: 0 !important;

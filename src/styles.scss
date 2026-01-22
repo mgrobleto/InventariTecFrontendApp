@@ -120,6 +120,10 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.mat-mdc-paginator-container {
+    margin-top: 1rem;
+}
+
 /* Status chip styles */
 .status-chip {
     display: inline-flex;
@@ -133,20 +137,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     line-height: 1;
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
 .status-chip--active {
     background: #E8F5E9;
     color: #2E7D32;
-}
-
-.status-chip--active .status-dot {
-    background: #43A047;
 }
 
 .status-chip--inactive {
@@ -154,8 +147,91 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     color: #D32F2F;
 }
 
-.status-chip--inactive .status-dot {
-    background: #EF5350;
+.status-checkbox {
+    width: 1em;
+    height: 1em;
+    border-radius: 4px;
+    border: 2px solid currentColor;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    position: relative;
+}
+
+.status-chip--active .status-checkbox {
+    background: #43A047;
+    border-color: #2E7D32;
+}
+
+.status-chip--active .status-checkbox::after {
+    content: '';
+    width: 0.7em;
+    height: 0.7em;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' d='M9.29 16.29L4.7 11.7a1 1 0 0 1 1.41-1.41l3.18 3.17 7.09-7.09a1 1 0 0 1 1.41 1.41l-7.8 7.8a1 1 0 0 1-1.41 0z'/%3E%3C/svg%3E");
+}
+
+.status-chip--inactive .status-checkbox {
+    border-color: #D32F2F;
+}
+
+/* Status select in tables: no outline box */
+.status-select {
+    width: auto;
+    min-width: 120px;
+
+    .mat-mdc-text-field-wrapper {
+        background: transparent !important;
+        padding: 0 !important;
+        height: auto !important;
+    }
+
+    .mdc-text-field {
+        padding: 0 !important;
+        min-height: auto !important;
+        height: auto !important;
+        align-items: center;
+    }
+
+    .mdc-notched-outline {
+        display: none !important;
+    }
+
+    .mat-mdc-form-field-infix {
+        padding: 0 !important;
+        min-height: auto !important;
+    }
+
+    .mat-mdc-form-field-flex {
+        padding: 0 !important;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+    }
+
+    .mat-mdc-select-trigger {
+        padding: 0 !important;
+    }
+
+    .mat-mdc-select-value-text {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .mat-mdc-select-arrow {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+    }
+
+    .cdk-overlay-origin {
+        width: fit-content !important;
+    }
 }
 
 /* Global form-field alignment and size */
@@ -245,6 +321,77 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
             color: #1E488F !important;
         }
     }
+}
+
+/* Align delete column cells with header */
+.mat-column-Eliminar {
+    text-align: center;
+}
+
+.mat-mdc-header-cell.mat-column-Eliminar,
+.mat-mdc-cell.mat-column-Eliminar {
+    justify-content: center;
+}
+
+.mat-mdc-header-cell.mat-column-Editar,
+.mat-mdc-cell.mat-column-Editar,
+.mat-mdc-header-cell.mat-column-Eliminar,
+.mat-mdc-cell.mat-column-Eliminar {
+    flex: 0 0 120px;
+    width: 120px;
+}
+
+/* Prevent action columns from wrapping to the next line */
+.mat-mdc-header-row,
+.mat-mdc-row {
+    flex-wrap: nowrap !important;
+}
+
+.mat-mdc-table {
+    min-width: max-content;
+}
+
+/* Keep top bars visible and paginator reachable */
+.customers-container,
+.suppliers-container,
+.products-container,
+.categories-container,
+.invoices-list-container {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 64px);
+    overflow: hidden;
+}
+
+.customers-top-bar,
+.suppliers-top-bar,
+.products-top-bar,
+.categories-top-bar,
+.invoices-top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+.customers-table-container,
+.suppliers-table-container,
+.products-table-container,
+.categories-table-container,
+.invoices-table-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.customers-table-container .responsive-table,
+.suppliers-table-container .responsive-table,
+.products-table-container .responsive-table,
+.categories-table-container .responsive-table,
+.invoices-table-container .responsive-table {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
 }
 
 /* body {

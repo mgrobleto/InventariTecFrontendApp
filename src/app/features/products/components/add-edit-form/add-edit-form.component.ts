@@ -137,8 +137,7 @@ export class AddEditFormComponent implements OnInit {
       stock: [null, [Validators.required, Validators.min(0), this.integerValidator()]],
       cost_price: [null, [Validators.required, Validators.min(0), this.decimalValidator(2)]],
       sale_price: [null, [Validators.required, Validators.min(0), this.decimalValidator(2)]],
-      category: [null, [Validators.required]],
-      status: ['active', [Validators.required]]
+      category: [null, [Validators.required]]
     });
 
     // Set dialog action and title
@@ -155,8 +154,7 @@ export class AddEditFormComponent implements OnInit {
           stock: productData.stock || null,
           cost_price: productData.cost_price || null,
           sale_price: productData.sale_price || null,
-          category: productData.category?.id || productData.category || null,
-          status: productData.status || 'active'
+          category: productData.category?.id || productData.category || null
         });
       }
     } else {
@@ -207,8 +205,7 @@ export class AddEditFormComponent implements OnInit {
       sale_price : formData.sale_price,
       category : categoryID,
       business: businessId,
-      with_iva : true,
-      status: formData.status
+      with_iva : true
     }
     console.log(data);
 
@@ -254,8 +251,7 @@ export class AddEditFormComponent implements OnInit {
       stock: formData.stock,
       cost_price : formData.cost_price,
       sale_price : formData.sale_price,
-      category : categoryID,
-      status: formData.status
+      category : categoryID
     }
 
     this._productService.updateProduct(data).subscribe(

@@ -279,28 +279,26 @@
     align-items: center;
     gap: 0.5rem;
 
-    .status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
+    .status-checkbox {
+        width: 0.85rem;
+        height: 0.85rem;
+        border-radius: 4px;
+        border: 2px solid #1E488F;
         display: inline-block;
 
         &.active {
             background-color: #74C365;
+            border-color: #2E7D32;
         }
 
         &.inactive {
-            background-color: #999;
+            border-color: #999;
         }
     }
 }
 
 // Action Cell
 .action-cell {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: center;
 
     .edit-button {
         background-color: #1E488F;

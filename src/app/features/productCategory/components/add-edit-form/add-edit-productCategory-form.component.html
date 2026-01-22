@@ -26,37 +26,6 @@
             </mat-form-field>
         </div>
 
-        <div class="form-field-wrapper">
-            <label class="field-label">Estado<span class="required-asterisk">*</span></label>
-            <mat-form-field appearance="outline">
-                <mat-icon matPrefix>toggle_on</mat-icon>
-                <mat-select formControlName="status" panelClass="custom-select-panel" required>
-                    <mat-select-trigger>
-                        <span
-                            class="status-chip"
-                            [ngClass]="productCategoryForm.value.status === 'active' ? 'status-chip--active' : 'status-chip--inactive'">
-                            <span class="status-dot"></span>
-                            {{ productCategoryForm.value.status === 'active' ? 'Activo' : 'Inactivo' }}
-                        </span>
-                    </mat-select-trigger>
-                    <mat-option value="active">
-                        <span class="status-chip status-chip--active">
-                            <span class="status-dot"></span>
-                            Activo
-                        </span>
-                    </mat-option>
-                    <mat-option value="inactive">
-                        <span class="status-chip status-chip--inactive">
-                            <span class="status-dot"></span>
-                            Inactivo
-                        </span>
-                    </mat-option>
-                </mat-select>
-                <mat-error *ngIf="productCategoryForm.controls['status'].touched && productCategoryForm.controls['status'].invalid">
-                    <span *ngIf="productCategoryForm.controls['status'].errors?.['required']">Campo obligatorio</span>
-                </mat-error>
-            </mat-form-field>
-        </div>
     </form>
 </mat-dialog-content>
 
