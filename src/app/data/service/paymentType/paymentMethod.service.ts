@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpBackend } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
 
@@ -10,8 +10,7 @@ export class PaymentMethodService {
 
   apiUrl = environment.apiUrl;
 
-  constructor(private httpClient: HttpClient, handler : HttpBackend) { 
-    this.httpClient = new HttpClient(handler);
+  constructor(private httpClient: HttpClient) { 
     /* this.apiUrl = this.envService.apiUrl */
   }
 

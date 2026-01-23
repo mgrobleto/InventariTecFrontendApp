@@ -245,8 +245,8 @@
     gap: 1rem;
 
     .customer-icon-placeholder {
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
         border-radius: 8px;
         background: linear-gradient(135deg, #1E488F 0%, #00804C 100%);
         display: flex;
@@ -256,9 +256,9 @@
         flex-shrink: 0;
 
         mat-icon {
-            font-size: 24px;
-            width: 24px;
-            height: 24px;
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
         }
     }
 
@@ -272,6 +272,12 @@
             font-size: 0.95rem;
         }
     }
+}
+
+// Match Apellido font size with customer name
+.customers-table .mat-column-Apellido b {
+    font-size: 0.95rem;
+    color: #001F3F;
 }
 
 // Action Cell

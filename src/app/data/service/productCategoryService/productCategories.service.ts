@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpBackend } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
@@ -13,10 +13,8 @@ export class ProductCategorieService {
   
   constructor (
     private httpClient : HttpClient, 
-    handler : HttpBackend , 
     private authService : AuthService,
   ) {
-    this.httpClient = new HttpClient(handler);
     this.token = this.authService.getAuthToken();
 /*     this.apiUrl = this.envService.apiUrl
  */  }

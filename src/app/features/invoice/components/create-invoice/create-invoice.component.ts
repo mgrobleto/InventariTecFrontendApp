@@ -108,7 +108,7 @@ export class CreateInvoiceComponent implements OnInit {
       customer_name: [null,[Validators.required]],
       //phoneNumber: [null,[Validators.required]],
       //sub_total: [null,[Validators.required]],
-      iva: [null,[Validators.required]],
+      iva: [0],
       total: [null,[Validators.required]],
       payment_type: [null,[Validators.required]],
       product: [null,[Validators.required]],
@@ -116,6 +116,7 @@ export class CreateInvoiceComponent implements OnInit {
       cost_price_at_time: [null,[Validators.required]],
       quantity: [null,[Validators.required]],
       sale_price_at_time: [null,[Validators.required]],
+      description: [''],
       currency: ['USD'], // Add currency field
     })
 
@@ -134,11 +135,18 @@ export class CreateInvoiceComponent implements OnInit {
     //this.getMonth(); */
 
 
-    this.invoiceForm.controls['iva'].setValue(0.15); // el iva se establece en un valor de 15.0
+    this.invoiceForm.controls['iva'].setValue(0);
 
     this.invoiceForm.controls['invoice_date'].setValue(
       this.datePipe.transform(myDate, "YYYY-MM-dd")
     );
+
+    this.invoiceForm.get('quantity')?.valueChanges.subscribe(() => {
+      this.updateLineSubtotal();
+    });
+    this.invoiceForm.get('cost_price_at_time')?.valueChanges.subscribe(() => {
+      this.updateLineSubtotal();
+    });
 
     this.invoiceForm.valueChanges.subscribe(() => {
       this.validateSubmit();
@@ -277,14 +285,14 @@ export class CreateInvoiceComponent implements OnInit {
     var temp = this.invoiceForm.controls['quantity'].value;
     
     if(temp > 0 && temp <= this.productStockQuantity){
-      this.invoiceForm.controls['sale_price_at_time'].setValue(this.invoiceForm.controls['quantity'].value * this.invoiceForm.controls['cost_price_at_time'].value);
+      this.updateLineSubtotal();
     }
     else if (temp > this.productStockQuantity) {
       this._coreService.openFailureSnackBar(GlobalConstants.stock, GlobalConstants.error);
     }
     else if (temp != '') {
       this.invoiceForm.controls['quantity'].setValue('1');
-      this.invoiceForm.controls['sale_price_at_time'].setValue(this.invoiceForm.controls['quantity'].value * this.invoiceForm.controls['cost_price_at_time'].value);
+      this.updateLineSubtotal();
     } 
 
     // establece la cantidad de productos que va a comprar
@@ -292,6 +300,13 @@ export class CreateInvoiceComponent implements OnInit {
 
     console.log(this.productQuantity);
 
+  }
+
+  private updateLineSubtotal(): void {
+    const quantity = Number(this.invoiceForm.controls['quantity']?.value || 0);
+    const price = Number(this.invoiceForm.controls['cost_price_at_time']?.value || 0);
+    const subtotal = quantity * price;
+    this.invoiceForm.controls['sale_price_at_time']?.setValue(subtotal);
   }
 
   validateAddProduct() {
@@ -305,36 +320,23 @@ export class CreateInvoiceComponent implements OnInit {
 
   addProductToSaleList() {
     var invoiceDetailFormData = this.invoiceForm.value;
-    var temp = this.invoiceForm.controls['iva'].value;
-    //var twoPlaces = Number.toFied(2)x;
 
     var productName = this.dataSource.find((e: {product : any}) => e.product === invoiceDetailFormData.product);
     //console.log(productName);
 
     if( productName ===  undefined && this.productQuantity <= this.productStockQuantity) {
 
-      this.totalAmount = this.totalAmount + invoiceDetailFormData.sale_price_at_time;
-      var totalAmountValue = this.totalAmount.toFixed(2);
-      this.ivatMount = this.totalAmount * temp;
-
-      //var iva = this.ivatMount.toFixed(2);
-      //this.ivatMount.toFixed(2);
-
-      this.netAmount = parseFloat(totalAmountValue) + this.ivatMount;
-
-      var netTotal = this.netAmount.toFixed(2);
-      this.invoiceForm.controls['sale_price_at_time'].setValue(totalAmountValue);
-      this.invoiceForm.controls['total'].setValue(netTotal);
-
       this.dataSource.push({
         //id: invoiceDetailFormData.product,
         product:invoiceDetailFormData.product, 
         quantity:+invoiceDetailFormData.quantity, 
         cost_price_at_time:invoiceDetailFormData.cost_price_at_time, 
-        sale_price_at_time:invoiceDetailFormData.sale_price_at_time
+        sale_price_at_time:invoiceDetailFormData.sale_price_at_time,
+        description: invoiceDetailFormData.description || ''
       })
 
       this.dataSource = [...this.dataSource]
+      this.recalculateTotals();
       //this._coreService.openSuccessSnackBar(GlobalConstants.productAdded, "con exito");
       //this.productQuantity = 0;
 
@@ -397,12 +399,20 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   handleDeleteAction(value: any, element: any) {
-    this.totalAmount = this.totalAmount - element.sale_price_at_time;
     this.dataSource.splice(value, 1);
     this.dataSource = [...this.dataSource]
-    this.invoiceForm.controls['sale_price_at_time'].reset();
-    this.invoiceForm.controls['total'].reset();
+    this.recalculateTotals();
     this.validateSubmit();
+  }
+
+  private recalculateTotals(): void {
+    this.totalAmount = this.dataSource.reduce((sum: number, item: any) => sum + (item.sale_price_at_time || 0), 0);
+    const totalAmountValue = Number(this.totalAmount.toFixed(2));
+    this.ivatMount = 0;
+    this.netAmount = totalAmountValue;
+    this.invoiceForm.controls['sale_price_at_time'].setValue(totalAmountValue);
+    this.invoiceForm.controls['total'].setValue(totalAmountValue);
+    this.invoiceForm.controls['iva'].setValue(0);
   }
 
   submitAction() {
@@ -431,7 +441,7 @@ export class CreateInvoiceComponent implements OnInit {
       invoice_number : billFormData.invoice_number,
       invoice_date : billFormData.invoice_date,
       sub_total:billFormData.sale_price_at_time,
-      iva: billFormData.iva,
+      iva: 0,
       total: billFormData.total,
       customer: billFormData.customer_name,
       business: businessId,
@@ -486,7 +496,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   getClientAddress(): string {
     if (this.customerDetail && this.customerDetail[0]) {
-      return this.customerDetail[0].c_adress || '';
+      return this.customerDetail[0].c_adress || this.customerDetail[0].c_address || this.customerDetail[0].address || '';
     }
     return '';
   }

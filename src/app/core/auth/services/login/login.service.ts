@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient, HttpBackend} from '@angular/common/http';
 import { map } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
@@ -72,14 +73,17 @@ export class LoginService {
   }
 
   logOut() {
-    this.authService.logout().subscribe(() => {
-      localStorage.removeItem('currentUser');
-      console.log(localStorage.getItem('currentUser'))
-      console.log('Logged out successfully');
-      this.router.navigate(['/login']);
-    }, (error) => {
-      console.log('Log out failed!' + error);
-    })
+    this.authService.logout()
+      .pipe(
+        finalize(() => {
+          this.router.navigate(['/login']);
+        })
+      )
+      .subscribe(() => {
+        console.log('Logged out successfully');
+      }, (error) => {
+        console.log('Log out failed!' + error);
+      });
   } 
 }
 

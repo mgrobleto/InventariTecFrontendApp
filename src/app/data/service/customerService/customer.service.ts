@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpBackend } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
@@ -13,10 +13,8 @@ export class CustomerService {
   
   constructor (
     private httpClient : HttpClient, 
-    handler : HttpBackend ,
     private authService: AuthService,
   ) {
-    this.httpClient = new HttpClient(handler);
     this.token = this.authService.getAuthToken();
     /* this.apiUrl = this.envService.apiUrl */
   }

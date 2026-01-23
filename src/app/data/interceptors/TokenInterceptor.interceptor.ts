@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../core/auth/services/auth.service';
 import { LoginService } from 'src/app/core/auth/services/login/login.service';
 
@@ -14,8 +15,6 @@ export class TokenInterceptorService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
-    //const token  = this.authService.getAuthToken();
-
     const token = localStorage.getItem('token');
 
     if (token) {
@@ -24,20 +23,27 @@ export class TokenInterceptorService implements HttpInterceptor {
           Authorization: `Token ${token}`,
         },
       });
-
-      return next.handle(request)
-    } else {
-      return next.handle(request);
     }
-   /*  return next.handle(request).pipe(
-      catchError((err) => {
-        if (err.status === 401) {
+
+    return next.handle(request).pipe(
+      catchError((err: HttpErrorResponse) => {
+        const errorDetail = err.error?.detail || err.error?.message || '';
+        const errorString = typeof err.error === 'string' ? err.error : JSON.stringify(err.error || {});
+        const isInvalidToken =
+          err.status === 401 ||
+          err.status === 403 ||
+          (errorDetail && errorDetail.toString().toLowerCase().includes('invalid token')) ||
+          (errorString && errorString.toLowerCase().includes('invalid token'));
+
+        if (isInvalidToken) {
+          this.authService.clearAuthToken();
           this.loginService.logOut();
         }
-        const error = err.error.message || err.statusText;
-        return throwError(error);
+
+        return throwError(() => err);
       })
-    ); */
+    );
   }
 }
+
 

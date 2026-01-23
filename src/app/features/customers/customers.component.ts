@@ -58,6 +58,14 @@ export class CustomersComponent {
   getCustomerStatus(customer: any): 'active' | 'inactive' {
     return customer?.status === 'inactive' ? 'inactive' : 'active';
   }
+
+  updateStatus(customer: any, status: 'active' | 'inactive'): void {
+    customer.status = status;
+    this._coreService.openSuccessSnackBar(
+      `Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`,
+      'success'
+    );
+  }
   
 
   openEditClientForm(data : any) {

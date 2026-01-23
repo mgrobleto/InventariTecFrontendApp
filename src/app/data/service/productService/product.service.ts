@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders, HttpBackend, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 @Injectable({
@@ -14,10 +14,8 @@ export class ProductService {
 
   constructor(
     private httpClient : HttpClient, 
-    handler : HttpBackend ,
     private authService : AuthService,
   ) {
-    this.httpClient = new HttpClient(handler);
     this.token = this.authService.getAuthToken();
 /*     this.apiUrl = this.envService.apiUrl
  */  }

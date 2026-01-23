@@ -61,6 +61,14 @@ export class SuppliersComponent {
   getSupplierStatus(supplier: any): 'active' | 'inactive' {
     return supplier?.status === 'inactive' ? 'inactive' : 'active';
   }
+
+  updateStatus(supplier: any, status: 'active' | 'inactive'): void {
+    supplier.status = status;
+    this._coreService.openSuccessSnackBar(
+      `Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`,
+      'success'
+    );
+  }
   
 
   openEditClientForm(data : any) {

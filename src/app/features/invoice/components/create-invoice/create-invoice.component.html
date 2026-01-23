@@ -41,7 +41,7 @@
                     <div class="form-row" *ngIf="customerDetail && customerDetail[0]">
                         <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Dirección</mat-label>
-                            <input matInput [value]="customerDetail[0].c_adress || 'Ingrese la dirección del cliente'" readonly>
+                            <input matInput [value]="getClientAddress() || 'Ingrese la dirección del cliente'" readonly>
                         </mat-form-field>
                     </div>
 
@@ -93,7 +93,7 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" class="flex-grow">
-                            <mat-label>Descripción</mat-label>
+                            <mat-label>Producto</mat-label>
                             <mat-select formControlName="product" (selectionChange)="getProductDetails($event.value)" [disabled]="!productsByCategorySelected || productsByCategorySelected.length === 0">
                                 <mat-option *ngFor="let product of productsByCategorySelected" [value]="product.id">
                                     {{product.name}}
@@ -104,9 +104,16 @@
                     </div>
 
                     <div class="form-row">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Descripción</mat-label>
+                            <input matInput formControlName="description" placeholder="Opcional">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
                         <mat-form-field appearance="outline">
                             <mat-label>Cantidad</mat-label>
-                            <input matInput type="number" formControlName="quantity" required (keyup)="setQuantity($event)" min="1">
+                            <input matInput type="number" formControlName="quantity" required (input)="setQuantity($event)" min="1">
                             <mat-error *ngIf="invoiceForm.controls['quantity'].touched && invoiceForm.controls['quantity'].invalid">
                                 <span *ngIf="invoiceForm.controls['quantity'].errors?.['required']">Debe rellenar este campo</span>
                             </mat-error>
@@ -126,15 +133,6 @@
                     </div>
 
                     <div class="form-row">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Impuesto</mat-label>
-                            <mat-select formControlName="iva">
-                                <mat-option [value]="0">0%</mat-option>
-                                <mat-option [value]="0.15">15%</mat-option>
-                                <mat-option [value]="0.18">18%</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
                         <mat-form-field appearance="outline" class="flex-grow">
                             <mat-label>Subtotal</mat-label>
                             <input matInput formControlName="sale_price_at_time" readonly>
@@ -271,9 +269,12 @@
                         <tbody>
                             <tr *ngFor="let item of dataSource">
                                 <td>
-                                    <span *ngFor="let prod of productsByCategorySelected">
-                                        <span *ngIf="prod.id === item.product">{{prod.name}}</span>
-                                    </span>
+                                    <span *ngIf="item.description; else productName">{{item.description}}</span>
+                                    <ng-template #productName>
+                                        <span *ngFor="let prod of productsByCategorySelected">
+                                            <span *ngIf="prod.id === item.product">{{prod.name}}</span>
+                                        </span>
+                                    </ng-template>
                                 </td>
                                 <td>{{item.quantity}}</td>
                                 <td>C${{item.sale_price_at_time | number:'1.2-2'}}</td>
@@ -287,14 +288,6 @@
                     <div class="summary-row">
                         <span>Subtotal:</span>
                         <span>C$ {{totalAmount | number:'1.2-2'}}</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Tasa de impuesto:</span>
-                        <span>{{(invoiceForm.get('iva')?.value * 100) || 0}}%</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Impuesto:</span>
-                        <span>C$ {{ivatMount | number:'1.2-2'}}</span>
                     </div>
                     <div class="summary-row total-row">
                         <span>Total:</span>

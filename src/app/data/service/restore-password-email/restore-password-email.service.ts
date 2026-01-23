@@ -1,4 +1,4 @@
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
@@ -10,10 +10,8 @@ export class RestorePasswordEmailService {
   apiUrl = environment.apiUrl;
 
   constructor(
-    private httpClient : HttpClient,
-    handler : HttpBackend,
+    private httpClient : HttpClient
   ) {
-    this.httpClient = new HttpClient(handler);
 /*     this.apiUrl = this.envService.apiUrl
  */  }
 
