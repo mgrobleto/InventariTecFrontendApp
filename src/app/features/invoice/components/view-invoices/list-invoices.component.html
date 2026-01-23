@@ -86,11 +86,11 @@
         <mat-form-field appearance="outline" class="filter-field">
             <mat-label>Fecha</mat-label>
             <input
-                matInput 
+                matInput
                 (dateChange)="searchByDate($event)"
-                [matDatepicker]="picker" 
+                [matDatepicker]="picker"
                 formControlName="dateSelected">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     </form>

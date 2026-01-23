@@ -103,15 +103,14 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   searchByDate(date: any) {
-
-    //var dateSelected = this.searchOptionsForm.controls['dateSelected'].value;
-    date.value = this.datePipe.transform(date.value, "YYYY-MM-dd");
+    const dateValue = date?.value ?? date;
+    const formattedDate = this.datePipe.transform(dateValue, "YYYY-MM-dd");
 
     //console.log(date);
 
     this._billService.getAllInvoices().pipe(
       map( (bill : any) => {
-      return bill.data.filter((bill : any) => bill.created_at === date.value)
+      return bill.data.filter((bill : any) => bill.created_at === formattedDate)
     })).subscribe(
       (response: any) => {
         this.dataSource.data = response;

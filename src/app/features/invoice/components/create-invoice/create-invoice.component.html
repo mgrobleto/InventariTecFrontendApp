@@ -55,7 +55,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>Fecha de Vencimiento</mat-label>
                             <input matInput [matDatepicker]="dueDatePicker" formControlName="invoice_date" readonly>
-                            <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #dueDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
@@ -240,7 +240,13 @@
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Vence:</span>
-                        <span class="detail-value">{{invoiceForm.get('invoice_date')?.value || '---'}}</span>
+                        <span class="detail-value">
+                            {{ invoiceForm.get('invoice_date')?.value | date:'dd MMM yyyy' }}
+                        </span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Fecha de creación:</span>
+                        <span class="detail-value">{{ currentDate | date:'dd MMM yyyy' }}</span>
                     </div>
                 </div>
 

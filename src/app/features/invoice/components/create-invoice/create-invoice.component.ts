@@ -69,6 +69,7 @@ export class CreateInvoiceComponent implements OnInit {
   yearValue: any;
 
   isSubmitDisabled = true;
+  currentDate = new Date();
 
   constructor(
     private _fb : FormBuilder,
@@ -101,6 +102,7 @@ export class CreateInvoiceComponent implements OnInit {
   ngOnInit(): void {
 
     var myDate = new Date();
+    this.currentDate = myDate;
 
     this.invoiceForm = this._fb.group({
       invoice_number: [null, [Validators.required]],
@@ -137,9 +139,7 @@ export class CreateInvoiceComponent implements OnInit {
 
     this.invoiceForm.controls['iva'].setValue(0);
 
-    this.invoiceForm.controls['invoice_date'].setValue(
-      this.datePipe.transform(myDate, "YYYY-MM-dd")
-    );
+    this.invoiceForm.controls['invoice_date'].setValue(myDate);
 
     this.invoiceForm.get('quantity')?.valueChanges.subscribe(() => {
       this.updateLineSubtotal();
@@ -439,7 +439,7 @@ export class CreateInvoiceComponent implements OnInit {
 
     var invoiceData = {
       invoice_number : billFormData.invoice_number,
-      invoice_date : billFormData.invoice_date,
+      invoice_date : selectedDate,
       sub_total:billFormData.sale_price_at_time,
       iva: 0,
       total: billFormData.total,
