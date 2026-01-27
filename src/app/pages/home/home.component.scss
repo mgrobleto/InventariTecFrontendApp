@@ -1,6 +1,6 @@
 // Dashboard Container with more contrasting background
 .dashboard-container {
-    background: #ffffff;
+    background: var(--app-bg);
     min-height: 100vh;
     padding: 2rem;
     color: #001F3F;
@@ -27,15 +27,17 @@
 }
 
 .summary-card {
-    background: #ffffff;
+    background: var(--glass-card-bg);
     border-radius: 1rem;
     padding: 1.5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.1);
-    border: 1px solid #e0e0e0;
+    box-shadow: var(--glass-card-shadow);
+    border: 1px solid var(--glass-card-border);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
 
     &:hover {
         transform: translateY(-4px);
@@ -134,11 +136,13 @@
 
 // Chart Section
 .chart-section {
-    background: #ffffff;
+    background: var(--glass-card-bg);
     border-radius: 1rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.1);
-    border: 1px solid #e0e0e0;
+    box-shadow: var(--glass-card-shadow);
+    border: 1px solid var(--glass-card-border);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
 
     .section-header {
         margin-bottom: 1.5rem;
@@ -234,11 +238,13 @@
 
 // Balance Section
 .balance-section {
-    background: #ffffff;
+    background: var(--glass-card-bg);
     border-radius: 1rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.1);
-    border: 1px solid #e0e0e0;
+    box-shadow: var(--glass-card-shadow);
+    border: 1px solid var(--glass-card-border);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
 
     .section-header {
         margin-bottom: 1.5rem;
@@ -318,8 +324,11 @@
             align-items: center;
             gap: 1rem;
             padding: 0.75rem;
-            background: #f8f9fa;
+            background: var(--glass-card-bg);
             border-radius: 0.5rem;
+            border: 1px solid var(--glass-card-border);
+            backdrop-filter: blur(var(--glass-card-blur));
+            -webkit-backdrop-filter: blur(var(--glass-card-blur));
 
             .legend-color {
                 width: 20px;

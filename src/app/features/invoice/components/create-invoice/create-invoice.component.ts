@@ -69,7 +69,7 @@ export class CreateInvoiceComponent implements OnInit {
   yearValue: any;
 
   isSubmitDisabled = true;
-  currentDate = new Date();
+  previewLogoUrl = '';
 
   constructor(
     private _fb : FormBuilder,
@@ -100,9 +100,9 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.previewLogoUrl = new URL('assets/tecnorefill-logo.png', document.baseURI).toString();
 
     var myDate = new Date();
-    this.currentDate = myDate;
 
     this.invoiceForm = this._fb.group({
       invoice_number: [null, [Validators.required]],
@@ -119,7 +119,7 @@ export class CreateInvoiceComponent implements OnInit {
       quantity: [null,[Validators.required]],
       sale_price_at_time: [null,[Validators.required]],
       description: [''],
-      currency: ['USD'], // Add currency field
+      currency: ['NIO'], // Add currency field
     })
 
     this.ngxService.start();
@@ -138,8 +138,12 @@ export class CreateInvoiceComponent implements OnInit {
 
 
     this.invoiceForm.controls['iva'].setValue(0);
+    this.invoiceForm.controls['currency'].setValue('NIO');
+    this.invoiceForm.controls['currency'].disable();
 
-    this.invoiceForm.controls['invoice_date'].setValue(myDate);
+    this.invoiceForm.controls['invoice_date'].setValue(
+      this.datePipe.transform(myDate, "YYYY-MM-dd")
+    );
 
     this.invoiceForm.get('quantity')?.valueChanges.subscribe(() => {
       this.updateLineSubtotal();
@@ -177,17 +181,34 @@ export class CreateInvoiceComponent implements OnInit {
     dialogConfig.data = {
       action:"Agregar"
     };
-    dialogConfig.width = "500px";
+    dialogConfig.width = "650px";
+    dialogConfig.panelClass = "customer-dialog";
     const dialogRef = this.dialog.open(AddEditCustomerFormComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
+
+    dialogRef.componentInstance.onAddCustomer.subscribe((createdCustomer: any) => {
+      this.getCustomers(createdCustomer);
+    });
   }
 
-  getCustomers() {
+  getCustomers(selectedCustomer?: any) {
     this._customerService.getAllCustomers().subscribe(
       (resp) => {
         this.customers = resp.data;
+        if (selectedCustomer) {
+          const selectedId = typeof selectedCustomer === 'object'
+            ? (selectedCustomer?.id || this.customers.find((customer: any) =>
+                customer.email === selectedCustomer?.email ||
+                customer.phone === selectedCustomer?.phone
+              )?.id)
+            : selectedCustomer;
+          if (selectedId) {
+            this.invoiceForm.controls['customer_name'].setValue(selectedId);
+            this.getCustomerInfo(selectedId);
+          }
+        }
       }, 
       (error) =>{
         console.log(error);
@@ -405,6 +426,21 @@ export class CreateInvoiceComponent implements OnInit {
     this.validateSubmit();
   }
 
+  updateCartItem(item: any): void {
+    const quantity = Number(item?.quantity || 0);
+    const safeQuantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+    if (safeQuantity !== quantity) {
+      item.quantity = safeQuantity;
+    }
+
+    const price = Number(item?.cost_price_at_time || 0);
+    item.sale_price_at_time = Number((safeQuantity * price).toFixed(2));
+
+    this.dataSource = [...this.dataSource];
+    this.recalculateTotals();
+    this.validateSubmit();
+  }
+
   private recalculateTotals(): void {
     this.totalAmount = this.dataSource.reduce((sum: number, item: any) => sum + (item.sale_price_at_time || 0), 0);
     const totalAmountValue = Number(this.totalAmount.toFixed(2));
@@ -439,7 +475,7 @@ export class CreateInvoiceComponent implements OnInit {
 
     var invoiceData = {
       invoice_number : billFormData.invoice_number,
-      invoice_date : selectedDate,
+      invoice_date : billFormData.invoice_date,
       sub_total:billFormData.sale_price_at_time,
       iva: 0,
       total: billFormData.total,

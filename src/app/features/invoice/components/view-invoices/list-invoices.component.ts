@@ -103,14 +103,15 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   searchByDate(date: any) {
-    const dateValue = date?.value ?? date;
-    const formattedDate = this.datePipe.transform(dateValue, "YYYY-MM-dd");
+
+    //var dateSelected = this.searchOptionsForm.controls['dateSelected'].value;
+    date.value = this.datePipe.transform(date.value, "YYYY-MM-dd");
 
     //console.log(date);
 
     this._billService.getAllInvoices().pipe(
       map( (bill : any) => {
-      return bill.data.filter((bill : any) => bill.created_at === formattedDate)
+      return bill.data.filter((bill : any) => bill.created_at === date.value)
     })).subscribe(
       (response: any) => {
         this.dataSource.data = response;
@@ -276,7 +277,10 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       data: values,
       //items: this.items
     }
-    dialogConfig.width = '50%';
+    dialogConfig.width = 'auto';
+    dialogConfig.maxWidth = '95vw';
+    dialogConfig.maxHeight = '95vh';
+    dialogConfig.panelClass = 'invoice-details-dialog';
     //dialogConfig.height= 'auto';
     const dialogRef =  this.dialog.open(InvoiceDetailsComponent, dialogConfig);
     this.router.events.subscribe(() => {

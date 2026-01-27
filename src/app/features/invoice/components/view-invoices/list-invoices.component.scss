@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     padding: 1.5rem 2rem;
-    background: #F6F7ED;
+    background: var(--app-bg);
     min-height: calc(100vh - 64px); // Account for header/toolbar
     max-height: 100vh;
     overflow-y: auto;
@@ -16,10 +16,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
+    background: var(--glass-card-bg);
     padding: 1rem 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.1);
+    box-shadow: var(--glass-card-shadow);
+    border: 1px solid var(--glass-card-border);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
     flex-wrap: wrap;
     gap: 1rem;
 
@@ -60,7 +63,7 @@
                 border-radius: 8px;
                 font-size: 0.95rem;
                 transition: all 0.3s ease;
-                background: white;
+                background: rgba(255, 255, 255, 0.85);
 
                 &:focus {
                     outline: none;
@@ -148,10 +151,13 @@
 .filters-section {
     display: flex;
     gap: 1rem;
-    background: white;
+    background: var(--glass-card-bg);
     padding: 1rem 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.1);
+    box-shadow: var(--glass-card-shadow);
+    border: 1px solid var(--glass-card-border);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
     flex-wrap: wrap;
 
     .filter-field {
@@ -189,9 +195,12 @@
 
 // Invoices Table Container
 .invoices-table-container {
-    background: white;
+    background: var(--glass-card-bg);
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.1);
+    box-shadow: var(--glass-card-shadow);
+    border: 1px solid var(--glass-card-border);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
     overflow: hidden;
 
     .table-card {
@@ -342,30 +351,38 @@
 
 // Action Cell
 .action-cell {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
 
     .view-button {
-        background-color: #1E488F;
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        font-size: 0.875rem;
+        background: rgba(30, 72, 143, 0.08);
+        color: #1E488F;
+        height: 38px;
+        padding: 0 16px 0 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(30, 72, 143, 0.4);
         min-width: auto;
-        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        box-shadow: 0 6px 14px rgba(30, 72, 143, 0.12);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 
         &:hover {
-            background-color: #001F3F;
+            background: rgba(30, 72, 143, 0.16);
+            border-color: rgba(30, 72, 143, 0.6);
             transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(30, 72, 143, 0.3);
+            box-shadow: 0 10px 20px rgba(30, 72, 143, 0.18);
         }
 
         mat-icon {
-            font-size: 18px;
-            width: 18px;
-            height: 18px;
-            margin-right: 0.25rem;
+            font-size: 19px;
+            width: 19px;
+            height: 19px;
+            margin-right: 0;
+            color: currentColor;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: geometricPrecision;
         }
     }
 

@@ -76,8 +76,9 @@ export class AddEditCustomerFormComponent {
     (
       (response:any) => {
         console.log(data);
-        this._dialogRef.close();
-        this.onAddCustomer.emit();
+        const createdCustomer = response?.data || response?.customer || response || data;
+        this._dialogRef.close(createdCustomer);
+        this.onAddCustomer.emit(createdCustomer);
         swal.fire(
           '¡ Nuevo cliente agregado !',
           'Cliente: '+ formData.first_name + ' ' + formData.last_name,

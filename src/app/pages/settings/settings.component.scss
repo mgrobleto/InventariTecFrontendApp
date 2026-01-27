@@ -14,8 +14,12 @@
 }
 
 mat-card {
-    background-color: #eeeeff;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
+    background-color: var(--glass-card-bg);
+    box-shadow: var(--glass-card-shadow);
+    border: 1px solid var(--glass-card-border);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
+}
 
 .help-item {
     display: flex;

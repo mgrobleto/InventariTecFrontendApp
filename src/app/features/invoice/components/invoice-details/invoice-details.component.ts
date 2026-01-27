@@ -36,6 +36,7 @@ export class InvoiceDetailsComponent implements OnInit {
   data:any;
   productsData:any;
   paymentTypeName: any;
+  logoUrl = '';
 
   constructor(
     public _dialogRef : MatDialogRef<InvoiceDetailsComponent>,
@@ -46,6 +47,7 @@ export class InvoiceDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.logoUrl = new URL('assets/tecnorefill-logo.png', document.baseURI).toString();
     this.data = this.dialogData.data;
     this.getBillItemsDetails(this.data);
     //this.getPaymentTypeName(this.data);

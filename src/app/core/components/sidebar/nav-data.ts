@@ -5,7 +5,7 @@ export const navbarData : INavbarData[] = [
     {
         routeLink: 'home',
         icon: 'fal fa-home',
-        label: 'Dashboard',
+        label: 'Inicio',
     },
     {
         routeLink: 'invoice',
