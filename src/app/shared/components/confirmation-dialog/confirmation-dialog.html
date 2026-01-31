@@ -1,23 +1,22 @@
-<mat-toolbar>
-	<mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-		<span>Confirmacion</span>
-		<span class="spacer"></span>
-		<button class="mat-dialog-close" mat-icon-button mat-dialog-close>
-			<mat-icon>close</mat-icon>
+<div class="confirmation-card">
+	<button class="icon-button" mat-icon-button mat-dialog-close aria-label="Cerrar">
+		<mat-icon>close</mat-icon>
+	</button>
+
+	<div class="confirmation-icon" aria-hidden="true">
+		<mat-icon>warning</mat-icon>
+	</div>
+
+	<div class="confirmation-title">Confirmacion</div>
+	<div class="confirmation-message">Está seguro de {{ details.message }} ?</div>
+
+	<div class="confirmation-actions">
+		<button type="button" class="action-button confirm" (click)="handleChangeAction()">
+			{{ confirmButtonText }}
 		</button>
-	</mat-toolbar-row>
-</mat-toolbar>
-
-<mat-dialog-content class="mat-typography">
-	<h2>Está seguro de {{details.message}} ?</h2>
-</mat-dialog-content>
-
-<mat-dialog-actions align="end">
-	<button mat-raised-button color="primary" (click)="handleChangeAction()" tabindex="1">
-		<mat-icon>check_circle</mat-icon> Sí
-	</button>
-	<button mat-raised-button color="warn" mat-dialog-close tabindex="-1">
-		<mat-icon>cancel</mat-icon> Cancelar
-	</button>
-</mat-dialog-actions>
+		<button type="button" class="action-button cancel" mat-dialog-close>
+			{{ cancelButtonText }}
+		</button>
+	</div>
+</div>
 

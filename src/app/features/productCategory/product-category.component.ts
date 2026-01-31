@@ -143,6 +143,7 @@ export class ProductCategoryComponent {
       message: 'eliminar el ' + values.name +' producto',
       confirmation: true
     }
+    dialogConfig.panelClass = 'confirmation-dialog';
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
       this.ngxService.start();
@@ -200,4 +201,5 @@ export class ProductCategoryComponent {
     this._coreService.openSuccessSnackBar(`Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`, 'success');
   }
 }
+
 

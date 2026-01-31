@@ -255,6 +255,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
       message: 'eliminar el ' + values.name +' producto',
       confirmation: true
     }
+    dialogConfig.panelClass = 'confirmation-dialog';
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
       this.ngxService.start();

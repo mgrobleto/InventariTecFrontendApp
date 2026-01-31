@@ -3,7 +3,7 @@
     <div class="brand">
       <img class="brand-logo" [src]="logoUrl" alt="Tecnorefili" />
       <div class="brand-text">
-        <span class="brand-name">TECNOREFFIL</span>
+        <span class="brand-name">TECNOREFILL</span>
         <span class="brand-url">Polaris.com</span>
       </div>
     </div>
@@ -11,7 +11,7 @@
     <div class="invoice-meta">
       <span class="invoice-title">Detalle de Factura</span>
       <span class="invoice-id">Factura # {{data?.invoice_number}}</span>
-      <span class="invoice-date">Emitida: {{data?.invoice_date}}</span>
+      <span class="invoice-date">Emitida: {{ data?.invoice_date | date:'dd/MM/yy HH:mm' }}</span>
     </div>
 
     <button class="close-button" mat-icon-button mat-dialog-close aria-label="Cerrar">

@@ -1,16 +1,109 @@
-/* .mat-h6 .mat-headline, .mat-typography{
-    font-size: 30px;
-    font-weight: 400;
-} */
-
-h6 {
-    font-size: 35px;
+:host {
+    display: block;
 }
 
-.mat-toolbar {
-    margin: auto;
-    margin-bottom: 10px;
-    width: auto;
-    background: #29296a;
-    color: #FFFF;
+:host ::ng-deep .mat-mdc-dialog-container {
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.confirmation-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    padding: 28px 28px 24px;
+    min-width: 300px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.icon-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+.confirmation-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    background: #ef4444;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    box-shadow: 0 10px 20px rgba(239, 68, 68, 0.35);
+
+    mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+    }
+}
+
+.confirmation-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.confirmation-message {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #475569;
+    margin-bottom: 22px;
+}
+
+.confirmation-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-button {
+    border: none;
+    border-radius: 10px;
+    padding: 9px 22px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer !important;
+    min-width: 120px;
+}
+
+.action-button:hover,
+.icon-button:hover {
+    cursor: pointer !important;
+}
+
+.confirmation-card button,
+.confirmation-card .mat-mdc-button-base,
+.confirmation-card .icon-button {
+    cursor: pointer !important;
+}
+
+.confirmation-card button:hover,
+.confirmation-card .mat-mdc-button-base:hover,
+.confirmation-card .icon-button:hover {
+    cursor: pointer !important;
+}
+
+.action-button.confirm {
+    background: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+}
+
+.action-button.cancel {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
 }

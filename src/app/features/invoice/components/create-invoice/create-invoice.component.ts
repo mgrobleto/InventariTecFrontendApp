@@ -70,6 +70,7 @@ export class CreateInvoiceComponent implements OnInit {
 
   isSubmitDisabled = true;
   previewLogoUrl = '';
+  createdAt: Date = new Date();
 
   constructor(
     private _fb : FormBuilder,
@@ -95,14 +96,31 @@ export class CreateInvoiceComponent implements OnInit {
   } */
 
   getDGIInvoiceDetail() {
-    var invoiceNumber = this.authService.getUserInfo().business.invoice_number;
-    this.invoiceForm.controls['invoice_number'].setValue(invoiceNumber);
+    const userInfo = this.authService.getUserInfo();
+    const baseInvoiceNumber = Number(userInfo?.business?.invoice_number);
+    const businessId = userInfo?.business?.id;
+    const storageKey = businessId ? `invoice_counter_offset_${businessId}` : 'invoice_counter_offset_default';
+    const storedOffset = Number(localStorage.getItem(storageKey));
+    const safeBase = Number.isFinite(baseInvoiceNumber) ? baseInvoiceNumber : 1;
+    const safeOffset = Number.isFinite(storedOffset) ? storedOffset : 0;
+
+    this.invoiceForm.controls['invoice_number'].setValue(safeBase + safeOffset);
+  }
+
+  private incrementInvoiceCounter(): void {
+    const userInfo = this.authService.getUserInfo();
+    const businessId = userInfo?.business?.id;
+    const storageKey = businessId ? `invoice_counter_offset_${businessId}` : 'invoice_counter_offset_default';
+    const storedOffset = Number(localStorage.getItem(storageKey));
+    const safeOffset = Number.isFinite(storedOffset) ? storedOffset : 0;
+    localStorage.setItem(storageKey, String(safeOffset + 1));
   }
 
   ngOnInit(): void {
     this.previewLogoUrl = new URL('assets/tecnorefill-logo.png', document.baseURI).toString();
 
     var myDate = new Date();
+    this.createdAt = myDate;
 
     this.invoiceForm = this._fb.group({
       invoice_number: [null, [Validators.required]],
@@ -157,6 +175,19 @@ export class CreateInvoiceComponent implements OnInit {
     });
     
     //console.log(this.billDate);
+  }
+
+  onDueDateChange(event: any): void {
+    const selected = event?.value as Date | null;
+    if (!selected) {
+      return;
+    }
+
+    // Keep due date as date-only (no time)
+    const normalized = this.datePipe.transform(selected, 'YYYY-MM-dd');
+    if (normalized) {
+      this.invoiceForm.controls['invoice_date'].setValue(normalized);
+    }
   }
 
   getPaymentType() {
@@ -497,6 +528,12 @@ export class CreateInvoiceComponent implements OnInit {
           'Número de Factura: '+ billFormData.invoice_number,
           'success'
         )
+        this.incrementInvoiceCounter();
+
+        this.invoiceForm.reset();
+        this.dataSource = [];
+        this.totalAmount = 0;
+        this.ngOnInit();
       },
       (error) => {
         if(error.message?.message){
@@ -516,10 +553,6 @@ export class CreateInvoiceComponent implements OnInit {
 
     //this._billService.addNewSale()
 
-    this.invoiceForm.reset();
-    this.dataSource = [];
-    this.totalAmount = 0;
-    this.ngOnInit();
   }
 
   // Preview helper methods

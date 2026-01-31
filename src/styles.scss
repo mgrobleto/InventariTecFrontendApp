@@ -1,3 +1,5 @@
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
@@ -109,17 +111,6 @@
 
 .cdk-overlay-pane {
     z-index: 1000 !important;
-}
-
-.mat-mdc-select-panel,
-.custom-select-panel {
-    background: white !important;
-    max-height: 300px !important;
-    overflow-y: auto !important;
-    z-index: 1001 !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
 }
 
 /* Focused label color */
@@ -432,83 +423,14 @@ body {
 
 @media print { html, body { height: auto; overflow-y: visible !important; } }
 
-// Fix Material Select Dropdown Positioning
-.cdk-overlay-container {
-    position: fixed !important;
-    z-index: 10000 !important;
-    pointer-events: none;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.cdk-overlay-backdrop {
-    position: fixed !important;
-    z-index: 9999 !important;
-    pointer-events: auto;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-// Ensure overlay panes receive clicks even when container is non-interactive
-.cdk-overlay-pane {
-    pointer-events: auto !important;
-}
-
-// Ensure select dropdown backdrop allows closing
-// Material select uses transparent backdrop that should allow clicks to close
-/* .cdk-overlay-backdrop.cdk-overlay-transparent-backdrop {
-    pointer-events: auto !important;
-    
-    z-index: 10001 !important;
-} */
-
-// Select dropdown backdrop should allow closing when clicking outside
-.cdk-overlay-container:has(.mat-mdc-select-panel) .cdk-overlay-backdrop,
-.cdk-overlay-container:has(.custom-select-panel) .cdk-overlay-backdrop {
-    pointer-events: auto !important;
-    
-    z-index: 10001 !important;
-}
-
-// Remove blur when select panels are open
-.cdk-overlay-container:has(.mat-mdc-select-panel) .cdk-overlay-backdrop,
-.cdk-overlay-container:has(.custom-select-panel) .cdk-overlay-backdrop {
-    background-color: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-// Ensure select panel is above backdrop but backdrop can still receive clicks
-.cdk-overlay-pane:has(.mat-mdc-select-panel),
-.cdk-overlay-pane:has(.custom-select-panel) {
-    z-index: 10002 !important;
-    pointer-events: auto !important;
-}
-
-.cdk-overlay-pane {
-    position: fixed !important;
-    pointer-events: auto;
-    z-index: 10000 !important;
-    
-    &.custom-select-panel {
-        max-height: 300px !important;
-        border-radius: 8px !important;
-        box-shadow: 0 4px 12px rgba(0, 31, 63, 0.15) !important;
-        margin-top: 4px !important;
-    }
-}
-
+// Select panel visuals (no overlay behavior changes)
 .mat-mdc-select-panel.custom-select-panel,
 .mat-mdc-select-panel {
     padding: 8px 0 !important;
     background: white !important;
     max-height: 300px !important;
     overflow-y: auto !important;
-    z-index: 10002 !important;
+    z-index: 1001 !important;
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -538,35 +460,21 @@ body {
     }
 }
 
-// Ensure select panel overlay appears above dialogs
-.cdk-overlay-pane:has(.mat-mdc-select-panel),
-.cdk-overlay-pane:has(.custom-select-panel),
-.cdk-overlay-pane .mat-mdc-select-panel,
-.cdk-overlay-pane .custom-select-panel {
-    z-index: 10002 !important;
-    pointer-events: auto !important;
+/* Avoid blur for select/datepicker backdrops */
+.cdk-overlay-container:has(.mat-mdc-select-panel) .cdk-overlay-backdrop,
+.cdk-overlay-container:has(.custom-select-panel) .cdk-overlay-backdrop,
+.cdk-overlay-container:has(.mat-datepicker-content) .cdk-overlay-backdrop,
+.cdk-overlay-backdrop.mat-datepicker-backdrop {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    z-index: 900 !important;
 }
 
-// Additional fix for select panels in dialogs
-.cdk-overlay-container .cdk-overlay-pane {
-    &.mat-select-panel-overlay,
-    &[class*="select"] {
-        z-index: 10002 !important;
-    }
+/* Ensure overlay backdrop is fixed (not absolute) */
+.cdk-overlay-backdrop {
+    position: fixed !important;
 }
-
-// Ensure select dropdown can be closed by clicking outside
-/* .cdk-overlay-pane:has(.mat-mdc-select-panel),
-.cdk-overlay-pane:has(.custom-select-panel) {
-    pointer-events: auto !important;
-    
-    // Allow backdrop clicks to close
-    & + .cdk-overlay-backdrop {
-        pointer-events: auto !important;
-        background: transparent !important;
-    }
-}
- */
 // Dialog Styling - Must be very specific (for all dialogs)
 .cdk-overlay-pane.product-dialog,
 .cdk-overlay-pane.category-dialog,
@@ -624,14 +532,61 @@ body {
     overflow: visible !important;
 }
 
+// Center confirmation dialog in viewport
+.cdk-overlay-pane.confirmation-dialog {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+}
+
+.cdk-overlay-pane.confirmation-dialog .mat-mdc-dialog-container {
+    margin: 0 !important;
+}
+
 // Dialog Backdrop - Improved blur and shadow to match modal size
-.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+/* Dialog-only backdrop blur */
+/* .cdk-overlay-container:has(.mat-mdc-dialog-container) .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
     background-color: rgba(0, 0, 0, 0.4) !important;
     backdrop-filter: blur(4px) !important;
     -webkit-backdrop-filter: blur(4px) !important;
     opacity: 1 !important;
     z-index: 9999 !important;
     transition: backdrop-filter 0.2s ease, background-color 0.2s ease !important;
+} */
+
+/* Avoid blur when opening select/dropdown fields */
+/* .cdk-overlay-container:has(.mat-mdc-select-panel) .cdk-overlay-backdrop,
+.cdk-overlay-container:has(.custom-select-panel) .cdk-overlay-backdrop {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+} */
+
+/* Avoid blur when opening datepicker */
+/* .cdk-overlay-container:has(.mat-datepicker-content) .cdk-overlay-backdrop,
+.cdk-overlay-backdrop.mat-datepicker-backdrop {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+} */
+
+/* Avoid blur when opening confirmation dialog */
+/* .cdk-overlay-container:has(.confirmation-dialog) .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+} */
+
+/* Confirmation dialog buttons should show pointer cursor */
+confirmation-dialog button {
+    cursor: pointer;
+}
+
+confirmation-dialog button:hover {
+    cursor: pointer;
 }
 
 // Dialog Container - Better shadow that matches actual modal size

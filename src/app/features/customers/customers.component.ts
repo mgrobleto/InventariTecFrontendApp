@@ -156,6 +156,7 @@ export class CustomersComponent {
       message: 'eliminar el ' + 'cliente ' + values.first_name,
       confirmation: true
     }
+    dialogConfig.panelClass = 'confirmation-dialog';
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
       this.ngxService.start();

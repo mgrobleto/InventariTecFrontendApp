@@ -161,6 +161,7 @@ export class SuppliersComponent {
       message: 'eliminar el ' + 'proveedor con nombre ' + values.first_name,
       confirmation: true
     }
+    dialogConfig.panelClass = 'confirmation-dialog';
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
       this.ngxService.start();

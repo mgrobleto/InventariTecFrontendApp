@@ -10,7 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class ConfirmationDialog implements OnInit {
 
     message: string = "Esta seguro?"
-    confirmButtonText = 'Si'
+    confirmButtonText = 'Sí'
     cancelButtonText = 'Cancelar'
     details:any = {};
     onEmitStatusChange = new EventEmitter();

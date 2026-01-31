@@ -12,6 +12,7 @@ import { InvoiceDetailsComponent } from '../invoice-details/invoice-details.comp
 import { map } from 'rxjs';
 import { EditInvoiceStatusComponent } from '../edit-invoice-status/edit-invoice-status.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSelect } from '@angular/material/select';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -30,7 +31,6 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   searchOptionsForm:any = FormGroup;
   searchOptions: any [] = [
     { value: 'date', description: "Por fecha"},
-    { value: 'status', description: "Por estado de factura" },
   ];
 
   dataSource = new MatTableDataSource<any>();
@@ -39,8 +39,8 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   billDetails:any = [];
   items:any = [];
   responseMessage:any;
-  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
-  displayedColumnsWithSelect: string[] = ['select', 'Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
+  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Estado', 'Fecha', 'Ver detalle', 'Eliminar'];
+  displayedColumnsWithSelect: string[] = ['select', 'Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Estado', 'Fecha', 'Ver detalle', 'Eliminar'];
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   billState: any;
 
@@ -52,6 +52,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   selectedPriceRange: string = 'all';
   selectedShowOption: string = 'all';
   selectedSortOption: string = 'default';
+  recentDays = 7;
 
   constructor(
     private _billService : InvoiceSalesService, 
@@ -67,14 +68,12 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     this.searchOptionsForm = this._fb.group({
       searchBy:['date'],
       dateSelected:[''],
-      bill_state:[''],
     })
 
     this.searchOptionsForm.get("searchBy") ?.valueChanges.subscribe(
       (value: any) => {
         this.searchOptionsForm.patchValue({
-          dateSelected: '',
-          bill_state:''
+          dateSelected: ''
         })
       }
     )
@@ -96,23 +95,31 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       var dateSelected = this.searchOptionsForm.controls['dateSelected'].value;
       this.searchByDate(dateSelected);
 
-    }else {
-      var billState = this.searchOptionsForm.controls['bill_state'].value;
-      this.searchByBillStatus(billState);
     }
   }
 
-  searchByDate(date: any) {
+  searchByDate(dateValue: Date | string | null) {
+    const normalized = dateValue
+      ? this.datePipe.transform(dateValue, 'yyyy-MM-dd')
+      : null;
 
-    //var dateSelected = this.searchOptionsForm.controls['dateSelected'].value;
-    date.value = this.datePipe.transform(date.value, "YYYY-MM-dd");
-
-    //console.log(date);
+    if (!normalized) {
+      this.resetFilters();
+      return;
+    }
 
     this._billService.getAllInvoices().pipe(
-      map( (bill : any) => {
-      return bill.data.filter((bill : any) => bill.created_at === date.value)
-    })).subscribe(
+      map((bill: any) => {
+        const rows = bill.data || bill || [];
+        return rows.filter((row: any) => {
+          const createdAt = this.datePipe.transform(
+            row.created_at ?? row.invoice_date ?? row.date,
+            'yyyy-MM-dd'
+          );
+          return createdAt === normalized;
+        });
+      })
+    ).subscribe(
       (response: any) => {
         this.dataSource.data = response;
       }, (error : any) => {
@@ -146,6 +153,14 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     )
   }
 
+  resetFilters(): void {
+    this.searchOptionsForm.patchValue({ dateSelected: '' });
+    this.selectedShowOption = 'all';
+    this.dataSource.data = [...this.originalData];
+    this.selection.clear();
+    this.paginator?.firstPage();
+  }
+
   ngOnInit(): void { 
     this.ngxService.start();
     this.getAllBills();
@@ -167,7 +182,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
         console.log(data);
         this.ngxService.stop();
         this.originalData = data.data || [];
-        this.dataSource.data = this.originalData;
+        this.applyShowFilter();
         //this.productDetails = response;
       }, (error : any) => {
         this.ngxService.stop();
@@ -204,6 +219,36 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  toggleSelect(select: MatSelect): void {
+    if (select.panelOpen) {
+      select.close();
+    } else {
+      select.open();
+    }
+  }
+
+
+  onShowOptionChange(value: string): void {
+    this.selectedShowOption = value;
+    this.applyShowFilter();
+  }
+
+  applyShowFilter(): void {
+    let filtered = [...this.originalData];
+
+    if (this.selectedShowOption === 'recent') {
+      filtered = filtered.filter((bill) => this.isRecentInvoice(bill));
+    }
+
+    if (this.selectedShowOption === 'pending') {
+      filtered = filtered.filter((bill) => this.isPendingInvoice(bill));
+    }
+
+    this.dataSource.data = filtered;
+    this.selection.clear();
+    this.paginator?.firstPage();
+  }
+
   // Selection methods
   isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
@@ -233,6 +278,75 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     const first = customer.first_name?.charAt(0) || '';
     const last = customer.last_name?.charAt(0) || '';
     return (first + last).toUpperCase() || '?';
+  }
+
+  getInvoiceState(bill: any): string {
+    if (this.isRecentInvoice(bill)) {
+      return 'Reciente';
+    }
+
+    return 'Pendiente';
+  }
+
+  private isPendingInvoice(bill: any): boolean {
+    if (bill?.pending === true) {
+      return true;
+    }
+
+    const state = (bill?.bill_state ?? bill?.state ?? bill?.status ?? '')
+      .toString()
+      .toLowerCase();
+
+    if (state === 'pending' || state === 'pendiente') {
+      return true;
+    }
+
+    return !this.isRecentInvoice(bill);
+  }
+
+  private isRecentInvoice(bill: any): boolean {
+    const dateValue = this.getInvoiceDate(bill);
+
+    if (!dateValue) {
+      return false;
+    }
+
+    const now = new Date();
+    const diffMs = now.getTime() - dateValue.getTime();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+    return diffDays >= 0 && diffDays <= this.recentDays;
+  }
+
+  private getInvoiceDate(bill: any): Date | null {
+    const rawValue = bill?.invoice_date ?? bill?.created_at ?? bill?.date;
+
+    if (!rawValue) {
+      return null;
+    }
+
+    if (rawValue instanceof Date) {
+      return rawValue;
+    }
+
+    if (typeof rawValue === 'number') {
+      const parsed = new Date(rawValue);
+      return isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    if (typeof rawValue === 'string') {
+      const trimmed = rawValue.trim();
+      const normalized = trimmed.includes('T') ? trimmed : trimmed.replace(' ', 'T');
+      const parsed = new Date(normalized);
+      if (!isNaN(parsed.getTime())) {
+        return parsed;
+      }
+
+      const fallback = new Date(trimmed);
+      return isNaN(fallback.getTime()) ? null : fallback;
+    }
+
+    return null;
   }
 
   /* getBillItemsDetails(values: any) {
@@ -311,6 +425,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       message: 'eliminar esta factura',
       confirmation: true
     }
+    dialogConfig.panelClass = 'confirmation-dialog';
     const dialogRef = this.dialog.open(ConfirmationDialog, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
       this.ngxService.start();
