@@ -24,9 +24,9 @@ export class DashboardComponent{
     this.isSideNavCollapsed = data.collapsed;
   }
 
- /*  isAuthenticated() {
+  /*  isAuthenticated() {
     if(this.authService.auth()){
-      this.router.navigate(['/dashboard/home']);
+      this.router.navigate(['/home']);
     }
   } */
 

@@ -590,7 +590,7 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard/invoice/allInvoices']);
+    this.router.navigate(['/invoice/allInvoices']);
   }
 
   cancelInvoice(): void {

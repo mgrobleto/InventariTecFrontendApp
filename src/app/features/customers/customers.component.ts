@@ -48,11 +48,27 @@ export class CustomersComponent {
   }
 
   exportToExcel() {
-    const tableId = 'ClientsData';
-    const columnsToInclude = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico', 'Contacto', 'Dirección', 'Estado']
-    const fileName = 'ClientesInfo'
+    const rows = (this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data) || [];
+    const exportRows = rows.map((row: any) => ({
+      firstName: row?.first_name ?? row?.name ?? '',
+      lastName: row?.last_name ?? '',
+      email: row?.email ?? '',
+      phone: row?.phone ?? row?.contact ?? '',
+      address: row?.address ?? row?.c_address ?? row?.c_adress ?? '',
+      status: row?.status ?? ''
+    }));
 
-    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
+    const fileName = 'ClientesInfo';
+    const columns = [
+      { header: 'Nombre', key: 'firstName', width: 18 },
+      { header: 'Apellido', key: 'lastName', width: 18 },
+      { header: 'Correo Electrónico', key: 'email', width: 26 },
+      { header: 'Contacto', key: 'phone', width: 16 },
+      { header: 'Dirección', key: 'address', width: 30 },
+      { header: 'Estado', key: 'status', width: 12 }
+    ];
+
+    this.excelExportService.exportJsonToExcel(exportRows, columns, fileName);
   }
 
   getCustomerStatus(customer: any): 'active' | 'inactive' {

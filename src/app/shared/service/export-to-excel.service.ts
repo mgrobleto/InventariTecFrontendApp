@@ -36,4 +36,34 @@ export class ExportToExcelService {
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     FileSaver.saveAs(blob, `${fileName}.xlsx`);
   }
+
+  async exportJsonToExcel(
+    rows: any[],
+    columns: { header: string; key: string; width?: number; numFmt?: string }[],
+    fileName: string
+  ) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet1');
+
+    worksheet.columns = columns.map((col) => ({
+      header: col.header,
+      key: col.key,
+      width: col.width || 18
+    }));
+
+    worksheet.addRows(rows);
+
+    columns.forEach((col, index) => {
+      if (col.numFmt) {
+        worksheet.getColumn(index + 1).numFmt = col.numFmt;
+      }
+    });
+
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    FileSaver.saveAs(blob, `${fileName}.xlsx`);
+  }
 }

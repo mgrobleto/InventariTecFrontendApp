@@ -7,17 +7,6 @@ import { RestorePasswordComponent } from './pages/restore-password-email/restore
 
 const routes: Routes = [
   {
-    path: '', 
-    redirectTo: 'dashboard', 
-    pathMatch: 'full',
-  },
-  {
-    path: 'dashboard', 
-    //component: DashboardComponent, 
-    loadChildren: () => import('./modules/dashboard/dashboard.module').then(dashboard => dashboard.DashboardModule),
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'login',
     component: LoginComponent
   },
@@ -28,6 +17,11 @@ const routes: Routes = [
   {
     path: 'restore-password',
     component: RestorePasswordComponent
+  },
+  {
+    path: '',
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then(dashboard => dashboard.DashboardModule),
+    canActivate: [AuthGuard]
   },
   {
     path: '**', 

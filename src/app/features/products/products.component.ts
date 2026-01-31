@@ -69,11 +69,27 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   }
 
   exportToExcel() {
-    const tableId = 'productsData';
-    const columnsToInclude = ['ID', 'Nombre', 'Descripcion', 'Stock', 'Costo', 'Precio Total', 'Categoría']
-    const fileName = 'Inventario Productos'
+    const rows = (this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data) || [];
+    const exportRows = rows.map((row: any) => ({
+      name: row?.name ?? '',
+      description: row?.description ?? '',
+      stock: Number(row?.stock ?? 0),
+      cost: Number(row?.cost_price ?? row?.cost ?? 0),
+      total: Number(row?.sale_price ?? row?.total_price ?? row?.price ?? 0),
+      category: row?.productsCategories?.category ?? row?.category?.name ?? row?.category ?? ''
+    }));
 
-    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
+    const fileName = 'Inventario Productos';
+    const columns = [
+      { header: 'Nombre', key: 'name', width: 26 },
+      { header: 'Descripcion', key: 'description', width: 34 },
+      { header: 'Stock', key: 'stock', width: 12 },
+      { header: 'Costo', key: 'cost', width: 14, numFmt: '#,##0.00' },
+      { header: 'Precio Total', key: 'total', width: 16, numFmt: '#,##0.00' },
+      { header: 'Categoría', key: 'category', width: 18 }
+    ];
+
+    this.excelExportService.exportJsonToExcel(exportRows, columns, fileName);
   }
   
 

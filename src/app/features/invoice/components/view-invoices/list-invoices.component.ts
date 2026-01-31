@@ -81,11 +81,25 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
   exportToExcel(): void
   {
-    const tableId = 'sales-details';
-    const columnsToInclude = ['ID', 'Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha']
-    const fileName = 'VentasReporte'
+    const rows = (this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data) || [];
+    const exportRows = rows.map((row: any) => ({
+      invoiceNumber: row?.invoice_number ?? '',
+      customer: row?.customer ? `${row.customer.first_name || ''} ${row.customer.last_name || ''}`.trim() : '',
+      total: Number(row?.total ?? 0),
+      paymentType: row?.payment_type?.payment_type_name ?? '',
+      date: this.datePipe.transform(row?.invoice_date ?? row?.created_at ?? row?.date, 'dd/MM/yy HH:mm') || ''
+    }));
 
-    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
+    const fileName = 'VentasReporte';
+    const columns = [
+      { header: 'Numero de Factura', key: 'invoiceNumber', width: 20 },
+      { header: 'Nombre Cliente', key: 'customer', width: 28 },
+      { header: 'Total', key: 'total', width: 14, numFmt: '#,##0.00' },
+      { header: 'Tipo de pago', key: 'paymentType', width: 20 },
+      { header: 'Fecha', key: 'date', width: 18 }
+    ];
+
+    this.excelExportService.exportJsonToExcel(exportRows, columns, fileName);
  
   }
 
@@ -173,7 +187,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   
 
   addNewBill() {
-    this.router.navigate(['/dashboard/invoice/createNewInvoice']);
+    this.router.navigate(['/invoice/createNewInvoice']);
   }
 
   getAllBills() {

@@ -32,11 +32,25 @@ export class HomeComponent implements OnInit {
   billDetails:any;
   responseMessage: any;
   month: any;
+  private readonly monthNames = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+  ];
   monthReturned: any;
   currentMonth: any;
   monthSelect: any = FormGroup;
   userData: any = [];
-  userName: number = 0;
+  userName: string = '';
   barChart: any
 
   constructor(
@@ -60,16 +74,13 @@ export class HomeComponent implements OnInit {
       });
 
     this.currentMonth = new Date().getMonth();
-    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const value = monthNames[this.currentMonth];
+    const value = this.monthNames[this.currentMonth];
     console.log(value);
 
     if(this.monthSelect.controls['id_month'].value === null) {
       this.monthSelect.controls['id_month'].setValue(value);
       var initialValue = this.monthSelect.controls['id_month'].value;
-      this.getMonthValues(initialValue);
-      this.getTotalSales(initialValue);
-      this.getTotalIncomeByMonth(initialValue);
+      this.updateMonthData(initialValue);
     }
   }
 
@@ -96,107 +107,38 @@ export class HomeComponent implements OnInit {
   }
 
   redirectToProductsInventory(){
-    this.router.navigate(['dashboard/products/'])
+    this.router.navigate(['products/'])
   }
 
   redirectToeEquipmentInventory(){
-    this.router.navigate(['dashboard/equipment'])
+    this.router.navigate(['settings'])
   }
 
   getTotalProducts() {
     this._productService.getAllProducts().subscribe(
       (response : any) => {
-        this.products = response;
+        this.products = response?.data || [];
         this.totalProducts = this.products.length;
       }
     )
   }
 
   redirectToAddNewInvoice () {
-    this.router.navigate(['/dashboard/invoice/createNewInvoice']);
+    this.router.navigate(['/invoice/createNewInvoice']);
   }
 
   redirectToAddNewClient() {
-    this.router.navigate(['/dashboard/clients/']);
+    this.router.navigate(['/clients/']);
   }
 
   redirectToAddNewProduct() {
-    this.router.navigate(['dashboard/products'])
-  }
-
-  getTotalSales(value : any) {
-
-    this.totalSales = 0;
-    var amount:any = 0;
-    //this.totalSales = this._billService.getAllBills().pipe(map( resp => resp.billItems.length))
-
-    this._billService.getAllInvoices().pipe( map ( (resp : any) => {
-      return resp.filter((month : any) => month.id_month === value)
-    })).subscribe(
-      (response : any) => {
-
-        response.forEach((items : any)=> {
-          this.billItems = items.billItems;
-          amount = this.billItems.length;
-          this.totalSales += amount;
-        })
-
-        console.log(this.billItems.length);
-
-        console.log(this.totalSales)
-        
-      },
-      (error) => {
-        if(error.message?.message){
-          this.responseMessage = error.message?.message;
-        }else{
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
-      }
-    )
-  }
-
-  getTotalIncomeByMonth(value : any) {
-
-    this.totalIncome = 0;
-    var amount:any = 0;
-    var incomeValue: any = 0;
-
-    this._billService.getAllInvoices().pipe( map ( (resp : any) => {
-      return resp.filter((month : any) => month.id_month === value)
-    })).subscribe(
-      (response : any) => {
-
-        response.forEach((items : any)=> {
-          this.totalIncomes = items.total;
-          amount = parseFloat(this.totalIncomes);
-          incomeValue += amount;
-          this.totalIncome = incomeValue.toFixed(2)
-        })
-
-        //console.log(this.billItems.length);
-
-        //console.log(this.totalSales)
-        
-      },
-      (error) => {
-        if(error.message?.message){
-          this.responseMessage = error.message?.message;
-        }else{
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
-      }
-    )
+    this.router.navigate(['products'])
   }
 
   getMonthValues(value: any){
-    //var monthSelected = this.monthSelect.controls['id_month'].value;
     this.monthReturned = value;
     console.log(value)
-
-    this.getTotalSalesByMonth(value);
+    this.updateMonthData(value);
   }
 
 
@@ -216,32 +158,36 @@ export class HomeComponent implements OnInit {
     )
   } */
 
-  getTotalSalesByMonth(selectedMonth : any) {
-    this._billService.getAllInvoices().pipe( map ( (resp : any) => {
-      return resp.filter((month : any) => month.id_month === selectedMonth)
-    })).subscribe(
-      (data : any) => {
-        
-        console.log(data);
-        this.billDetails = data;
-        console.log(this.billDetails);
+  private updateMonthData(selectedMonth: string) {
+    this._billService.getAllInvoices()
+      .pipe(
+        map((resp: any) => this.extractInvoices(resp)),
+        map((invoices: any[]) => this.filterInvoicesByMonth(invoices, selectedMonth))
+      )
+      .subscribe(
+        (filtered: any[]) => {
+          this.billDetails = filtered;
+          this.totalSales = filtered.length;
+          this.totalIncome = filtered.reduce((sum, item) => {
+            const total = Number(item?.total ?? 0);
+            return sum + (Number.isFinite(total) ? total : 0);
+          }, 0);
 
-        const labelTemp = this.billDetails.map((value:any) => value.created_at);
-        //const labelTemp = this.datePipe.transform(this.billDetails.map((value:any) => value.created_at), "EEEE, MMMM d, y");
-        const dataTemp = this.billDetails.map((value : any) => value.total);
-
-        console.log(labelTemp);
-        this.showGraphic(labelTemp, dataTemp);
-      },
-      (error) => {
-        if(error.message?.message){
-          this.responseMessage = error.message?.message;
-        }else{
-          this.responseMessage = GlobalConstants.genericError;
+          const labelTemp = filtered.map((value: any) =>
+            this.formatInvoiceDate(value?.created_at ?? value?.invoice_date)
+          );
+          const dataTemp = filtered.map((value: any) => Number(value?.total ?? 0));
+          this.showGraphic(labelTemp, dataTemp);
+        },
+        (error) => {
+          if(error.message?.message){
+            this.responseMessage = error.message?.message;
+          }else{
+            this.responseMessage = GlobalConstants.genericError;
+          }
+          this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
         }
-        this._coreService.openFailureSnackBar(this.responseMessage, GlobalConstants.error);
-      }
-    )
+      )
   }
 
   showGraphic(labelGraphic:any[], graphicData:any[]){
@@ -319,6 +265,61 @@ export class HomeComponent implements OnInit {
       }
     });
 
+  }
+
+  private extractInvoices(response: any): any[] {
+    if (Array.isArray(response)) {
+      return response;
+    }
+    return response?.data || [];
+  }
+
+  private filterInvoicesByMonth(invoices: any[], monthName: string): any[] {
+    if (!monthName) return invoices;
+    return invoices.filter((invoice) => this.getInvoiceMonthName(invoice) === monthName);
+  }
+
+  private getInvoiceMonthName(invoice: any): string | null {
+    const rawMonth = invoice?.id_month ?? invoice?.month ?? invoice?.month_name;
+
+    if (rawMonth !== undefined && rawMonth !== null) {
+      if (typeof rawMonth === 'number' && rawMonth >= 1 && rawMonth <= 12) {
+        return this.monthNames[rawMonth - 1];
+      }
+
+      const asNumber = Number(rawMonth);
+      if (Number.isFinite(asNumber) && asNumber >= 1 && asNumber <= 12) {
+        return this.monthNames[asNumber - 1];
+      }
+
+      if (typeof rawMonth === 'string') {
+        const normalized = rawMonth.toLowerCase();
+        const match = this.monthNames.find((name) => name.toLowerCase() === normalized);
+        if (match) {
+          return match;
+        }
+      }
+    }
+
+    const parsed = this.parseDate(invoice?.created_at ?? invoice?.invoice_date);
+    if (!parsed) {
+      return null;
+    }
+
+    return this.monthNames[parsed.getMonth()];
+  }
+
+  private parseDate(value: any): Date | null {
+    if (!value) return null;
+    if (value instanceof Date) return value;
+    const parsed = new Date(value);
+    return isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  private formatInvoiceDate(value: any): string {
+    const parsed = this.parseDate(value);
+    if (!parsed) return '';
+    return this.datePipe.transform(parsed, 'dd/MM') || '';
   }
 
   getProductsPercent(): number {

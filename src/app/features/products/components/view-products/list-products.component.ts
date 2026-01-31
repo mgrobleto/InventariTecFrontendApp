@@ -180,7 +180,7 @@ export class ListProductsComponent implements OnInit {
     //console.log(this.openDialog.confirmed);
 
   redirect(){
-    this.router.navigate(['dashboard/products/addNewProduct'])
+    this.router.navigate(['products/addNewProduct'])
   }
 }
 

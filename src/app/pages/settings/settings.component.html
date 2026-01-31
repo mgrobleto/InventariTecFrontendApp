@@ -1,65 +1,84 @@
-<mat-toolbar class="table-header">
-    <mat-icon>
-        <span class="material-symbols-outlined">
-            info
-            </span>
-    </mat-icon>
-    <div class="mx-2">
-        <h2>Centro de Ayuda</h2>
-    </div>
-</mat-toolbar>
+<section class="help-page">
+    <mat-toolbar class="help-hero">
+        <mat-icon>help_outline</mat-icon>
+        <div class="hero-text">
+            <h2>Centro de Ayuda</h2>
+            <p>Guías rápidas para facturación, ventas y gestión de inventario.</p>
+        </div>
+    </mat-toolbar>
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <mat-card class="help-item my-5">
+    <div class="help-content">
+        <div class="help-grid">
+            <mat-card class="help-item">
                 <div class="image-section">
-                    <img src="assets/svg/invoice.svg" width="150px">
+                    <img src="assets/svg/invoice.svg" width="140px" alt="Facturar nueva venta">
                 </div>
-                <div class="detail-section mx-5">
-                    <h2>¿Cómo facturar una nueva venta?</h2>
-                    <p>Busque en el navegador la opción <b>Facturar</b>, de click y aparecerá la opción de <b>Facturar nueva venta</b>.</p>
+                <div class="detail-section">
+                    <h3>¿Cómo facturar una nueva venta?</h3>
+                    <ol>
+                        <li>En el menú, entra a <b>Facturar</b>.</li>
+                        <li>Selecciona <b>Nueva factura</b>.</li>
+                        <li>Completa los datos y presiona <b>Enviar factura</b>.</li>
+                    </ol>
+                </div>
+            </mat-card>
+
+            <mat-card class="help-item">
+                <div class="image-section">
+                    <img src="assets/svg/sales.svg" width="140px" alt="Historial de ventas">
+                </div>
+                <div class="detail-section">
+                    <h3>¿Cómo ver el historial de ventas?</h3>
+                    <ol>
+                        <li>Abre <b>Facturar</b>.</li>
+                        <li>Selecciona <b>Todas las facturas</b>.</li>
+                        <li>Usa filtros por fecha o búsqueda.</li>
+                    </ol>
+                </div>
+            </mat-card>
+
+            <mat-card class="help-item">
+                <div class="image-section">
+                    <img src="assets/svg/stock.svg" width="120px" alt="Inventario de productos">
+                </div>
+                <div class="detail-section">
+                    <h3>¿Cómo ver el inventario?</h3>
+                    <ol>
+                        <li>Entra a <b>Productos</b>.</li>
+                        <li>Filtra por categoría si lo necesitas.</li>
+                        <li>Revisa stock y estado en la tabla.</li>
+                    </ol>
+                </div>
+            </mat-card>
+
+            <mat-card class="help-item">
+                <div class="image-section">
+                    <img src="assets/svg/addProduct.svg" width="120px" alt="Agregar producto">
+                </div>
+                <div class="detail-section">
+                    <h3>¿Cómo añadir un producto?</h3>
+                    <ol>
+                        <li>Entra a <b>Productos</b>.</li>
+                        <li>Haz clic en <b>Agregar nuevo</b>.</li>
+                        <li>Completa los campos y guarda.</li>
+                    </ol>
                 </div>
             </mat-card>
         </div>
-        <div class="col">
-            <mat-card class="help-item my-5">
-                <div class="image-section">
-                    <img src="assets/svg/sales.svg" width="150px">
-                </div>
-                <div class="detail-section mx-5">
-                    <h2>¿Cómo visualizar el historial de ventas?</h2>
-                    <p>Busque en el navegador la opción <b>Facturar</b>, de click y aparecerá la opción de <b>Historial de Ventas</b>.</p>
-                </div>
-            </mat-card>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col">
-            <mat-card class="help-item my-5">
-                <div class="image-section">
-                    <img src="assets/svg/stock.svg" width="100px">
-                </div>
-                <div class="detail-section mx-5">
-                    <h2>¿Cómo visualizar el inventario de productos?</h2>
-                    <p>En el navegador se muestra la opción <b>Productos</b>.
-                        Seleccione la opción que quiera visualizar y se mostrará el inventario correspondiente. </p>
-                </div>
-            </mat-card>
-        </div>   
-        <div class="col">
-            <mat-card class="help-item my-5">
-                <div class="image-section">
-                    <img src="assets/svg/addProduct.svg" width="100px">
-                </div>
-                <div class="detail-section mx-5">
-                    <h2>¿Cómo añadir un nuevo producto?</h2>
-                    <p>En el navegador se muestra la opción <b>Productos</b>.
-                        Seleccione la opción que quiera visualizar y y pulse el botón <b>Añadir nuevo</b>. </p>
-                </div>
-            </mat-card>
-        </div>     
+        <mat-card class="help-actions">
+            <div class="actions-header">
+                <h3>Atajos rápidos</h3>
+                <p>Ve directo a las secciones más usadas.</p>
+            </div>
+            <div class="actions-grid">
+                <button mat-stroked-button routerLink="/invoice/createNewInvoice">Nueva factura</button>
+                <button mat-stroked-button routerLink="/invoice/allInvoices">Todas las facturas</button>
+                <button mat-stroked-button routerLink="/products">Productos</button>
+                <button mat-stroked-button routerLink="/clients">Clientes</button>
+                <button mat-stroked-button routerLink="/suppliers">Proveedores</button>
+            </div>
+        </mat-card>
     </div>
-</div>
+</section>
 

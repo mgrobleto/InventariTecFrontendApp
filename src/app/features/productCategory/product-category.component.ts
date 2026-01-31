@@ -89,11 +89,19 @@ export class ProductCategoryComponent {
   }
 
   exportToExcel() {
-    const tableId = 'categoriesData';
-    const columnsToInclude = ['ID', 'Nombre', 'Estado'];
-    const fileName = 'CategoriasProductos';
+    const rows = (this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data) || [];
+    const exportRows = rows.map((row: any) => ({
+      name: row?.name ?? row?.category ?? '',
+      status: row?.status ?? ''
+    }));
 
-    this.excelExportService.ExportToExcelComponent(tableId, columnsToInclude, fileName);
+    const fileName = 'CategoriasProductos';
+    const columns = [
+      { header: 'Nombre', key: 'name', width: 24 },
+      { header: 'Estado', key: 'status', width: 14 }
+    ];
+
+    this.excelExportService.exportJsonToExcel(exportRows, columns, fileName);
   }
 
   handleAddAction() {
