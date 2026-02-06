@@ -27,7 +27,7 @@
         align-items: center;
         gap: 1rem;
         flex: 1;
-        min-width: 300px;
+        min-width: 0;
 
         .view-toggle {
             color: #666;
@@ -42,6 +42,7 @@
             position: relative;
             flex: 1;
             max-width: 400px;
+            min-width: 0;
 
             .search-icon {
                 position: absolute;
@@ -234,6 +235,37 @@
 
         &:hover {
             background-color: rgba(30, 72, 143, 0.05);
+        }
+    }
+}
+
+@media (max-width: 1400px) {
+    .customers-container {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .customers-top-bar {
+        .top-bar-left {
+            flex: 1 1 100%;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+
+        .top-bar-right {
+            flex: 1 1 100%;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+
+            .show-select,
+            .sort-select {
+                width: 160px;
+            }
+        }
+    }
+
+    .filters-section {
+        .filter-field {
+            min-width: 180px;
         }
     }
 }

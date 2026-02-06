@@ -31,8 +31,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   productsCategories:any;
   productStocks:any;
   responseMessage:any;
-  displayedColumns: string[] = ['Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Estado', 'Editar', 'Eliminar'];
-  displayedColumnsWithSelect: string[] = ['select', 'Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Estado', 'Editar', 'Eliminar'];
+  displayedColumns: string[] = ['Nombre', 'Costo', 'Stock', 'Precio Total', 'Categoria', 'Editar', 'Eliminar'];
   productStockColumns: string[] = ['ID', 'Nombre', 'Stock','Editar'];
 
   // Selection
@@ -401,9 +400,30 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   }
 
   updateStatus(product: any, status: string): void {
-    // TODO: Implement status update API call
-    product.status = status;
-    this._coreService.openSuccessSnackBar(`Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`, 'success');
+    const payload = {
+      product_id: product?.id,
+      name: product?.name,
+      description: product?.description,
+      stock: product?.stock,
+      cost_price: product?.cost_price,
+      sale_price: product?.sale_price,
+      category: product?.category?.id ?? product?.category,
+      status
+    };
+
+    this.productService.updateProduct(payload).subscribe(
+      () => {
+        this._coreService.openSuccessSnackBar(
+          `Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`,
+          'success'
+        );
+        this.getAllProducts();
+      },
+      (error: any) => {
+        const message = error?.error?.message || error?.message || GlobalConstants.genericError;
+        this._coreService.openFailureSnackBar(message, GlobalConstants.error);
+      }
+    );
   }
 
   getStockClass(stock: number): string {

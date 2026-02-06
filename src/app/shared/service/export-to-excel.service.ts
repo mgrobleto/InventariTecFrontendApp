@@ -9,6 +9,40 @@ export class ExportToExcelService {
 
   constructor() { }
 
+  private async addLogoToWorksheet(workbook: ExcelJS.Workbook, worksheet: ExcelJS.Worksheet): Promise<number> {
+    const logoUrl = 'assets/tecnorefill-logo.png';
+    const logoRows = 3;
+
+    try {
+      const response = await fetch(logoUrl);
+      if (!response.ok) {
+        return 0;
+      }
+      const buffer = await response.arrayBuffer();
+      const base64 = this.arrayBufferToBase64(buffer);
+
+      worksheet.insertRows(1, Array.from({ length: logoRows }, () => []));
+      const imageId = workbook.addImage({ base64, extension: 'png' });
+      worksheet.addImage(imageId, {
+        tl: { col: 0, row: 0 },
+        ext: { width: 220, height: 80 }
+      });
+
+      return logoRows;
+    } catch {
+      return 0;
+    }
+  }
+
+  private arrayBufferToBase64(buffer: ArrayBuffer): string {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    bytes.forEach((b) => {
+      binary += String.fromCharCode(b);
+    });
+    return btoa(binary);
+  }
+
   async ExportToExcelComponent(tableId: string, columnsToInclude: string[], fileName: string) {
     const element = document.getElementById(tableId) as HTMLTableElement;
     if (!element) {
@@ -31,6 +65,8 @@ export class ExportToExcelService {
     });
 
     worksheet.addRows(filteredData);
+
+    await this.addLogoToWorksheet(workbook, worksheet);
 
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -59,8 +95,10 @@ export class ExportToExcelService {
       }
     });
 
-    worksheet.getRow(1).font = { bold: true };
-    worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+    const logoRows = await this.addLogoToWorksheet(workbook, worksheet);
+    const headerRowIndex = 1 + logoRows;
+    worksheet.getRow(headerRowIndex).font = { bold: true };
+    worksheet.getRow(headerRowIndex).alignment = { vertical: 'middle', horizontal: 'center' };
 
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

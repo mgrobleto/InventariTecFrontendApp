@@ -176,9 +176,12 @@
                         <ng-container matColumnDef="Nombre">
                             <th mat-header-cell *matHeaderCellDef> Nombre </th>
                             <td mat-cell *matCellDef="let element"> 
-                                <span *ngFor="let prod of productsByCategorySelected">
-                                    <span *ngIf="prod.id === element.product">{{prod.name}}</span>
-                                </span>
+                                <span *ngIf="element.product_name; else productLookup">{{element.product_name}}</span>
+                                <ng-template #productLookup>
+                                    <span *ngFor="let prod of productsByCategorySelected">
+                                        <span *ngIf="prod.id === element.product">{{prod.name}}</span>
+                                    </span>
+                                </ng-template>
                             </td>
                         </ng-container>
 
@@ -299,9 +302,12 @@
                                 <td>
                                     <span *ngIf="item.description; else productName">{{item.description}}</span>
                                     <ng-template #productName>
-                                        <span *ngFor="let prod of productsByCategorySelected">
-                                            <span *ngIf="prod.id === item.product">{{prod.name}}</span>
-                                        </span>
+                                        <span *ngIf="item.product_name; else previewLookup">{{item.product_name}}</span>
+                                        <ng-template #previewLookup>
+                                            <span *ngFor="let prod of productsByCategorySelected">
+                                                <span *ngIf="prod.id === item.product">{{prod.name}}</span>
+                                            </span>
+                                        </ng-template>
                                     </ng-template>
                                 </td>
                                 <td>{{item.quantity}}</td>

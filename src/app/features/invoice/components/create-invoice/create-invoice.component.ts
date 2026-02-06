@@ -374,6 +374,10 @@ export class CreateInvoiceComponent implements OnInit {
     var invoiceDetailFormData = this.invoiceForm.value;
 
     var productName = this.dataSource.find((e: {product : any}) => e.product === invoiceDetailFormData.product);
+    const selectedProduct =
+      this.productsByCategorySelected?.find((prod: any) => prod.id === invoiceDetailFormData.product) ||
+      this.productDetail?.[0];
+    const selectedProductName = selectedProduct?.name ?? '';
     //console.log(productName);
 
     if( productName ===  undefined && this.productQuantity <= this.productStockQuantity) {
@@ -381,6 +385,7 @@ export class CreateInvoiceComponent implements OnInit {
       this.dataSource.push({
         //id: invoiceDetailFormData.product,
         product:invoiceDetailFormData.product, 
+        product_name: selectedProductName,
         quantity:+invoiceDetailFormData.quantity, 
         cost_price_at_time:invoiceDetailFormData.cost_price_at_time, 
         sale_price_at_time:invoiceDetailFormData.sale_price_at_time,

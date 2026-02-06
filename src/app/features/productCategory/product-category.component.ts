@@ -25,7 +25,7 @@ export class ProductCategoryComponent {
   dataSource = new MatTableDataSource<any>();
   productsCategories:any;
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Estado', 'Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Editar', 'Eliminar'];
 
   // Filter properties
   selectedShowOption: string = 'all';
@@ -91,14 +91,12 @@ export class ProductCategoryComponent {
   exportToExcel() {
     const rows = (this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data) || [];
     const exportRows = rows.map((row: any) => ({
-      name: row?.name ?? row?.category ?? '',
-      status: row?.status ?? ''
+      name: row?.name ?? row?.category ?? ''
     }));
 
     const fileName = 'CategoriasProductos';
     const columns = [
-      { header: 'Nombre', key: 'name', width: 24 },
-      { header: 'Estado', key: 'status', width: 14 }
+      { header: 'Nombre', key: 'name', width: 24 }
     ];
 
     this.excelExportService.exportJsonToExcel(exportRows, columns, fileName);
@@ -204,9 +202,25 @@ export class ProductCategoryComponent {
   }
 
   updateStatus(category: any, status: string): void {
-    // TODO: Implement status update API call
-    category.status = status;
-    this._coreService.openSuccessSnackBar(`Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`, 'success');
+    const payload = {
+      product_category_id: category?.id,
+      name: category?.name,
+      status
+    };
+
+    this._categoryService.updateProductCategory(payload).subscribe(
+      () => {
+        this._coreService.openSuccessSnackBar(
+          `Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`,
+          'success'
+        );
+        this.getProductsCategories();
+      },
+      (error: any) => {
+        const message = error?.error?.message || error?.message || GlobalConstants.genericError;
+        this._coreService.openFailureSnackBar(message, GlobalConstants.error);
+      }
+    );
   }
 }
 

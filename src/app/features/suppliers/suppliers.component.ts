@@ -23,7 +23,7 @@ import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.ser
 export class SuppliersComponent {
   dataSource = new MatTableDataSource<any>();
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección', 'Estado', 'Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección', 'Editar', 'Eliminar'];
 
   // Filter properties
   selectedShowOption: string = 'all';
@@ -57,8 +57,7 @@ export class SuppliersComponent {
       lastName: row?.last_name ?? '',
       email: row?.email ?? '',
       phone: row?.phone ?? row?.contact ?? '',
-      address: row?.address ?? row?.c_address ?? row?.c_adress ?? '',
-      status: row?.status ?? ''
+      address: row?.address ?? row?.c_address ?? row?.c_adress ?? ''
     }));
 
     const fileName = 'InformacionProveedores';
@@ -67,8 +66,7 @@ export class SuppliersComponent {
       { header: 'Apellido', key: 'lastName', width: 18 },
       { header: 'Correo Electrónico', key: 'email', width: 26 },
       { header: 'Contacto', key: 'phone', width: 16 },
-      { header: 'Dirección', key: 'address', width: 30 },
-      { header: 'Estado', key: 'status', width: 12 }
+      { header: 'Dirección', key: 'address', width: 30 }
     ];
 
     this.excelExportService.exportJsonToExcel(exportRows, columns, fileName);
@@ -79,10 +77,28 @@ export class SuppliersComponent {
   }
 
   updateStatus(supplier: any, status: 'active' | 'inactive'): void {
-    supplier.status = status;
-    this._coreService.openSuccessSnackBar(
-      `Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`,
-      'success'
+    const payload = {
+      supplier_id: supplier?.id,
+      first_name: supplier?.first_name ?? supplier?.name ?? null,
+      last_name: supplier?.last_name ?? null,
+      email: supplier?.email ?? null,
+      phone: supplier?.phone ?? supplier?.contact ?? null,
+      s_address: supplier?.s_address ?? supplier?.address ?? supplier?.c_address ?? supplier?.c_adress ?? null,
+      status
+    };
+
+    this.supplierService.updateSupplier(payload).subscribe(
+      () => {
+        this._coreService.openSuccessSnackBar(
+          `Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`,
+          'success'
+        );
+        this.getAllSuppliers();
+      },
+      (error: any) => {
+        const message = error?.error?.message || error?.message || GlobalConstants.genericError;
+        this._coreService.openFailureSnackBar(message, GlobalConstants.error);
+      }
     );
   }
   
@@ -166,9 +182,13 @@ export class SuppliersComponent {
       dialogRef.close();
     });
 
-   /*  const sub = dialogRef.componentInstance.onEditCustomer.subscribe((response) => {
-      this.getAllClients();
-    }); */
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.getAllSuppliers();
+        }
+      }
+    });
   }
 
   handleDeleteAction(values:any) {

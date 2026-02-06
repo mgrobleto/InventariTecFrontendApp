@@ -76,8 +76,9 @@ export class AddEditSuppliersFormComponent {
     (
       (response:any) => {
         console.log(data);
-        this._dialogRef.close();
-        this.onAddSupplier.emit();
+        const createdSupplier = response?.data || response?.supplier || response || data;
+        this._dialogRef.close(createdSupplier);
+        this.onAddSupplier.emit(createdSupplier);
         swal.fire(
           '¡ Nuevo proveedor agregado !',
           'Proveedor: '+ formData.first_name,
@@ -119,8 +120,9 @@ export class AddEditSuppliersFormComponent {
     .subscribe
     (
       (response:any) => {
-        this._dialogRef.close();
-        this.onEditSupplier.emit();
+        const updatedSupplier = response?.data || response?.supplier || response || data;
+        this._dialogRef.close(updatedSupplier);
+        this.onEditSupplier.emit(updatedSupplier);
         swal.fire(
           '¡ Información editada con éxito !',
           '',

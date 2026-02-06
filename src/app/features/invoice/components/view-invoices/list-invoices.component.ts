@@ -39,8 +39,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   billDetails:any = [];
   items:any = [];
   responseMessage:any;
-  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Estado', 'Fecha', 'Ver detalle', 'Eliminar'];
-  displayedColumnsWithSelect: string[] = ['select', 'Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Estado', 'Fecha', 'Ver detalle', 'Eliminar'];
+  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
   billState: any;
 

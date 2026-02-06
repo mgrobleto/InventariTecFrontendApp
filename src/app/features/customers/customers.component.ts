@@ -22,7 +22,7 @@ export class CustomersComponent {
 
   dataSource = new MatTableDataSource<any>();
   responseMessage:any;
-  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección', 'Estado', 'Editar', 'Eliminar'];
+  displayedColumns: string[] = ['ID', 'Nombre', 'Apellido', 'Correo Electrónico','Contacto', 'Dirección', 'Editar', 'Eliminar'];
   selectedShowOption: string = 'all';
   selectedSortOption: string = 'default';
 
@@ -54,8 +54,7 @@ export class CustomersComponent {
       lastName: row?.last_name ?? '',
       email: row?.email ?? '',
       phone: row?.phone ?? row?.contact ?? '',
-      address: row?.address ?? row?.c_address ?? row?.c_adress ?? '',
-      status: row?.status ?? ''
+      address: row?.address ?? row?.c_address ?? row?.c_adress ?? ''
     }));
 
     const fileName = 'ClientesInfo';
@@ -64,8 +63,7 @@ export class CustomersComponent {
       { header: 'Apellido', key: 'lastName', width: 18 },
       { header: 'Correo Electrónico', key: 'email', width: 26 },
       { header: 'Contacto', key: 'phone', width: 16 },
-      { header: 'Dirección', key: 'address', width: 30 },
-      { header: 'Estado', key: 'status', width: 12 }
+      { header: 'Dirección', key: 'address', width: 30 }
     ];
 
     this.excelExportService.exportJsonToExcel(exportRows, columns, fileName);
@@ -76,10 +74,28 @@ export class CustomersComponent {
   }
 
   updateStatus(customer: any, status: 'active' | 'inactive'): void {
-    customer.status = status;
-    this._coreService.openSuccessSnackBar(
-      `Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`,
-      'success'
+    const payload = {
+      customer_id: customer?.id,
+      first_name: customer?.first_name,
+      last_name: customer?.last_name,
+      email: customer?.email,
+      phone: customer?.phone,
+      c_address: customer?.c_address,
+      status
+    };
+
+    this.customerService.updateCustomerInfo(payload).subscribe(
+      () => {
+        this._coreService.openSuccessSnackBar(
+          `Estado actualizado a ${status === 'active' ? 'Activo' : 'Inactivo'}`,
+          'success'
+        );
+        this.getAllClients();
+      },
+      (error: any) => {
+        const message = error?.error?.message || error?.message || GlobalConstants.genericError;
+        this._coreService.openFailureSnackBar(message, GlobalConstants.error);
+      }
     );
   }
   
