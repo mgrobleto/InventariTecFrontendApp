@@ -2,13 +2,6 @@
     <!-- Top Navigation Bar -->
     <div class="invoices-top-bar">
         <div class="top-bar-left">
-            <button mat-icon-button class="view-toggle" matTooltip="Vista de cuadrícula">
-                <mat-icon>grid_view</mat-icon>
-            </button>
-            <button mat-icon-button class="view-toggle" matTooltip="Vista de lista">
-                <mat-icon>view_list</mat-icon>
-            </button>
-            
             <div class="search-container">
                 <mat-icon class="search-icon">search</mat-icon>
                 <input 
@@ -22,33 +15,6 @@
         </div>
 
         <div class="top-bar-right">
-            <mat-form-field appearance="outline" class="show-select">
-                <mat-label>Mostrar</mat-label>
-                <mat-select
-                    [(value)]="selectedShowOption"
-                    (selectionChange)="onShowOptionChange($event.value)"
-                    panelClass="custom-select-panel">
-                    <mat-option value="all">Todas las Facturas</mat-option>
-                    <mat-option value="recent">Facturas Recientes</mat-option>
-                    <mat-option value="pending">Pendientes</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="sort-select">
-                <mat-label>Ordenar por</mat-label>
-                <mat-select [(value)]="selectedSortOption" panelClass="custom-select-panel">
-                    <mat-option value="default">Por defecto</mat-option>
-                    <mat-option value="date">Fecha</mat-option>
-                    <mat-option value="total">Total</mat-option>
-                    <mat-option value="number">Número</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <button mat-stroked-button class="filter-button">
-                <mat-icon>filter_list</mat-icon>
-                Filtro
-            </button>
-
             <button mat-raised-button class="add-invoice-button" (click)="addNewBill()">
                 <mat-icon>add</mat-icon>
                 Nueva Factura
@@ -59,20 +25,12 @@
     <!-- Filter Section -->
     <form [formGroup]="searchOptionsForm" class="filters-section">
         <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Categoría</mat-label>
-            <mat-select [(value)]="selectedCategory" panelClass="custom-select-panel">
-                <mat-option value="all">Todas las Categorías</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Rango de Precio</mat-label>
-            <mat-select [(value)]="selectedPriceRange" panelClass="custom-select-panel">
-                <mat-option value="all">Todos los Precios</mat-option>
-                <mat-option value="0-500">C$0 - C$500</mat-option>
-                <mat-option value="500-1000">C$500 - C$1,000</mat-option>
-                <mat-option value="1000-5000">C$1,000 - C$5,000</mat-option>
-                <mat-option value="5000+">C$5,000+</mat-option>
+            <mat-label>Ordenar por</mat-label>
+            <mat-select [(value)]="selectedSortOption" (selectionChange)="onSortChange($event.value)" panelClass="custom-select-panel">
+                <mat-option value="default">Por defecto</mat-option>
+                <mat-option value="date">Fecha</mat-option>
+                <mat-option value="total">Total</mat-option>
+                <mat-option value="number">Número</mat-option>
             </mat-select>
         </mat-form-field>
 
@@ -249,10 +207,10 @@
                 </mat-table>
 
                 <mat-paginator 
-                    [pageSizeOptions]="[10, 20, 50, 100]"
+                    [pageSizeOptions]="[5]"
                     showFirstLastButtons
                     [length]="dataSource.data.length"
-                    [pageSize]="10"
+                    [pageSize]="5"
                     class="invoices-paginator">
                 </mat-paginator>
             </div>

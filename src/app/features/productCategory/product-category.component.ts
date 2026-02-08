@@ -23,12 +23,12 @@ import swal from'sweetalert2';
 export class ProductCategoryComponent {
 
   dataSource = new MatTableDataSource<any>();
+  originalData: any[] = [];
   productsCategories:any;
   responseMessage:any;
   displayedColumns: string[] = ['ID', 'Nombre', 'Editar', 'Eliminar'];
 
   // Filter properties
-  selectedShowOption: string = 'all';
   selectedSortOption: string = 'default';
 
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
@@ -68,7 +68,9 @@ export class ProductCategoryComponent {
       (resp : any) => {
         console.log(resp);
         this.ngxService.stop();
-        this.dataSource.data = resp.data;
+        this.originalData = resp.data || [];
+        this.dataSource.data = [...this.originalData];
+        this.applySort();
       }, (err : any) => {
         this.ngxService.stop();
         console.log(err);
@@ -86,6 +88,23 @@ export class ProductCategoryComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     //this.productDetails.filter((value:any) => value.productsCategories.category).breadcrumb[0].replace()
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  onSortChange(sortOption: string): void {
+    this.selectedSortOption = sortOption;
+    this.applySort();
+  }
+
+  private applySort(): void {
+    const rows = [...this.originalData];
+
+    if (this.selectedSortOption === 'name') {
+      rows.sort((a, b) => (a?.name || '').localeCompare(b?.name || ''));
+    } else if (this.selectedSortOption === 'id') {
+      rows.sort((a, b) => (Number(a?.id) || 0) - (Number(b?.id) || 0));
+    }
+
+    this.dataSource.data = rows;
   }
 
   exportToExcel() {
@@ -146,7 +165,7 @@ export class ProductCategoryComponent {
   handleDeleteAction(values:any) {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
-      message: 'eliminar el ' + values.name +' producto',
+      message: `Esta seguro de eliminar la categoria ${values.name}.`,
       confirmation: true
     }
     dialogConfig.panelClass = 'confirmation-dialog';

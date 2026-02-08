@@ -113,7 +113,7 @@ export class ListProductsComponent implements OnInit {
   handleDeleteAction(values:any) {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
-      message: 'eliminar ' + values.name +' producto',
+      message: `Eliminar el producto ${values.name}.`,
       confirmation: true
     }
     dialogConfig.panelClass = 'confirmation-dialog';

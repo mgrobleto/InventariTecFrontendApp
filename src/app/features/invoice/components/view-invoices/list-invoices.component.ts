@@ -47,9 +47,6 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<any>(true, []);
 
   // Filter properties
-  selectedCategory: string = 'all';
-  selectedPriceRange: string = 'all';
-  selectedShowOption: string = 'all';
   selectedSortOption: string = 'default';
   recentDays = 7;
 
@@ -134,7 +131,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
       })
     ).subscribe(
       (response: any) => {
-        this.dataSource.data = response;
+        this.applySort(response);
       }, (error : any) => {
         console.log(error);
         if(error.message?.message){
@@ -168,8 +165,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
   resetFilters(): void {
     this.searchOptionsForm.patchValue({ dateSelected: '' });
-    this.selectedShowOption = 'all';
-    this.dataSource.data = [...this.originalData];
+    this.applySort([...this.originalData]);
     this.selection.clear();
     this.paginator?.firstPage();
   }
@@ -195,7 +191,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
         console.log(data);
         this.ngxService.stop();
         this.originalData = data.data || [];
-        this.applyShowFilter();
+        this.applySort([...this.originalData]);
         //this.productDetails = response;
       }, (error : any) => {
         this.ngxService.stop();
@@ -241,23 +237,27 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   }
 
 
-  onShowOptionChange(value: string): void {
-    this.selectedShowOption = value;
-    this.applyShowFilter();
+  onSortChange(sortOption: string): void {
+    this.selectedSortOption = sortOption;
+    this.applySort([...this.dataSource.data]);
   }
 
-  applyShowFilter(): void {
-    let filtered = [...this.originalData];
+  private applySort(rows: any[]): void {
+    const sorted = [...rows];
 
-    if (this.selectedShowOption === 'recent') {
-      filtered = filtered.filter((bill) => this.isRecentInvoice(bill));
+    if (this.selectedSortOption === 'date') {
+      sorted.sort((a, b) => {
+        const dateA = this.getInvoiceDate(a)?.getTime() || 0;
+        const dateB = this.getInvoiceDate(b)?.getTime() || 0;
+        return dateA - dateB;
+      });
+    } else if (this.selectedSortOption === 'total') {
+      sorted.sort((a, b) => (Number(a?.total) || 0) - (Number(b?.total) || 0));
+    } else if (this.selectedSortOption === 'number') {
+      sorted.sort((a, b) => (Number(a?.invoice_number) || 0) - (Number(b?.invoice_number) || 0));
     }
 
-    if (this.selectedShowOption === 'pending') {
-      filtered = filtered.filter((bill) => this.isPendingInvoice(bill));
-    }
-
-    this.dataSource.data = filtered;
+    this.dataSource.data = sorted;
     this.selection.clear();
     this.paginator?.firstPage();
   }
@@ -435,7 +435,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   handleDeleteAction(values:any) {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
-      message: 'eliminar esta factura',
+      message: `Esta seguro de eliminar la factura ${values.invoice_number ?? ''}`.trim() + '.',
       confirmation: true
     }
     dialogConfig.panelClass = 'confirmation-dialog';

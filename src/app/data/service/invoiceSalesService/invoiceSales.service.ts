@@ -30,6 +30,13 @@ export class InvoiceSalesService {
     });
   }
 
+  getLastRegisteredInvoice() {
+    this.refreshAuthToken();
+    return this.httpClient.get(this.apiUrl + '/other/get_last_registered_invoice/', {
+      headers : new HttpHeaders().set('Authorization', 'Token ' + this.token)
+    });
+  }
+
   updateInvoice(invoiceData: any) {
     this.refreshAuthToken();
     return this.httpClient.put(this.apiUrl + '/invoice/update-invoice/', invoiceData, {

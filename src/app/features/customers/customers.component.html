@@ -2,13 +2,6 @@
     <!-- Top Navigation Bar -->
     <div class="customers-top-bar">
         <div class="top-bar-left">
-            <button mat-icon-button class="view-toggle" matTooltip="Vista de cuadrícula">
-                <mat-icon>grid_view</mat-icon>
-            </button>
-            <button mat-icon-button class="view-toggle" matTooltip="Vista de lista">
-                <mat-icon>view_list</mat-icon>
-            </button>
-            
             <div class="search-container">
                 <mat-icon class="search-icon">search</mat-icon>
                 <input 
@@ -22,26 +15,14 @@
         </div>
 
         <div class="top-bar-right">
-            <mat-form-field appearance="outline" class="show-select">
-                <mat-label>Mostrar</mat-label>
-                <mat-select [(value)]="selectedShowOption" panelClass="custom-select-panel">
-                    <mat-option value="all">Todos los Clientes</mat-option>
-                </mat-select>
-            </mat-form-field>
-
             <mat-form-field appearance="outline" class="sort-select">
                 <mat-label>Ordenar por</mat-label>
-                <mat-select [(value)]="selectedSortOption" panelClass="custom-select-panel">
+                <mat-select [(value)]="selectedSortOption" (selectionChange)="onSortChange($event.value)" panelClass="custom-select-panel">
                     <mat-option value="default">Por defecto</mat-option>
                     <mat-option value="name">Nombre</mat-option>
                     <mat-option value="id">ID</mat-option>
                 </mat-select>
             </mat-form-field>
-
-            <button mat-stroked-button class="filter-button">
-                <mat-icon>filter_list</mat-icon>
-                Filtro
-            </button>
 
             <button mat-raised-button class="add-customer-button" (click)="handleAddAction()">
                 <mat-icon>add</mat-icon>
@@ -227,10 +208,10 @@
                 </mat-table>
             
                 <mat-paginator 
-                    [pageSizeOptions]="[10, 20, 50, 100]"
+                    [pageSizeOptions]="[5]"
                     showFirstLastButtons
                     [length]="dataSource.data.length"
-                    [pageSize]="10"
+                    [pageSize]="5"
                     class="customers-paginator">
                 </mat-paginator>
             </div>

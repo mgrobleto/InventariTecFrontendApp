@@ -2,13 +2,6 @@
     <!-- Top Navigation Bar -->
     <div class="products-top-bar">
         <div class="top-bar-left">
-            <button mat-icon-button class="view-toggle" matTooltip="Vista de cuadrícula">
-                <mat-icon>grid_view</mat-icon>
-            </button>
-            <button mat-icon-button class="view-toggle" matTooltip="Vista de lista">
-                <mat-icon>view_list</mat-icon>
-            </button>
-            
             <div class="search-container">
                 <mat-icon class="search-icon">search</mat-icon>
                 <input 
@@ -22,25 +15,6 @@
         </div>
 
         <div class="top-bar-right">
-            <mat-form-field appearance="outline" class="show-select">
-                <mat-label>Mostrar</mat-label>
-                <mat-select [(value)]="selectedShowOption" panelClass="custom-select-panel">
-                    <mat-option value="all">Todos los Productos</mat-option>
-                    <mat-option value="active">Productos Activos</mat-option>
-                    <mat-option value="inactive">Productos Inactivos</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="sort-select">
-                <mat-label>Ordenar por</mat-label>
-                <mat-select [(value)]="selectedSortOption" panelClass="custom-select-panel">
-                    <mat-option value="default">Por defecto</mat-option>
-                    <mat-option value="name">Nombre</mat-option>
-                    <mat-option value="price">Precio</mat-option>
-                    <mat-option value="stock">Stock</mat-option>
-                </mat-select>
-            </mat-form-field>
-
             <button mat-stroked-button class="filter-button">
                 <mat-icon>filter_list</mat-icon>
                 Filtro
@@ -56,21 +30,22 @@
     <!-- Filter Section -->
     <div class="filters-section">
         <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Ordenar por</mat-label>
+            <mat-select [(value)]="selectedSortOption" (selectionChange)="onSortChange($event.value)" panelClass="custom-select-panel">
+                <mat-option value="default">Por defecto</mat-option>
+                <mat-option value="name">Nombre</mat-option>
+                <mat-option value="price">Precio</mat-option>
+                <mat-option value="stock">Stock</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-field">
             <mat-label>Categoría</mat-label>
             <mat-select [(value)]="selectedCategory" (selectionChange)="filterByCategory($event.value)" panelClass="custom-select-panel">
                 <mat-option value="all">Todas las Categorías</mat-option>
                 <mat-option *ngFor="let category of productsCategories?.data" [value]="category.id">
                     {{category.name}} ({{getCategoryCount(category.id)}})
                 </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter-field">
-            <mat-label>Estado</mat-label>
-            <mat-select [(value)]="selectedStatus" (selectionChange)="filterByStatus($event.value)" panelClass="custom-select-panel">
-                <mat-option value="all">Todos los Estados</mat-option>
-                <mat-option value="active">Activo</mat-option>
-                <mat-option value="inactive">Inactivo</mat-option>
             </mat-select>
         </mat-form-field>
 
@@ -266,10 +241,10 @@
                 </mat-table>
 
                 <mat-paginator 
-                    [pageSizeOptions]="[10, 20, 50, 100]"
+                    [pageSizeOptions]="[5]"
                     showFirstLastButtons
                     [length]="dataSource.data.length"
-                    [pageSize]="10"
+                    [pageSize]="5"
                     class="products-paginator">
                 </mat-paginator>
             </div>

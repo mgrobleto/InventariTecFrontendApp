@@ -96,24 +96,40 @@ export class CreateInvoiceComponent implements OnInit {
   } */
 
   getDGIInvoiceDetail() {
-    const userInfo = this.authService.getUserInfo();
-    const baseInvoiceNumber = Number(userInfo?.business?.invoice_number);
-    const businessId = userInfo?.business?.id;
-    const storageKey = businessId ? `invoice_counter_offset_${businessId}` : 'invoice_counter_offset_default';
-    const storedOffset = Number(localStorage.getItem(storageKey));
-    const safeBase = Number.isFinite(baseInvoiceNumber) ? baseInvoiceNumber : 1;
-    const safeOffset = Number.isFinite(storedOffset) ? storedOffset : 0;
+    const fallbackBase = Number(this.authService.getUserInfo()?.business?.invoice_number);
+    const safeFallback = Number.isFinite(fallbackBase) ? fallbackBase : 1;
 
-    this.invoiceForm.controls['invoice_number'].setValue(safeBase + safeOffset);
-  }
+    this._billService.getLastRegisteredInvoice().subscribe(
+      (response: any) => {
+        const nextFromResponse = Number(
+          response?.next_invoice_number ??
+          response?.data?.next_invoice_number
+        );
+        const lastFromResponse = Number(
+          response?.last_registered_invoice ??
+          response?.data?.last_registered_invoice ??
+          response?.invoice_number ??
+          response?.data?.invoice_number
+        );
 
-  private incrementInvoiceCounter(): void {
-    const userInfo = this.authService.getUserInfo();
-    const businessId = userInfo?.business?.id;
-    const storageKey = businessId ? `invoice_counter_offset_${businessId}` : 'invoice_counter_offset_default';
-    const storedOffset = Number(localStorage.getItem(storageKey));
-    const safeOffset = Number.isFinite(storedOffset) ? storedOffset : 0;
-    localStorage.setItem(storageKey, String(safeOffset + 1));
+        const hasNext = Number.isFinite(nextFromResponse);
+        const hasLast = Number.isFinite(lastFromResponse);
+        const computedNext = hasNext
+          ? nextFromResponse
+          : (hasLast ? lastFromResponse + 1 : safeFallback);
+
+        this.invoiceForm.controls['invoice_number'].setValue(computedNext);
+      },
+      (error: any) => {
+        if (error.message?.message) {
+          this.responseMessage = error.error?.message;
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
+        this.invoiceForm.controls['invoice_number'].setValue(safeFallback);
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -533,7 +549,6 @@ export class CreateInvoiceComponent implements OnInit {
           'Número de Factura: '+ billFormData.invoice_number,
           'success'
         )
-        this.incrementInvoiceCounter();
 
         this.invoiceForm.reset();
         this.dataSource = [];

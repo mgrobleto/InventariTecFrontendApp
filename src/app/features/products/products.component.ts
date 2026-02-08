@@ -39,10 +39,8 @@ export class ProductsComponent implements OnInit, AfterViewInit{
 
   // Filter properties
   selectedCategory: string = 'all';
-  selectedStatus: string = 'all';
   selectedPriceRange: string = 'all';
   selectedStore: string = 'all';
-  selectedShowOption: string = 'all';
   selectedSortOption: string = 'default';
 
   @ViewChild(MatPaginator) paginator :any = MatPaginator;
@@ -267,7 +265,7 @@ export class ProductsComponent implements OnInit, AfterViewInit{
   handleDeleteAction(values:any) {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
-      message: 'eliminar el ' + values.name +' producto',
+      message: `Eliminar el producto ${values.name}.`,
       confirmation: true
     }
     dialogConfig.panelClass = 'confirmation-dialog';
@@ -346,13 +344,13 @@ export class ProductsComponent implements OnInit, AfterViewInit{
     this.applyFilters();
   }
 
-  filterByStatus(status: string): void {
-    this.selectedStatus = status;
+  filterByPrice(priceRange: string): void {
+    this.selectedPriceRange = priceRange;
     this.applyFilters();
   }
 
-  filterByPrice(priceRange: string): void {
-    this.selectedPriceRange = priceRange;
+  onSortChange(sortOption: string): void {
+    this.selectedSortOption = sortOption;
     this.applyFilters();
   }
 
@@ -364,15 +362,6 @@ export class ProductsComponent implements OnInit, AfterViewInit{
       filteredData = filteredData.filter(product => product.category?.id === this.selectedCategory);
     }
 
-    // Status filter
-    if (this.selectedStatus !== 'all') {
-      // Assuming products have a status field, adjust based on your data structure
-      filteredData = filteredData.filter(product => {
-        const status = this.getProductStatus(product);
-        return status === this.selectedStatus;
-      });
-    }
-
     // Price filter
     if (this.selectedPriceRange !== 'all') {
       const [min, max] = this.selectedPriceRange.split('-').map(v => v === '+' ? Infinity : parseFloat(v));
@@ -382,6 +371,22 @@ export class ProductsComponent implements OnInit, AfterViewInit{
           return price >= 200;
         }
         return price >= min && price <= max;
+      });
+    }
+
+    // Sorting
+    if (this.selectedSortOption !== 'default') {
+      filteredData.sort((a, b) => {
+        if (this.selectedSortOption === 'name') {
+          return (a?.name || '').localeCompare(b?.name || '');
+        }
+        if (this.selectedSortOption === 'price') {
+          return (Number(a?.sale_price) || 0) - (Number(b?.sale_price) || 0);
+        }
+        if (this.selectedSortOption === 'stock') {
+          return (Number(a?.stock) || 0) - (Number(b?.stock) || 0);
+        }
+        return 0;
       });
     }
 
