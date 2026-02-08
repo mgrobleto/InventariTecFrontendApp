@@ -96,40 +96,18 @@ export class CreateInvoiceComponent implements OnInit {
   } */
 
   getDGIInvoiceDetail() {
-    const fallbackBase = Number(this.authService.getUserInfo()?.business?.invoice_number);
-    const safeFallback = Number.isFinite(fallbackBase) ? fallbackBase : 1;
+    try {
+      const userInfo = this.authService.getUserInfo();
+      const lastRegistered = Number(userInfo?.business?.last_registered_invoice);
+      const fallbackBase = Number(userInfo?.business?.invoice_number);
+      const safeFallback = Number.isFinite(fallbackBase) ? fallbackBase : 1;
 
-    this._billService.getLastRegisteredInvoice().subscribe(
-      (response: any) => {
-        const nextFromResponse = Number(
-          response?.next_invoice_number ??
-          response?.data?.next_invoice_number
-        );
-        const lastFromResponse = Number(
-          response?.last_registered_invoice ??
-          response?.data?.last_registered_invoice ??
-          response?.invoice_number ??
-          response?.data?.invoice_number
-        );
-
-        const hasNext = Number.isFinite(nextFromResponse);
-        const hasLast = Number.isFinite(lastFromResponse);
-        const computedNext = hasNext
-          ? nextFromResponse
-          : (hasLast ? lastFromResponse + 1 : safeFallback);
-
-        this.invoiceForm.controls['invoice_number'].setValue(computedNext);
-      },
-      (error: any) => {
-        if (error.message?.message) {
-          this.responseMessage = error.error?.message;
-        } else {
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
-        this.invoiceForm.controls['invoice_number'].setValue(safeFallback);
-      }
-    );
+      const computedValue = Number.isFinite(lastRegistered) ? lastRegistered : safeFallback;
+      this.invoiceForm.controls['invoice_number'].setValue(computedValue);
+    } catch (error) {
+      console.error('Error reading invoice number from user info:', error);
+      this.invoiceForm.controls['invoice_number'].setValue(1);
+    }
   }
 
   ngOnInit(): void {
@@ -550,6 +528,8 @@ export class CreateInvoiceComponent implements OnInit {
           'success'
         )
 
+        this.updateLastRegisteredInvoice(billFormData.invoice_number);
+
         this.invoiceForm.reset();
         this.dataSource = [];
         this.totalAmount = 0;
@@ -573,6 +553,22 @@ export class CreateInvoiceComponent implements OnInit {
 
     //this._billService.addNewSale()
 
+  }
+
+  private updateLastRegisteredInvoice(invoiceNumber: any): void {
+    const numericValue = Number(invoiceNumber);
+    if (!Number.isFinite(numericValue)) {
+      return;
+    }
+
+    const userInfo = this.authService.getUserInfo();
+    if (!userInfo?.business) {
+      return;
+    }
+
+    userInfo.business.last_registered_invoice = numericValue;
+    this.authService.setUserInfo(userInfo);
+    localStorage.setItem('currentUser', JSON.stringify(userInfo));
   }
 
   // Preview helper methods

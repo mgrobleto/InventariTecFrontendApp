@@ -17,7 +17,6 @@ export class AppComponent {
   constructor(private pService: PublicService, private http: HttpClient){}
 
   ngOnInit() {
-    this.showMessage()
     //this.fetchCsrfToken()
   }
 
@@ -33,11 +32,6 @@ export class AppComponent {
   } */
   
 
-  showMessage(){
-    this.pService.getMessage().subscribe(data => {
-      this.msg = data,
-      console.log(this.msg);
-    });
-  }
+  // Removed unused API root call to avoid 404 noise.
 }
 
