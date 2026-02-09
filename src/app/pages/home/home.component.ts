@@ -173,11 +173,11 @@ export class HomeComponent implements OnInit {
             return sum + (Number.isFinite(total) ? total : 0);
           }, 0);
 
-          const labelTemp = filtered.map((value: any) =>
-            this.formatInvoiceDate(value?.created_at ?? value?.invoice_date)
-          );
-          const dataTemp = filtered.map((value: any) => Number(value?.total ?? 0));
-          this.showGraphic(labelTemp, dataTemp);
+          const dailyTotals = this.buildDailyTotals(filtered);
+          const chartData = dailyTotals.labels.length > 14
+            ? this.buildWeeklyTotals(filtered)
+            : dailyTotals;
+          this.showGraphic(chartData.labels, chartData.data);
         },
         (error) => {
           if(error.message?.message){
@@ -265,6 +265,60 @@ export class HomeComponent implements OnInit {
       }
     });
 
+  }
+
+  private buildDailyTotals(invoices: any[]): { labels: string[]; data: number[] } {
+    const totalsByDay = new Map<string, number>();
+
+    invoices.forEach((invoice) => {
+      const parsed = this.parseDate(invoice?.created_at ?? invoice?.invoice_date);
+      if (!parsed) {
+        return;
+      }
+      const key = this.datePipe.transform(parsed, 'yyyy-MM-dd');
+      if (!key) {
+        return;
+      }
+      const total = Number(invoice?.total ?? 0);
+      const safeTotal = Number.isFinite(total) ? total : 0;
+      totalsByDay.set(key, (totalsByDay.get(key) || 0) + safeTotal);
+    });
+
+    const sortedKeys = Array.from(totalsByDay.keys()).sort((a, b) => a.localeCompare(b));
+    const labels = sortedKeys.map((key) => {
+      const parsed = this.parseDate(key);
+      return parsed ? (this.datePipe.transform(parsed, 'dd/MM') || '') : key;
+    });
+    const data = sortedKeys.map((key) => totalsByDay.get(key) || 0);
+
+    return { labels, data };
+  }
+
+  private buildWeeklyTotals(invoices: any[]): { labels: string[]; data: number[] } {
+    const totalsByWeek = new Map<string, number>();
+
+    invoices.forEach((invoice) => {
+      const parsed = this.parseDate(invoice?.created_at ?? invoice?.invoice_date);
+      if (!parsed) {
+        return;
+      }
+      const year = parsed.getFullYear();
+      const month = parsed.getMonth(); // 0-based
+      const weekNumber = Math.ceil(parsed.getDate() / 7);
+      const key = `${year}-${month + 1}-W${weekNumber}`;
+      const total = Number(invoice?.total ?? 0);
+      const safeTotal = Number.isFinite(total) ? total : 0;
+      totalsByWeek.set(key, (totalsByWeek.get(key) || 0) + safeTotal);
+    });
+
+    const sortedKeys = Array.from(totalsByWeek.keys()).sort((a, b) => a.localeCompare(b));
+    const labels = sortedKeys.map((key) => {
+      const weekLabel = key.split('-W')[1];
+      return `Semana ${weekLabel}`;
+    });
+    const data = sortedKeys.map((key) => totalsByWeek.get(key) || 0);
+
+    return { labels, data };
   }
 
   private extractInvoices(response: any): any[] {
