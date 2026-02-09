@@ -102,7 +102,7 @@ export class CreateInvoiceComponent implements OnInit {
       const fallbackBase = Number(userInfo?.business?.invoice_number);
       const safeFallback = Number.isFinite(fallbackBase) ? fallbackBase : 1;
 
-      const computedValue = Number.isFinite(lastRegistered) ? lastRegistered : safeFallback;
+      const computedValue = Number.isFinite(lastRegistered) ? lastRegistered + 1 : safeFallback + 1;
       this.invoiceForm.controls['invoice_number'].setValue(computedValue);
     } catch (error) {
       console.error('Error reading invoice number from user info:', error);
