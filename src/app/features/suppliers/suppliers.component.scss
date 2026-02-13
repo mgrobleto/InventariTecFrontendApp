@@ -3,9 +3,8 @@
     display: flex;
     flex-direction: column;
     padding: 1.5rem 2rem;
-    min-height: calc(100vh - 64px); // Account for header/toolbar
-    max-height: 100vh;
-    overflow-y: auto;
+    height: calc(100vh - 64px);
+    overflow: hidden;
     gap: 1.5rem;
     box-sizing: border-box;
 }
@@ -144,14 +143,21 @@
 
 // Table Container
 .suppliers-table-container {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 31, 63, 0.1);
-    overflow: hidden;
 
     .table-card {
         box-shadow: none;
         border-radius: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
 
     .table-header-section {
@@ -190,22 +196,31 @@
 
 // Table Styling
 .responsive-table {
-    overflow-x: auto;
-    padding: 1rem;
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    overflow: auto;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .suppliers-table {
     width: 100%;
+    min-width: 1000px;
     background: white;
 
     // Header cells
     .mat-mdc-header-cell {
-        background: transparent;
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
         font-weight: 600;
         color: #001F3F;
         font-size: 0.875rem;
         padding: 1rem;
         border-bottom: 2px solid rgba(30, 72, 143, 0.1);
+        white-space: nowrap;
 
         .header-cell {
             display: flex;
@@ -222,11 +237,32 @@
         }
     }
 
+    // Column widths
+    ::ng-deep .mat-mdc-header-cell:nth-child(1),
+    ::ng-deep .mat-mdc-cell:nth-child(1) { width: 5%; min-width: 60px; }   // ID
+    ::ng-deep .mat-mdc-header-cell:nth-child(2),
+    ::ng-deep .mat-mdc-cell:nth-child(2) { width: 15%; min-width: 120px; } // Nombre
+    ::ng-deep .mat-mdc-header-cell:nth-child(3),
+    ::ng-deep .mat-mdc-cell:nth-child(3) { width: 15%; min-width: 120px; } // Apellido
+    ::ng-deep .mat-mdc-header-cell:nth-child(4),
+    ::ng-deep .mat-mdc-cell:nth-child(4) { width: 18%; min-width: 150px; } // Correo
+    ::ng-deep .mat-mdc-header-cell:nth-child(5),
+    ::ng-deep .mat-mdc-cell:nth-child(5) { width: 12%; min-width: 100px; } // Contacto
+    ::ng-deep .mat-mdc-header-cell:nth-child(6),
+    ::ng-deep .mat-mdc-cell:nth-child(6) { width: 15%; min-width: 150px; } // Dirección
+    ::ng-deep .mat-mdc-header-cell:nth-child(7),
+    ::ng-deep .mat-mdc-cell:nth-child(7) { width: 10%; min-width: 100px; } // Estado
+    ::ng-deep .mat-mdc-header-cell:nth-child(8),
+    ::ng-deep .mat-mdc-cell:nth-child(8) { width: 5%; min-width: 80px; }   // Editar
+    ::ng-deep .mat-mdc-header-cell:nth-child(9),
+    ::ng-deep .mat-mdc-cell:nth-child(9) { width: 5%; min-width: 60px; }   // Eliminar
+
     // Data cells
     .mat-mdc-cell {
         padding: 1rem;
         border-bottom: 1px solid #f0f0f0;
         color: #1a1a1a;
+        box-sizing: border-box;
     }
 
     // Row hover effect
