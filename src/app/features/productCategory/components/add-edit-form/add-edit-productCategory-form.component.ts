@@ -61,12 +61,32 @@ export class AddEditProductCategoryFormComponent implements OnInit {
     }
   }
 
+  private isDuplicateCategoryName(name: string, excludeId?: number): boolean {
+    const existing = (this.dialogData?.existingCategories || []) as Array<{ id?: number; name?: string }>;
+    const normalizedInput = (name || '').trim().toLowerCase();
+    return existing.some(
+      (c) => (c.name || '').trim().toLowerCase() === normalizedInput && c.id !== excludeId
+    );
+  }
+
   addProductCategory() {
     var formData = this.productCategoryForm.value;
+    const name = (formData.name || '').trim();
+    if (!name) return;
+
+    if (this.isDuplicateCategoryName(name)) {
+      swal.fire({
+        icon: 'warning',
+        title: 'Categoría duplicada',
+        text: `Ya existe una categoría con el nombre "${name}". Por favor, elija otro nombre.`
+      });
+      return;
+    }
+
     var businessId = this.authService.getUserInfo().business.id;
 
     var data = {
-      name: formData.name,
+      name: name,
       business: businessId
     }
     console.log(data);
@@ -106,9 +126,21 @@ export class AddEditProductCategoryFormComponent implements OnInit {
 
   editProductCategory() {
     var formData = this.productCategoryForm.value;
+    const name = (formData.name || '').trim();
+    if (!name) return;
+
+    if (this.isDuplicateCategoryName(name, this.dialogData.data?.id)) {
+      swal.fire({
+        icon: 'warning',
+        title: 'Categoría duplicada',
+        text: `Ya existe otra categoría con el nombre "${name}". Por favor, elija otro nombre.`
+      });
+      return;
+    }
+
     var data = {
       product_category_id : this.dialogData.data.id,
-      name: formData.name,
+      name: name,
     }
 
     this.productCategorieService.updateProductCategory(data)

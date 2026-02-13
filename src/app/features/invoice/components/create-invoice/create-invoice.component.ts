@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalConstants } from '../../../../shared/global-constants';
-import { map, filter } from 'rxjs';
+import { map, filter, forkJoin } from 'rxjs';
 import { DatePipe} from '@angular/common';
 import swal from'sweetalert2';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -248,10 +248,22 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   getProductsCategories() {
-    this._categoryService.getProductsCategories().subscribe(
-      (resp : any) => {
-        console.log(resp);
-        this.productsCategories = resp.data;
+    forkJoin({
+      categories: this._categoryService.getProductsCategories(),
+      products: this.productService.getAllProducts()
+    }).pipe(
+      map((result: any) => {
+        const categories = result.categories.data;
+        const products = result.products.data;
+        // Create a set of category IDs that have at least one product
+        const usedCategoryIds = new Set(products.map((p: any) => p.category));
+        
+        // Filter categories that have products
+        return categories.filter((c: any) => usedCategoryIds.has(c.id));
+      })
+    ).subscribe(
+      (filteredCategories: any) => {
+        this.productsCategories = filteredCategories;
         this.ngxService.stop();
       }, (err : any) => {
         console.log(err);
@@ -261,6 +273,7 @@ export class CreateInvoiceComponent implements OnInit {
           this.responseMessage = GlobalConstants.genericError;
         }
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
+        this.ngxService.stop();
       }
     )
   }
@@ -433,9 +446,13 @@ export class CreateInvoiceComponent implements OnInit {
     }))
     .subscribe(
       (response: any) => {
-        
-        this.customerDetail = response;
-        console.log(this.customerDetail)
+        const list = Array.isArray(response) ? response : [response];
+        this.customerDetail = list.map((c: any) => ({
+          ...c,
+          email: (c?.email?.trim() || GlobalConstants.emptyFieldPlaceholder),
+          phone: (c?.phone?.trim() || GlobalConstants.emptyFieldPlaceholder)
+        }));
+        console.log(this.customerDetail);
 
       }, (error : any) => {
         console.log(error);

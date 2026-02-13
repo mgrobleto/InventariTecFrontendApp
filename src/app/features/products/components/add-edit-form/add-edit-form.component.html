@@ -29,22 +29,18 @@
 
             <!-- Description -->
             <div class="form-field-wrapper form-field-full description-field">
-                <label class="field-label">Descripción<span class="required-asterisk">*</span></label>
+                <label class="field-label">Descripción</label>
                 <mat-form-field appearance="outline" class="form-field-full">
                     <textarea 
                         matInput 
                         formControlName="description" 
                         rows="3" 
-                        placeholder="Detalle del producto" 
-                        required
+                        placeholder="Detalle del producto (opcional)"
                         cdkTextareaAutosize
                         cdkAutosizeMinRows="3"
                         cdkAutosizeMaxRows="10">
                     </textarea>
                     <mat-icon matPrefix>description</mat-icon>
-                    <mat-error *ngIf="productForm.controls['description'].touched && productForm.controls['description'].invalid">
-                        <span *ngIf="productForm.controls['description'].errors?.['required']">Campo obligatorio</span>
-                    </mat-error>
                 </mat-form-field>
             </div>
 

@@ -124,7 +124,8 @@ export class ProductCategoryComponent {
   handleAddAction() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      action:"Agregar"
+      action: "Agregar",
+      existingCategories: this.originalData || []
     };
     dialogConfig.width = "auto";
     dialogConfig.maxWidth = "90vw";
@@ -144,8 +145,9 @@ export class ProductCategoryComponent {
   handleEditAction(values:any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      action:"Editar",
-      data:values
+      action: "Editar",
+      data: values,
+      existingCategories: this.originalData || []
     };
     dialogConfig.width = "auto";
     dialogConfig.maxWidth = "90vw";

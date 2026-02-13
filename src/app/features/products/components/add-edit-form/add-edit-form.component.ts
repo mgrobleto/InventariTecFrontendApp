@@ -133,7 +133,7 @@ export class AddEditFormComponent implements OnInit {
     // Initialize form
     this.productForm = this._fb.group({
       name: [null, [Validators.required]],
-      description: [null, [Validators.required]],
+      description: [''],
       stock: [null, [Validators.required, Validators.min(0), this.integerValidator()]],
       cost_price: [null, [Validators.required, Validators.min(0), this.decimalValidator(2)]],
       sale_price: [null, [Validators.required, Validators.min(0), this.decimalValidator(2)]],
@@ -150,7 +150,7 @@ export class AddEditFormComponent implements OnInit {
         const productData = this.dialogData.data;
         this.productForm.patchValue({
           name: productData.name || null,
-          description: productData.description || null,
+          description: (productData.description?.trim() === GlobalConstants.emptyFieldPlaceholder || !productData.description?.trim()) ? '' : (productData.description ?? ''),
           stock: productData.stock || null,
           cost_price: productData.cost_price || null,
           sale_price: productData.sale_price || null,
@@ -199,7 +199,7 @@ export class AddEditFormComponent implements OnInit {
 
     var data = {
       name: formData.name,
-      description : formData.description,
+      description: (formData.description?.trim() || GlobalConstants.emptyFieldPlaceholder),
       stock: formData.stock,
       cost_price : formData.cost_price,
       sale_price : formData.sale_price,
@@ -247,7 +247,7 @@ export class AddEditFormComponent implements OnInit {
     var data = {
       product_id : this.dialogData.data.id,
       name: formData.name,
-      description : formData.description,
+      description: formData.description ?? '',
       stock: formData.stock,
       cost_price : formData.cost_price,
       sale_price : formData.sale_price,

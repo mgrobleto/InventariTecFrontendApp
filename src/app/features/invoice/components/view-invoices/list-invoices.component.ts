@@ -17,7 +17,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import swal from'sweetalert2';
+import swal from 'sweetalert2';
 import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.service';
 
 
@@ -28,19 +28,19 @@ import { ExportToExcelService } from 'src/app/shared/service/export-to-excel.ser
 })
 export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
-  searchOptionsForm:any = FormGroup;
-  searchOptions: any [] = [
-    { value: 'date', description: "Por fecha"},
+  searchOptionsForm: any = FormGroup;
+  searchOptions: any[] = [
+    { value: 'date', description: "Por fecha" },
   ];
 
   dataSource = new MatTableDataSource<any>();
   originalData: any[] = []; // Store original data for filtering
-  filterBill:any;
-  billDetails:any = [];
-  items:any = [];
-  responseMessage:any;
-  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Fecha', 'Ver detalle', 'Eliminar'];
-  @ViewChild(MatPaginator) paginator :any = MatPaginator;
+  filterBill: any;
+  billDetails: any = [];
+  items: any = [];
+  responseMessage: any;
+  displayedColumns: string[] = ['Numero de Factura', 'Nombre Cliente', 'Total', 'Tipo de pago', 'Estado', 'Fecha', 'Ver detalle', 'Eliminar'];
+  @ViewChild(MatPaginator) paginator: any = MatPaginator;
   billState: any;
 
   // Selection
@@ -51,22 +51,22 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   recentDays = 7;
 
   constructor(
-    private _billService : InvoiceSalesService, 
-    public router : Router,
-    private dialog : MatDialog,
-    private _coreService : CoreService,
+    private _billService: InvoiceSalesService,
+    public router: Router,
+    private dialog: MatDialog,
+    private _coreService: CoreService,
     private ngxService: NgxUiLoaderService,
     private _fb: FormBuilder,
     private datePipe: DatePipe,
-    private excelExportService : ExportToExcelService
-  ) { 
+    private excelExportService: ExportToExcelService
+  ) {
 
     this.searchOptionsForm = this._fb.group({
-      searchBy:['date'],
-      dateSelected:[''],
+      searchBy: ['date'],
+      dateSelected: [''],
     })
 
-    this.searchOptionsForm.get("searchBy") ?.valueChanges.subscribe(
+    this.searchOptionsForm.get("searchBy")?.valueChanges.subscribe(
       (value: any) => {
         this.searchOptionsForm.patchValue({
           dateSelected: ''
@@ -75,8 +75,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     )
   }
 
-  exportToExcel(): void
-  {
+  exportToExcel(): void {
     const rows = (this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data) || [];
     const exportRows = rows.map((row: any) => ({
       invoiceNumber: row?.invoice_number ?? '',
@@ -96,11 +95,11 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     ];
 
     this.excelExportService.exportJsonToExcel(exportRows, columns, fileName);
- 
+
   }
 
   handleSearchAction() {
-    if(this.searchOptionsForm.value.searchBy === "date"){
+    if (this.searchOptionsForm.value.searchBy === "date") {
 
       var dateSelected = this.searchOptionsForm.controls['dateSelected'].value;
       this.searchByDate(dateSelected);
@@ -132,33 +131,33 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     ).subscribe(
       (response: any) => {
         this.applySort(response);
-      }, (error : any) => {
+      }, (error: any) => {
         console.log(error);
-        if(error.message?.message){
+        if (error.message?.message) {
           this.responseMessage = error.error?.message;
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
   }
 
   searchByBillStatus(billStatus: any) {
 
-    this._billService.getAllInvoices().pipe(map( (bill : any) => {
-      return bill.filter((bill : any) => bill.bill_state === billStatus)
+    this._billService.getAllInvoices().pipe(map((bill: any) => {
+      return bill.filter((bill: any) => bill.bill_state === billStatus)
     })).subscribe(
       (response: any) => {
         this.dataSource.data = response;
-      }, (error : any) => {
+      }, (error: any) => {
         console.log(error);
-        if(error.message?.message){
+        if (error.message?.message) {
           this.responseMessage = error.error?.message;
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     )
   }
@@ -170,7 +169,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     this.paginator?.firstPage();
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.ngxService.start();
     this.getAllBills();
     //this.getBillState()
@@ -179,7 +178,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  
+
 
   addNewBill() {
     this.router.navigate(['/invoice/createNewInvoice']);
@@ -193,15 +192,15 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
         this.originalData = data.data || [];
         this.applySort([...this.originalData]);
         //this.productDetails = response;
-      }, (error : any) => {
+      }, (error: any) => {
         this.ngxService.stop();
         console.log(error.error?.message);
-        if(error.message?.message){
+        if (error.message?.message) {
           this.responseMessage = error.error?.message;
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
+        this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }
@@ -222,7 +221,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     )
   } */
 
-  applyFilter(event: Event){
+  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     //this.productDetails.filter((value:any) => value.productsCategories.category).breadcrumb[0].replace()
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -395,7 +394,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     )
   } */
 
-  handleViewAction(values : any) {
+  handleViewAction(values: any) {
 
     //this.getBillItemsDetails(values);
 
@@ -409,17 +408,17 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     dialogConfig.maxHeight = '95vh';
     dialogConfig.panelClass = 'invoice-details-dialog';
     //dialogConfig.height= 'auto';
-    const dialogRef =  this.dialog.open(InvoiceDetailsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(InvoiceDetailsComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
     })
   }
 
-  handleEditAction(values:any) {
-   const dialogConfig = new MatDialogConfig();
+  handleEditAction(values: any) {
+    const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      action:"Editar",
-      data:values
+      action: "Editar",
+      data: values
     };
     dialogConfig.width = "500px";
     const dialogRef = this.dialog.open(EditInvoiceStatusComponent, dialogConfig);
@@ -432,7 +431,7 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  handleDeleteAction(values:any) {
+  handleDeleteAction(values: any) {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.data = {
       message: `Esta seguro de eliminar la factura ${values.invoice_number ?? ''}`.trim() + '.',
@@ -449,35 +448,35 @@ export class ListInvoicesComponent implements OnInit, AfterViewInit {
 
   deleteInvoice(id: string) {
     this._billService.deleteInvoice(id)
-    .subscribe(
-      (response:any) => {
-        this.ngxService.stop();
-        this.getAllBills();
-        swal.fire(
-          'Factura eliminada correctamente',
-          this.responseMessage = response?.message,
-          'success'
-        )
-        //this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
-        console.log(response);
-      },
-      (error : HttpErrorResponse) => {
-        this.ngxService.stop();
-        console.log(error.error?.message);
-        if(error.error?.message){
-          this.responseMessage = error.error?.message;
-        } else {
-          this.responseMessage = GlobalConstants.genericError;
+      .subscribe(
+        (response: any) => {
+          this.ngxService.stop();
+          this.getAllBills();
+          swal.fire(
+            'Factura eliminada correctamente',
+            this.responseMessage = response?.message,
+            'success'
+          )
+          //this._coreService.openSuccessSnackBar(this.responseMessage, "con exito");
+          console.log(response);
+        },
+        (error: HttpErrorResponse) => {
+          this.ngxService.stop();
+          console.log(error.error?.message);
+          if (error.error?.message) {
+            this.responseMessage = error.error?.message;
+          } else {
+            this.responseMessage = GlobalConstants.genericError;
+          }
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No pudimos completar la acción.',
+            footer: this.responseMessage
+          })
+          //this._coreService.openFailureSnackBar(this.responseMessage,GlobalConstants.error);
         }
-        swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'No pudimos completar la acción.',
-          footer: this.responseMessage
-        })
-      //this._coreService.openFailureSnackBar(this.responseMessage,GlobalConstants.error);
-      }
-    );
+      );
   }
 }
 

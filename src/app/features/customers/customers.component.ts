@@ -78,9 +78,9 @@ export class CustomersComponent {
       customer_id: customer?.id,
       first_name: customer?.first_name,
       last_name: customer?.last_name,
-      email: customer?.email,
-      phone: customer?.phone,
-      c_address: customer?.c_address,
+      email: (customer?.email?.trim() || "example@gmail.com"),
+      phone: (customer?.phone?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      c_address: (customer?.c_address?.trim() || GlobalConstants.emptyFieldPlaceholder),
       status
     };
 

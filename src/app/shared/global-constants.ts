@@ -19,6 +19,9 @@ export class GlobalConstants {
 
     public static stock : string = "Producto fuera de stock!";
 
+    /** Value sent to backend when user leaves optional fields empty */
+    public static emptyFieldPlaceholder: string = "No disponible";
+
     //public static isLoggedIn : boolean = false;
 
 }

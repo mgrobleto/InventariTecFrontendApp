@@ -43,12 +43,11 @@
 
             <!-- Email -->
             <div class="form-field-wrapper form-field-full">
-                <label class="field-label">Correo Electrónico<span class="required-asterisk">*</span></label>
+                <label class="field-label">Correo Electrónico</label>
                 <mat-form-field appearance="outline" class="form-field-full">
-                    <input matInput type="email" formControlName="email" placeholder="ejemplo@gmail.com" required>
+                    <input matInput type="email" formControlName="email" placeholder="ejemplo@gmail.com (opcional)">
                     <mat-icon matPrefix>email</mat-icon>
                     <mat-error *ngIf="customerForm.controls['email'].touched && customerForm.controls['email'].invalid">
-                        <span *ngIf="customerForm.controls['email'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="customerForm.controls['email'].errors?.['email']">Ingresa un correo válido</span>
                     </mat-error>
                 </mat-form-field>
@@ -56,18 +55,16 @@
 
             <!-- Phone -->
             <div class="form-field-wrapper form-field-half">
-                <label class="field-label">Número de Contacto<span class="required-asterisk">*</span></label>
+                <label class="field-label">Número de Contacto</label>
                 <mat-form-field appearance="outline" class="form-field-half">
                     <input 
                         matInput 
                         type='text' 
                         mask="9999 9999" 
                         formControlName="phone"
-                        placeholder="9999 9999" 
-                        required>
+                        placeholder="9999 9999 (opcional)">
                     <mat-icon matPrefix>phone</mat-icon>
                     <mat-error *ngIf="customerForm.controls['phone'].touched && customerForm.controls['phone'].invalid">
-                        <span *ngIf="customerForm.controls['phone'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="customerForm.controls['phone'].errors?.['pattern']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>
@@ -75,12 +72,11 @@
 
             <!-- Address -->
             <div class="form-field-wrapper form-field-half">
-                <label class="field-label">Dirección<span class="required-asterisk">*</span></label>
+                <label class="field-label">Dirección</label>
                 <mat-form-field appearance="outline" class="form-field-half">
-                    <input matInput type="text" formControlName="c_address" placeholder="Dirección*" required>
+                    <input matInput type="text" formControlName="c_address" placeholder="Dirección (opcional)">
                     <mat-icon matPrefix>home</mat-icon>
                     <mat-error *ngIf="customerForm.controls['c_address'].touched && customerForm.controls['c_address'].invalid">
-                        <span *ngIf="customerForm.controls['c_address'].errors?.['required']">Campo obligatorio</span>
                         <span *ngIf="customerForm.controls['c_address'].errors?.['pattern']">Formato inválido</span>
                     </mat-error>
                 </mat-form-field>

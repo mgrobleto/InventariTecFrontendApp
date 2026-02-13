@@ -36,15 +36,21 @@ export class AddEditSuppliersFormComponent {
     this.supplierForm = this._fb.group({
       first_name: [null,[Validators.required]],
       last_name: [null,[Validators.required]],
-      email: [null,[Validators.required]],
-      phone: [null,[Validators.required]],
-      s_address: [null,[Validators.required]],
+      email: ['', [Validators.email]],
+      phone: [''],
+      s_address: [''],
     });
 
     if(this.dialogData.action === "Editar") {
       this.dialogAction = "Editar";
       this.action = "Actualizar";
-      this.supplierForm.patchValue(this.dialogData.data);
+      const d = this.dialogData.data;
+      this.supplierForm.patchValue({
+        ...d,
+        email: (d.email?.trim() === GlobalConstants.emptyFieldPlaceholder || !d.email?.trim()) ? '' : d.email,
+        phone: (d.phone?.trim() === GlobalConstants.emptyFieldPlaceholder || !d.phone?.trim()) ? '' : d.phone,
+        s_address: (d.s_address?.trim() === GlobalConstants.emptyFieldPlaceholder || !d.s_address?.trim()) ? '' : d.s_address
+      });
     }
   }
 
@@ -64,9 +70,9 @@ export class AddEditSuppliersFormComponent {
     {
       first_name: formData.first_name,
       last_name: formData.last_name,
-      email: formData.email,
-      phone: formData.phone,
-      s_address : formData.s_address,
+      email: (formData.email?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      phone: (formData.phone?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      s_address: (formData.s_address?.trim() || GlobalConstants.emptyFieldPlaceholder),
       business: businessId
     }
     console.log(data);
@@ -110,9 +116,9 @@ export class AddEditSuppliersFormComponent {
       supplier_id : this.dialogData.data.id,
       first_name: formData.first_name,
       last_name: formData.last_name,
-      email: formData.email,
-      phone: formData.phone,
-      s_address : formData.s_address,
+      email: (formData.email?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      phone: (formData.phone?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      s_address: (formData.s_address?.trim() || GlobalConstants.emptyFieldPlaceholder),
       //agregar id business
     }
 

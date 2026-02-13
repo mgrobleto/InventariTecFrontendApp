@@ -79,11 +79,11 @@ export class SuppliersComponent {
   updateStatus(supplier: any, status: 'active' | 'inactive'): void {
     const payload = {
       supplier_id: supplier?.id,
-      first_name: supplier?.first_name ?? supplier?.name ?? null,
-      last_name: supplier?.last_name ?? null,
-      email: supplier?.email ?? null,
-      phone: supplier?.phone ?? supplier?.contact ?? null,
-      s_address: supplier?.s_address ?? supplier?.address ?? supplier?.c_address ?? supplier?.c_adress ?? null,
+      first_name: supplier?.first_name ?? supplier?.name ?? '',
+      last_name: supplier?.last_name ?? '',
+      email: (supplier?.email?.trim() || supplier?.contact?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      phone: (supplier?.phone?.trim() || supplier?.contact?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      s_address: (supplier?.s_address?.trim() || supplier?.address?.trim() || supplier?.c_address?.trim() || supplier?.c_adress?.trim() || GlobalConstants.emptyFieldPlaceholder),
       status
     };
 

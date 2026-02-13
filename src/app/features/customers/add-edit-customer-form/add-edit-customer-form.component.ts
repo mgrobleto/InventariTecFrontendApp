@@ -36,15 +36,21 @@ export class AddEditCustomerFormComponent {
     this.customerForm = this._fb.group({
       first_name: [null,[Validators.required]],
       last_name: [null,[Validators.required]],
-      email: [null,[Validators.required]],
-      phone: [null,[Validators.required]],
-      c_address: [null,[Validators.required]],
+      email: ['', [Validators.email]],
+      phone: [''],
+      c_address: [''],
     });
 
     if(this.dialogData.action === "Editar") {
       this.dialogAction = "Editar";
       this.action = "Actualizar";
-      this.customerForm.patchValue(this.dialogData.data);
+      const d = this.dialogData.data;
+      this.customerForm.patchValue({
+        ...d,
+        email: (d.email?.trim() === GlobalConstants.emptyFieldPlaceholder || !d.email?.trim()) ? '' : d.email,
+        phone: (d.phone?.trim() === GlobalConstants.emptyFieldPlaceholder || !d.phone?.trim()) ? '' : d.phone,
+        c_address: (d.c_address?.trim() === GlobalConstants.emptyFieldPlaceholder || !d.c_address?.trim()) ? '' : d.c_address
+      });
     }
   }
 
@@ -64,9 +70,9 @@ export class AddEditCustomerFormComponent {
     {
       first_name: formData.first_name,
       last_name : formData.last_name,
-      email: formData.email,
-      phone: formData.phone,
-      c_address : formData.c_address,
+      email: (formData.email?.trim() || "example@gmail.com"),
+      phone: (formData.phone?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      c_address: (formData.c_address?.trim() || GlobalConstants.emptyFieldPlaceholder),
       business: businessId
     }
     console.log(data);
@@ -110,9 +116,9 @@ export class AddEditCustomerFormComponent {
       customer_id : this.dialogData.data.id,
       first_name: formData.first_name,
       last_name : formData.last_name,
-      email: formData.email,
-      phone: formData.phone,
-      c_address : formData.c_address,
+      email: (formData.email?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      phone: (formData.phone?.trim() || GlobalConstants.emptyFieldPlaceholder),
+      c_address: (formData.c_address?.trim() || GlobalConstants.emptyFieldPlaceholder),
       // id business
     }
 
