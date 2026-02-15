@@ -10,6 +10,11 @@ const routes: Routes = [
     component: CreateInvoiceComponent,
   },
   {
+    path: 'createQuote',
+    component: CreateInvoiceComponent,
+    data: { mode: 'quote' }
+  },
+  {
     path: 'allInvoices',
     component: ListInvoicesComponent,
   },

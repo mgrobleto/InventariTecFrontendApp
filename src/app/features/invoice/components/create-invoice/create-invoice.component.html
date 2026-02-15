@@ -4,7 +4,7 @@
         <button mat-icon-button (click)="goBack()" class="back-button">
             <mat-icon>arrow_back</mat-icon>
         </button>
-        <h1 class="page-title">Crear Factura</h1>
+        <h1 class="page-title">{{ isQuoteMode ? 'Crear Cotización' : 'Crear Factura' }}</h1>
     </div>
     <div class="header-right">
         <a href="#" class="help-link">
@@ -50,7 +50,7 @@
                     </div>
 
                     <!-- Invoice Number and Due Date -->
-                    <div class="form-row">
+                    <div class="form-row" *ngIf="!isQuoteMode">
                         <mat-form-field appearance="outline">
                             <mat-label>Número de Factura</mat-label>
                             <input matInput formControlName="invoice_number" readonly>
@@ -253,12 +253,13 @@
                     </div>
                     <div class="company-info">
                         <h3 class="total-amount">C$ {{invoiceForm.get('total')?.value || '0.00' | number:'1.2-2'}}</h3>
-                        <p class="company-name">Factura de {{getBusinessName()}}</p>
+                        <p class="company-name" *ngIf="!isQuoteMode && !isPrintingQuote">Factura de {{getBusinessName()}}</p>
+                        <p class="company-name quote-title" *ngIf="isQuoteMode || isPrintingQuote">COTIZACIÓN</p>
                     </div>
                 </div>
 
                 <!-- Invoice Details -->
-                <div class="preview-details">
+                <div class="preview-details" *ngIf="!isQuoteMode && !isPrintingQuote">
                     <div class="detail-row">
                         <span class="detail-label">Número de Factura:</span>
                         <span class="detail-value">{{invoiceForm.get('invoice_number')?.value || '---'}}</span>
@@ -328,6 +329,11 @@
                         <span>C$ {{invoiceForm.get('total')?.value || '0.00' | number:'1.2-2'}}</span>
                     </div>
                 </div>
+
+                <!-- Footer Disclaimer for Quote -->
+                <div class="preview-footer" *ngIf="isQuoteMode || isPrintingQuote" style="margin-top: 2rem; text-align: center; border-top: 1px solid #ddd; padding-top: 1rem;">
+                    <p style="font-size: 0.8rem; color: #666;">Este documento no tiene validez fiscal y es únicamente para fines informativos de precios y disponibilidad.</p>
+                </div>
             </div>
         </div>
 
@@ -336,7 +342,10 @@
             <button mat-stroked-button (click)="cancelInvoice()" class="cancel-button">
                 Cancelar
             </button>
-            <button mat-raised-button [disabled]="isSubmitDisabled" (click)="submitAction()" class="send-button">
+            <button mat-stroked-button color="accent" (click)="generateQuote()" class="quote-button" style="margin-right: 1rem;">
+                {{ isQuoteMode ? 'IMPRIMIR COTIZACIÓN' : 'COTIZAR' }}
+            </button>
+            <button *ngIf="!isQuoteMode" mat-raised-button [disabled]="isSubmitDisabled" (click)="submitAction()" class="send-button">
                 COMPLETAR FACTURA
             </button>
         </div>

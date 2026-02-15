@@ -3,10 +3,10 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalConstants } from '../../../../shared/global-constants';
 import { map, filter, forkJoin } from 'rxjs';
-import { DatePipe} from '@angular/common';
-import swal from'sweetalert2';
+import { DatePipe } from '@angular/common';
+import swal from 'sweetalert2';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 // Services
 import { ProductService } from 'src/app/data/service/productService/product.service';
@@ -39,32 +39,32 @@ export class CreateInvoiceComponent implements OnInit {
     'Total',
     'Eliminar',
   ];
-  
-  payment_type:any;
-  productsByCategorySelected:any;
-  productsCategories:any;
-  productDetail:any;
-  customers:any;
-  customerDetail:any;
 
-  productId:any;
+  payment_type: any;
+  productsByCategorySelected: any;
+  productsCategories: any;
+  productDetail: any;
+  customers: any;
+  customerDetail: any;
+
+  productId: any;
 
 
-  dataSource:any = [];
+  dataSource: any = [];
   responseMessage: any;
-  
-  sub_total:any;
-  iva:any;
-  totalAmount:number = 0; //corresponde al total de las ventas
-  netAmount:number = 0; //corresponde al total neto de la factura
-  ivatMount:number = 0;
-  price:any; //corresponde al modelo de detalle de venta
 
-  productStockQuantity:any;
-  productQuantity:number = 0; //corresponde
-  invoiceForm:any = FormGroup;
-  invoiceDetailForm:any = FormGroup;
-  
+  sub_total: any;
+  iva: any;
+  totalAmount: number = 0; //corresponde al total de las ventas
+  netAmount: number = 0; //corresponde al total neto de la factura
+  ivatMount: number = 0;
+  price: any; //corresponde al modelo de detalle de venta
+
+  productStockQuantity: any;
+  productQuantity: number = 0; //corresponde
+  invoiceForm: any = FormGroup;
+  invoiceDetailForm: any = FormGroup;
+
   currentMonth: any;
   yearValue: any;
 
@@ -72,19 +72,23 @@ export class CreateInvoiceComponent implements OnInit {
   previewLogoUrl = '';
   createdAt: Date = new Date();
 
+  isQuoteMode = false;
+  isPrintingQuote = false;
+
   constructor(
-    private _fb : FormBuilder,
-    private productService : ProductService, 
-    private _coreService : CoreService,
+    private _fb: FormBuilder,
+    private productService: ProductService,
+    private _coreService: CoreService,
     private ngxService: NgxUiLoaderService,
-    private _categoryService : ProductCategorieService,
-    private _billService : InvoiceSalesService,
-    private _customerService : CustomerService,
-    private paymentMethodsService : PaymentMethodService,
+    private _categoryService: ProductCategorieService,
+    private _billService: InvoiceSalesService,
+    private _customerService: CustomerService,
+    private paymentMethodsService: PaymentMethodService,
     private authService: AuthService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   // esto ya no
@@ -113,23 +117,30 @@ export class CreateInvoiceComponent implements OnInit {
   ngOnInit(): void {
     this.previewLogoUrl = new URL('assets/tecnorefill-logo.png', document.baseURI).toString();
 
+    this.route.data.subscribe(data => {
+      this.isQuoteMode = data['mode'] === 'quote';
+      if (this.isQuoteMode) {
+        // Clear unnecessary validations for quote mode if needed, or keep them to enforce data entry
+      }
+    });
+
     var myDate = new Date();
     this.createdAt = myDate;
 
     this.invoiceForm = this._fb.group({
       invoice_number: [null, [Validators.required]],
       invoice_date: [null, [Validators.required]],
-      customer_name: [null,[Validators.required]],
+      customer_name: [null, [Validators.required]],
       //phoneNumber: [null,[Validators.required]],
       //sub_total: [null,[Validators.required]],
       iva: [0],
-      total: [null,[Validators.required]],
-      payment_type: [null,[Validators.required]],
-      product: [null,[Validators.required]],
-      category: [null,[Validators.required]],
-      cost_price_at_time: [null,[Validators.required]],
-      quantity: [null,[Validators.required]],
-      sale_price_at_time: [null,[Validators.required]],
+      total: [null, [Validators.required]],
+      payment_type: [null, [Validators.required]],
+      product: [null, [Validators.required]],
+      category: [null, [Validators.required]],
+      cost_price_at_time: [null, [Validators.required]],
+      quantity: [null, [Validators.required]],
+      sale_price_at_time: [null, [Validators.required]],
       description: [''],
       currency: ['NIO'], // Add currency field
     })
@@ -167,7 +178,7 @@ export class CreateInvoiceComponent implements OnInit {
     this.invoiceForm.valueChanges.subscribe(() => {
       this.validateSubmit();
     });
-    
+
     //console.log(this.billDate);
   }
 
@@ -186,14 +197,14 @@ export class CreateInvoiceComponent implements OnInit {
 
   getPaymentType() {
     this.paymentMethodsService.getPaymentType().subscribe(
-      (resp : any) => {
+      (resp: any) => {
         this.payment_type = resp;
         this.ngxService.stop();
-      }, (err : any) => {
+      }, (err: any) => {
         console.log(err);
-        if(err.message?.message){
+        if (err.message?.message) {
           this.responseMessage = err.message?.message;
-        }else{
+        } else {
           this.responseMessage = GlobalConstants.genericError;
         }
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
@@ -204,7 +215,7 @@ export class CreateInvoiceComponent implements OnInit {
   handleAddCustomerAction() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      action:"Agregar"
+      action: "Agregar"
     };
     dialogConfig.width = "650px";
     dialogConfig.panelClass = "customer-dialog";
@@ -225,21 +236,21 @@ export class CreateInvoiceComponent implements OnInit {
         if (selectedCustomer) {
           const selectedId = typeof selectedCustomer === 'object'
             ? (selectedCustomer?.id || this.customers.find((customer: any) =>
-                customer.email === selectedCustomer?.email ||
-                customer.phone === selectedCustomer?.phone
-              )?.id)
+              customer.email === selectedCustomer?.email ||
+              customer.phone === selectedCustomer?.phone
+            )?.id)
             : selectedCustomer;
           if (selectedId) {
             this.invoiceForm.controls['customer_name'].setValue(selectedId);
             this.getCustomerInfo(selectedId);
           }
         }
-      }, 
-      (error) =>{
+      },
+      (error) => {
         console.log(error);
-        if(error.message?.message){
+        if (error.message?.message) {
           this.responseMessage = error.message?.message;
-        }else{
+        } else {
           this.responseMessage = GlobalConstants.genericError;
         }
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
@@ -257,7 +268,7 @@ export class CreateInvoiceComponent implements OnInit {
         const products = result.products.data;
         // Create a set of category IDs that have at least one product
         const usedCategoryIds = new Set(products.map((p: any) => p.category));
-        
+
         // Filter categories that have products
         return categories.filter((c: any) => usedCategoryIds.has(c.id));
       })
@@ -265,11 +276,11 @@ export class CreateInvoiceComponent implements OnInit {
       (filteredCategories: any) => {
         this.productsCategories = filteredCategories;
         this.ngxService.stop();
-      }, (err : any) => {
+      }, (err: any) => {
         console.log(err);
-        if(err.message?.message){
+        if (err.message?.message) {
           this.responseMessage = err.message?.message;
-        }else{
+        } else {
           this.responseMessage = GlobalConstants.genericError;
         }
         this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
@@ -279,71 +290,71 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   getProductsByCategory(value: any) {
-    this.productService.getAllProducts().pipe(map((products : any) => {
-      return products.data.filter((product : any) => product.category === value);
+    this.productService.getAllProducts().pipe(map((products: any) => {
+      return products.data.filter((product: any) => product.category === value);
     }))
-    .subscribe(
-      (response: any) => {
-        
-        this.productsByCategorySelected = response;
-        console.log('Productos por categoria: '+ this.productsByCategorySelected);
-        console.log('valor que le entra: '+ value);
-        this.invoiceForm.controls['cost_price_at_time'].setValue('');
-        this.invoiceForm.controls['quantity'].setValue('');
-        this.invoiceForm.controls['sale_price_at_time'].setValue(0);
+      .subscribe(
+        (response: any) => {
 
-      }, (error : any) => {
-        console.log(error);
-        if(error.message?.message){
-          this.responseMessage = error.error?.message;
-        } else {
-          this.responseMessage = GlobalConstants.genericError;
+          this.productsByCategorySelected = response;
+          console.log('Productos por categoria: ' + this.productsByCategorySelected);
+          console.log('valor que le entra: ' + value);
+          this.invoiceForm.controls['cost_price_at_time'].setValue('');
+          this.invoiceForm.controls['quantity'].setValue('');
+          this.invoiceForm.controls['sale_price_at_time'].setValue(0);
+
+        }, (error: any) => {
+          console.log(error);
+          if (error.message?.message) {
+            this.responseMessage = error.error?.message;
+          } else {
+            this.responseMessage = GlobalConstants.genericError;
+          }
+          this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
         }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
-      }
-    )
+      )
   }
 
-  getProductDetails(value:any) {
+  getProductDetails(value: any) {
     //var currency_type: any;
     this.productService.getAllProducts().pipe(
       map((products: any) => {
-      return products.data.filter((product : any) => product.id === value)
-    }))
-    .subscribe(
-      (response: any) => {
+        return products.data.filter((product: any) => product.id === value)
+      }))
+      .subscribe(
+        (response: any) => {
 
-        this.productDetail = response;
+          this.productDetail = response;
 
-        console.log(this.productDetail);
+          console.log(this.productDetail);
 
-        this.productDetail.forEach((element:any) => {
-          this.price = element.sale_price;
-          console.log('este es el precio:' + this.price);
-          this.productStockQuantity = element.stock;
-        });
-      
-        //console.log(this.productStockQuantity);
-        this.invoiceForm.controls['cost_price_at_time'].setValue(this.price);
-        this.invoiceForm.controls['quantity'].setValue('1');
-        this.invoiceForm.controls['sale_price_at_time'].setValue(this.price * 1);
+          this.productDetail.forEach((element: any) => {
+            this.price = element.sale_price;
+            console.log('este es el precio:' + this.price);
+            this.productStockQuantity = element.stock;
+          });
 
-      }, (error : any) => {
-        console.log(error);
-        if(error.message?.message){
-          this.responseMessage = error.error?.message;
-        } else {
-          this.responseMessage = GlobalConstants.genericError;
+          //console.log(this.productStockQuantity);
+          this.invoiceForm.controls['cost_price_at_time'].setValue(this.price);
+          this.invoiceForm.controls['quantity'].setValue('1');
+          this.invoiceForm.controls['sale_price_at_time'].setValue(this.price * 1);
+
+        }, (error: any) => {
+          console.log(error);
+          if (error.message?.message) {
+            this.responseMessage = error.error?.message;
+          } else {
+            this.responseMessage = GlobalConstants.genericError;
+          }
+          //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
         }
-        //this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
-      }
-    )
+      )
   }
 
   setQuantity(values: any) {
     var temp = this.invoiceForm.controls['quantity'].value;
-    
-    if(temp > 0 && temp <= this.productStockQuantity){
+
+    if (temp > 0 && temp <= this.productStockQuantity) {
       this.updateLineSubtotal();
     }
     else if (temp > this.productStockQuantity) {
@@ -352,7 +363,7 @@ export class CreateInvoiceComponent implements OnInit {
     else if (temp != '') {
       this.invoiceForm.controls['quantity'].setValue('1');
       this.updateLineSubtotal();
-    } 
+    }
 
     // establece la cantidad de productos que va a comprar
     this.productQuantity = temp;
@@ -369,33 +380,33 @@ export class CreateInvoiceComponent implements OnInit {
   }
 
   validateAddProduct() {
-    
-    if( this.invoiceForm.controls['sale_price_at_time'].value === 0 || this.invoiceForm.controls['cost_price_at_time'].value === null || 
-        this.invoiceForm.controls['quantity'].value <= 0) {
-     return true;
-    } else 
-     return false;
+
+    if (this.invoiceForm.controls['sale_price_at_time'].value === 0 || this.invoiceForm.controls['cost_price_at_time'].value === null ||
+      this.invoiceForm.controls['quantity'].value <= 0) {
+      return true;
+    } else
+      return false;
   }
 
   addProductToSaleList() {
     var invoiceDetailFormData = this.invoiceForm.value;
 
-    var productName = this.dataSource.find((e: {product : any}) => e.product === invoiceDetailFormData.product);
+    var productName = this.dataSource.find((e: { product: any }) => e.product === invoiceDetailFormData.product);
     const selectedProduct =
       this.productsByCategorySelected?.find((prod: any) => prod.id === invoiceDetailFormData.product) ||
       this.productDetail?.[0];
     const selectedProductName = selectedProduct?.name ?? '';
     //console.log(productName);
 
-    if( productName ===  undefined && this.productQuantity <= this.productStockQuantity) {
+    if (productName === undefined && this.productQuantity <= this.productStockQuantity) {
 
       this.dataSource.push({
         //id: invoiceDetailFormData.product,
-        product:invoiceDetailFormData.product, 
+        product: invoiceDetailFormData.product,
         product_name: selectedProductName,
-        quantity:+invoiceDetailFormData.quantity, 
-        cost_price_at_time:invoiceDetailFormData.cost_price_at_time, 
-        sale_price_at_time:invoiceDetailFormData.sale_price_at_time,
+        quantity: +invoiceDetailFormData.quantity,
+        cost_price_at_time: invoiceDetailFormData.cost_price_at_time,
+        sale_price_at_time: invoiceDetailFormData.sale_price_at_time,
         description: invoiceDetailFormData.description || ''
       })
 
@@ -404,10 +415,9 @@ export class CreateInvoiceComponent implements OnInit {
       //this._coreService.openSuccessSnackBar(GlobalConstants.productAdded, "con exito");
       //this.productQuantity = 0;
 
-    } else if(this.productQuantity > this.productStockQuantity) {
+    } else if (this.productQuantity > this.productStockQuantity) {
       this._coreService.openSuccessSnackBar(GlobalConstants.stock, GlobalConstants.error);
-    } else
-    {
+    } else {
       this._coreService.openSuccessSnackBar(GlobalConstants.productExistError, GlobalConstants.error);
     }
     this.validateSubmit();
@@ -425,13 +435,13 @@ export class CreateInvoiceComponent implements OnInit {
   calculateIvaMount() {
     var temp = this.invoiceForm.controls['iva'].value;
 
-    if(this.totalAmount > 0){
+    if (this.totalAmount > 0) {
       var totalAmountValue = this.totalAmount.toFixed(2);
       this.ivatMount = parseFloat(totalAmountValue) * temp;
       var iva = this.ivatMount.toFixed(2);
 
       console.log(this.ivatMount);
-  
+
       this.invoiceForm.controls['iva'].setValue(iva);
       this.netAmount = parseFloat(totalAmountValue) + parseFloat(iva);
       this.invoiceForm.controls['total'].setValue(this.netAmount);
@@ -440,30 +450,30 @@ export class CreateInvoiceComponent implements OnInit {
     }
   }
 
-  getCustomerInfo(value : any) {
-    this._customerService.getAllCustomers().pipe(map((customers : any) => {
-      return customers.data.filter((customer : any) => customer.id === value);
+  getCustomerInfo(value: any) {
+    this._customerService.getAllCustomers().pipe(map((customers: any) => {
+      return customers.data.filter((customer: any) => customer.id === value);
     }))
-    .subscribe(
-      (response: any) => {
-        const list = Array.isArray(response) ? response : [response];
-        this.customerDetail = list.map((c: any) => ({
-          ...c,
-          email: (c?.email?.trim() || GlobalConstants.emptyFieldPlaceholder),
-          phone: (c?.phone?.trim() || GlobalConstants.emptyFieldPlaceholder)
-        }));
-        console.log(this.customerDetail);
+      .subscribe(
+        (response: any) => {
+          const list = Array.isArray(response) ? response : [response];
+          this.customerDetail = list.map((c: any) => ({
+            ...c,
+            email: (c?.email?.trim() || GlobalConstants.emptyFieldPlaceholder),
+            phone: (c?.phone?.trim() || GlobalConstants.emptyFieldPlaceholder)
+          }));
+          console.log(this.customerDetail);
 
-      }, (error : any) => {
-        console.log(error);
-        if(error.message?.message){
-          this.responseMessage = error.error?.message;
-        } else {
-          this.responseMessage = GlobalConstants.genericError;
+        }, (error: any) => {
+          console.log(error);
+          if (error.message?.message) {
+            this.responseMessage = error.error?.message;
+          } else {
+            this.responseMessage = GlobalConstants.genericError;
+          }
+          this._coreService.openSuccessSnackBar(this.responseMessage, GlobalConstants.error);
         }
-        this._coreService.openSuccessSnackBar(this.responseMessage,GlobalConstants.error);
-      }
-    )
+      )
   }
 
   handleDeleteAction(value: any, element: any) {
@@ -521,9 +531,9 @@ export class CreateInvoiceComponent implements OnInit {
     } */
 
     var invoiceData = {
-      invoice_number : billFormData.invoice_number,
-      invoice_date : billFormData.invoice_date,
-      sub_total:billFormData.sale_price_at_time,
+      invoice_number: billFormData.invoice_number,
+      invoice_date: billFormData.invoice_date,
+      sub_total: billFormData.sale_price_at_time,
       iva: 0,
       total: billFormData.total,
       customer: billFormData.customer_name,
@@ -535,13 +545,13 @@ export class CreateInvoiceComponent implements OnInit {
     console.log(invoiceData);
 
     this._billService.createNewInvoice(invoiceData).subscribe(
-      (response:any) => {
+      (response: any) => {
         console.log(invoiceData);
         this.responseMessage = response.message;
         console.log(this.responseMessage);
         swal.fire(
           'Venta registrada',
-          'Número de Factura: '+ billFormData.invoice_number,
+          'Número de Factura: ' + billFormData.invoice_number,
           'success'
         )
 
@@ -553,9 +563,9 @@ export class CreateInvoiceComponent implements OnInit {
         this.ngOnInit();
       },
       (error) => {
-        if(error.message?.message){
+        if (error.message?.message) {
           this.responseMessage = error.message?.message;
-        }else{
+        } else {
           this.responseMessage = GlobalConstants.genericError;
         }
         swal.fire({
@@ -635,6 +645,32 @@ export class CreateInvoiceComponent implements OnInit {
   saveDraft(): void {
     // TODO: Implement draft save functionality
     this._coreService.openSuccessSnackBar('Borrador guardado exitosamente', 'success');
+  }
+
+  generateQuote(): void {
+    if (!this.invoiceForm.valid && !this.isQuoteMode) {
+      // Validate only if needed, or allow partial quotes? 
+      // Usually quotes need product details at least.
+      // Let's enforce basic validation
+    }
+
+    // Validate we have products
+    if (this.dataSource.length === 0) {
+      this._coreService.openFailureSnackBar('Agregue productos a la cotización', GlobalConstants.error);
+      return;
+    }
+
+    this.isPrintingQuote = true;
+
+    // Allow UI to update
+    setTimeout(() => {
+      window.print();
+      // Reset after print dialog closes (or immediately, as print pauses execution in some browsers)
+      // but to be safe we can use a timeout or just leave it if in quote mode
+      if (!this.isQuoteMode) {
+        this.isPrintingQuote = false;
+      }
+    }, 500);
   }
 }
 

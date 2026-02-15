@@ -1,6 +1,6 @@
 import { INavbarData } from "./helper";
 
-export const navbarData : INavbarData[] = [
+export const navbarData: INavbarData[] = [
 
     {
         routeLink: 'home',
@@ -16,6 +16,11 @@ export const navbarData : INavbarData[] = [
                 routeLink: 'invoice/createNewInvoice',
                 icon: 'fas fa-plus-circle',
                 label: 'Nueva Factura',
+            },
+            {
+                routeLink: 'invoice/createQuote',
+                icon: 'fas fa-file-contract',
+                label: 'Nueva Cotización',
             },
             {
                 routeLink: 'invoice/allInvoices',
