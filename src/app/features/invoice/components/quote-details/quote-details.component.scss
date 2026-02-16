@@ -1,10 +1,10 @@
 .invoice-modal-content {
-    background-color: #f3f7fb; /* App background to contrast the paper */
+    background-color: #f3f7fb;
     padding: 2rem;
     display: flex;
     justify-content: center;
     overflow-y: auto;
-    max-height: 90vh; /* Ensure scroll within modal */
+    max-height: 85vh; /* Allow space for actions */
 }
 
 .invoice-paper {
@@ -24,9 +24,8 @@
 
 /* Decorations */
 .header-decoration {
-    height: 140px;
+    height: 120px;
     width: 100%;
-    /* Gradient from Blue #1E488F to Light Green #b5ffc9 */
     background: linear-gradient(135deg, #1E488F 0%, #b5ffc9 100%);
     clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
     position: absolute;
@@ -36,7 +35,7 @@
 }
 
 .footer-decoration {
-    height: 200px;
+    height: 180px;
     width: 250px;
     background: linear-gradient(135deg, #b5ffc9 0%, #1E488F 100%);
     position: absolute;
@@ -52,19 +51,20 @@
 .info-details-container,
 .table-section,
 .bottom-section,
-.signatures-section {
-    padding: 0 4rem;
+.signatures-section,
+.quote-disclaimer {
+    padding: 0 3rem;
     position: relative;
     z-index: 2;
 }
 
 /* Header */
 .paper-header {
-    margin-top: 5rem; /* Space below decoration start */
+    margin-top: 4rem; 
     display: flex;
     justify-content: space-between;
-    align-items: flex-end; /* Align bottom lines of text */
-    margin-bottom: 4rem;
+    align-items: flex-end;
+    margin-bottom: 3rem;
 }
 
 .header-left {
@@ -74,19 +74,18 @@
 }
 
 .invoice-number {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 1px;
     color: #333;
 }
 
 .invoice-date {
-    font-size: 1rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 0.5px;
     color: #555;
-    margin-top: 0.25rem;
 }
 
 .header-right {
@@ -94,11 +93,11 @@
 }
 
 .document-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 900;
-    color: #1E488F; /* App Blue */
+    color: #1E488F;
     margin: 0;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     line-height: 1;
 }
 
@@ -106,7 +105,8 @@
 .info-details-container {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
+    gap: 2rem;
 }
 
 .info-column {
@@ -121,39 +121,38 @@
 }
 
 .column-label {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 800;
     text-transform: uppercase;
     color: #333;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     letter-spacing: 1px;
 }
 
 .name {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: #1E488F;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .company-name {
     font-weight: 600;
     color: #333;
     margin-bottom: 0.25rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .details {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: #555;
-    line-height: 1.5;
+    line-height: 1.4;
     max-width: 300px;
-    margin-bottom: 0.25rem;
 }
 
 /* Table Section */
 .table-section {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .custom-table {
@@ -162,55 +161,47 @@
 }
 
 .custom-table thead tr {
-    border-bottom: 2px solid #1E488F; /* Or full background */
+    border-bottom: 2px solid #1E488F;
 }
 
 .custom-table th {
     background-color: #1E488F;
     color: white;
-    padding: 14px 1rem;
+    padding: 10px 1rem;
     text-align: left;
     font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
-.custom-table th:first-child {
-    border-top-left-radius: 4px;
+    font-size: 0.85rem;
 }
 
 .custom-table th:last-child {
-    border-top-right-radius: 4px;
     text-align: right;
 }
 
 .custom-table td {
-    padding: 1.2rem 1rem;
+    padding: 0.8rem 1rem;
     border-bottom: 1px solid #ddd;
     color: #444;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .custom-table td.qty-col,
 .custom-table th.qty-col {
     text-align: center;
-    width: 80px;
+    width: 60px;
 }
 
 .custom-table td.price-col,
 .custom-table th.price-col {
     text-align: right;
-    width: 140px;
+    width: 120px;
 }
 
 .custom-table td.total-col,
 .custom-table th.total-col {
     text-align: right;
-    width: 140px;
-}
-
-.custom-table td.total-col {
+    width: 120px;
     font-weight: 600;
     color: #333;
 }
@@ -220,8 +211,8 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 5rem;
-    margin-top: 2rem;
+    margin-bottom: 4rem;
+    margin-top: 1rem;
 }
 
 .payment-info {
@@ -229,36 +220,30 @@
 }
 
 .payment-info h3 {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 800;
     text-transform: uppercase;
     color: #333;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .payment-info p {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #333;
-    margin-bottom: 0.4rem;
-    font-weight: 600;
-}
-
-.payment-info p strong {
-    font-weight: 800;
+    margin-bottom: 0.25rem;
 }
 
 .totals-box {
-    width: 350px;
-    background-color: #eee; /* Light grey box from image */
-    padding: 2rem;
-    padding-right: 2rem;
+    width: 300px;
+    background-color: #eee;
+    padding: 1.5rem;
 }
 
 .summary-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
     color: #555;
     font-weight: 500;
 }
@@ -266,35 +251,44 @@
 .summary-total {
     display: flex;
     justify-content: space-between;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     margin-bottom: 0;
     font-weight: 800;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #333;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #ccc;
 }
 
 /* Signatures */
 .signatures-section {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 6rem; /* Space from bottom */
+    padding-bottom: 2rem;
 }
 
 .signature-block {
-    width: 250px;
+    width: 200px;
     text-align: center;
 }
 
 .signature-block .line {
-    border-top: 2px solid #333;
-    margin-bottom: 0.8rem;
+    border-top: 1px solid #333;
+    margin-bottom: 0.5rem;
 }
 
 .signature-block p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: #444;
+}
+
+.quote-disclaimer {
+    color: #666;
+    font-size: 0.75rem;
+    text-align: center;
+    padding-bottom: 2rem;
+    font-style: italic;
 }
 
 /* Actions (Outside Paper) */
@@ -327,45 +321,6 @@
         margin-left: 1rem;
         background-color: #dc3545;
         color: white;
-    }
-}
-
-/* Responsive adjustments */
-@media (max-width: 900px) {
-    .invoice-paper {
-        width: 100%;
-        min-height: auto;
-    }
-    
-    .paper-header,
-    .info-details-container,
-    .bottom-section,
-    .signatures-section {
-        flex-direction: column;
-        gap: 2rem;
-        padding: 0 2rem;
-    }
-
-    .header-decoration {
-        height: 100px;
-    }
-
-    .header-right {
-        text-align: left;
-    }
-    
-    .info-column.align-right {
-        text-align: left;
-        align-items: flex-start;
-    }
-    
-    .totals-box {
-        width: 100%;
-        margin-top: 2rem;
-    }
-    
-    .signatures-section {
-        padding-bottom: 4rem;
     }
 }
 

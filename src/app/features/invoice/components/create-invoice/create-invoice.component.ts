@@ -19,6 +19,7 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 // Form Components
 import { AddEditCustomerFormComponent } from 'src/app/features/customers/add-edit-customer-form/add-edit-customer-form.component';
+import { QuoteDetailsComponent } from '../quote-details/quote-details.component';
 
 @Component({
   selector: 'app-create-invoice',
@@ -649,28 +650,36 @@ export class CreateInvoiceComponent implements OnInit {
 
   generateQuote(): void {
     if (!this.invoiceForm.valid && !this.isQuoteMode) {
-      // Validate only if needed, or allow partial quotes? 
-      // Usually quotes need product details at least.
-      // Let's enforce basic validation
+      // Validate only if needed.
     }
 
-    // Validate we have products
     if (this.dataSource.length === 0) {
       this._coreService.openFailureSnackBar('Agregue productos a la cotización', GlobalConstants.error);
       return;
     }
 
-    this.isPrintingQuote = true;
-
-    // Allow UI to update
-    setTimeout(() => {
-      window.print();
-      // Reset after print dialog closes (or immediately, as print pauses execution in some browsers)
-      // but to be safe we can use a timeout or just leave it if in quote mode
-      if (!this.isQuoteMode) {
-        this.isPrintingQuote = false;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      data: {
+        invoice_number: this.invoiceForm.get('invoice_number')?.value,
+        created_at: this.createdAt,
+        customer_name: this.getClientName(),
+        customer_address: this.getClientAddress(),
+        customer_phone: this.customerDetail && this.customerDetail[0] ? this.customerDetail[0].phone : '',
+        company_name: this.getBusinessName(),
+        payment_method: this.payment_type?.find((p: any) => p.id === this.invoiceForm.get('payment_type')?.value)?.name,
+        products: this.dataSource,
+        sub_total: this.totalAmount,
+        iva: this.invoiceForm.get('iva')?.value || 0,
+        total: this.invoiceForm.get('total')?.value
       }
-    }, 500);
+    };
+    dialogConfig.width = 'auto';
+    dialogConfig.maxWidth = '95vw';
+    dialogConfig.maxHeight = '95vh';
+    dialogConfig.panelClass = 'invoice-details-dialog';
+
+    this.dialog.open(QuoteDetailsComponent, dialogConfig);
   }
 }
 

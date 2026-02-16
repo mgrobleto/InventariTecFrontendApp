@@ -8,6 +8,7 @@ import { InvoiceComponent } from './invoice.component';
 import { InvoiceDetailsComponent } from './components/invoice-details/invoice-details.component';
 import { SharedModule } from '../../shared/shared.module';
 import { EditInvoiceStatusComponent } from './components/edit-invoice-status/edit-invoice-status.component';
+import { QuoteDetailsComponent } from './components/quote-details/quote-details.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { EditInvoiceStatusComponent } from './components/edit-invoice-status/edi
     CreateInvoiceComponent,
     ListInvoicesComponent,
     InvoiceDetailsComponent,
-    EditInvoiceStatusComponent
+    EditInvoiceStatusComponent,
+    QuoteDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -1,13 +1,13 @@
-<mat-dialog-content id="reportData" class="invoice-modal-content">
-  <div class="invoice-paper">
+<mat-dialog-content class="invoice-modal-content">
+  <div class="invoice-paper" id="quoteData">
     <!-- Top Decoration -->
     <div class="header-decoration"></div>
 
     <!-- Header Section -->
     <div class="paper-header">
       <div class="header-left">
-        <div class="invoice-number">Nº. {{data?.invoice_number}}</div>
-        <div class="invoice-date">{{ data?.invoice_date | date:'dd' }} DE {{ data?.invoice_date | date:'MMMM' | uppercase }} DE {{ data?.invoice_date | date:'yyyy' }}</div>
+        <div class="invoice-number">Ref. {{data?.invoice_number}}</div>
+        <div class="invoice-date">{{ data?.created_at | date:'dd' }} DE {{ data?.created_at | date:'MMMM' | uppercase }} DE {{ data?.created_at | date:'yyyy' }}</div>
       </div>
       <div class="header-right">
         <h1 class="document-title">COTIZACIÓN</h1>
@@ -17,15 +17,15 @@
     <!-- Info Section -->
     <div class="info-details-container">
       <div class="info-column">
-        <h3 class="column-label">COTIZACIÓN</h3>
-        <p class="name">{{data?.customer.first_name}} {{data?.customer.last_name}}</p>
-        <p class="details" *ngIf="data?.customer.address">{{data?.customer.address}}</p>
-        <p class="details" *ngIf="data?.customer.phone">Tel: {{data?.customer.phone}}</p>
+        <h3 class="column-label">COTIZACIÓN PARA</h3>
+        <p class="name">{{data?.customer_name}}</p>
+        <p class="details" *ngIf="data?.customer_address">{{data?.customer_address}}</p>
+        <p class="details" *ngIf="data?.customer_phone">Tel: {{data?.customer_phone}}</p>
       </div>
 
       <div class="info-column align-right">
         <h3 class="column-label">EMPRESA</h3>
-        <p class="name">{{data?.user?.name || 'Elena Fuentes'}}</p> <!-- Fallback or actual user -->
+        <p class="name">{{data?.company_name}}</p>
         <p class="company-name">TECNOREFILL</p>
         <p class="details">Colonia Linda Vista 2 1/2 c. al sur, 35 Avenida</p>
         <p class="details">Tel. 88975535 · Tigo 86087337</p>
@@ -45,10 +45,13 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of dataSource.data">
-            <td class="desc-col">{{item.product_name}}</td>
+            <td class="desc-col">
+              <span *ngIf="item.product_name">{{item.product_name}}</span>
+              <span *ngIf="!item.product_name && item.description">{{item.description}}</span>
+            </td>
             <td class="qty-col">{{item.quantity}}</td>
-            <td class="price-col">{{item.cost_price_at_time | currency}}</td>
-            <td class="total-col">{{item.sale_price_at_time | currency}}</td>
+            <td class="price-col">{{item.cost_price_at_time | currency:'NIO':'symbol-narrow'}}</td>
+            <td class="total-col">{{item.sale_price_at_time | currency:'NIO':'symbol-narrow'}}</td>
           </tr>
         </tbody>
       </table>
@@ -61,23 +64,25 @@
     <div class="bottom-section">
       <div class="payment-info">
         <h3>METODO DE PAGO</h3>
-        <p *ngIf="data?.payment_type?.payment_type_name"><strong>Tipo:</strong> {{data?.payment_type.payment_type_name}}</p>
-        <p>Cuenta: 0123 4567 8901</p>
+        <p *ngIf="data?.payment_method">
+            <strong>Tipo:</strong> {{data?.payment_method}}
+        </p>
+        <p>Cuenta: 0123 4567 8901</p> <!-- TODO: Dynamic? -->
         <p>Tarjeta: 0123 4567 8901 2345</p>
       </div>
       
       <div class="totals-box">
         <div class="summary-row">
           <span>Subtotal</span>
-          <span>{{data?.sub_total | currency}}</span>
+          <span>{{data?.sub_total | currency:'NIO':'symbol-narrow'}}</span>
         </div>
         <div class="summary-row">
           <span>IVA</span>
-          <span>{{data?.iva | currency}}</span>
+          <span>{{(data?.iva || 0) | currency:'NIO':'symbol-narrow'}}</span>
         </div>
         <div class="summary-total">
           <span>TOTAL</span>
-          <span>{{data?.total | currency}}</span>
+          <span>{{data?.total | currency:'NIO':'symbol-narrow'}}</span>
         </div>
       </div>
     </div>
@@ -86,21 +91,26 @@
     <div class="signatures-section">
       <div class="signature-block">
         <div class="line"></div>
-        <p>Firma</p>
+        <p>Firma Cliente</p>
       </div>
       <div class="signature-block">
         <div class="line"></div>
-        <p>Firma</p>
+        <p>Firma Autorizada</p>
       </div>
     </div>
 
     <!-- Bottom Decoration Corner -->
     <div class="footer-decoration"></div>
+
+    <!-- Disclaimer -->
+    <div class="quote-disclaimer">
+        Este documento no tiene validez fiscal y es únicamente para fines informativos de precios y disponibilidad.
+    </div>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="invoice-actions">
-  <button printTitle="Cotización" [useExistingCss]="true"  printSectionId="reportData" ngxPrint class="btn btn-primary" data-mdb-ripple-color="dark">
+  <button printTitle="Cotización" [useExistingCss]="true"  printSectionId="quoteData" ngxPrint class="btn btn-primary" data-mdb-ripple-color="dark">
     <i class="fas fa-print"></i> Imprimir / Guardar
   </button>
   <button class="btn btn-danger" type="button" mat-dialog-close>
