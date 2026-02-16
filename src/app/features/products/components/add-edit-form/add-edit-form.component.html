@@ -19,7 +19,7 @@
             <div class="form-field-wrapper form-field-full">
                 <label class="field-label">Nombre del Producto<span class="required-asterisk">*</span></label>
                 <mat-form-field appearance="outline" class="form-field-full">
-                    <input matInput type="text" formControlName="name" placeholder="Nombre del Producto*" required>
+                    <input matInput type="text" formControlName="name" placeholder="Nombre del Producto*" required appCapitalizeInput>
                     <mat-icon matPrefix>inventory_2</mat-icon>
                     <mat-error *ngIf="productForm.controls['name'].touched && productForm.controls['name'].invalid">
                         <span *ngIf="productForm.controls['name'].errors?.['required']">Campo obligatorio</span>

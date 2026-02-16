@@ -19,7 +19,7 @@
             <div class="form-field-wrapper form-field-half">
                 <label class="field-label">Nombres<span class="required-asterisk">*</span></label>
                 <mat-form-field appearance="outline" class="form-field-half">
-                    <input matInput type="text" formControlName="first_name" placeholder="Nombres*" required>
+                    <input matInput type="text" formControlName="first_name" placeholder="Nombres*" required appCapitalizeInput>
                     <mat-icon matPrefix>person</mat-icon>
                     <mat-error *ngIf="customerForm.controls['first_name'].touched && customerForm.controls['first_name'].invalid">
                         <span *ngIf="customerForm.controls['first_name'].errors?.['required']">Campo obligatorio</span>
@@ -32,7 +32,7 @@
             <div class="form-field-wrapper form-field-half">
                 <label class="field-label">Apellidos<span class="required-asterisk">*</span></label>
                 <mat-form-field appearance="outline" class="form-field-half">
-                    <input matInput type="text" formControlName="last_name" placeholder="Apellidos*" required>
+                    <input matInput type="text" formControlName="last_name" placeholder="Apellidos*" required appCapitalizeInput>
                     <mat-icon matPrefix>person_outline</mat-icon>
                     <mat-error *ngIf="customerForm.controls['last_name'].touched && customerForm.controls['last_name'].invalid">
                         <span *ngIf="customerForm.controls['last_name'].errors?.['required']">Campo obligatorio</span>

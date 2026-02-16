@@ -85,7 +85,7 @@
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 0.5px;
-    color: #555;
+    color: #ddd;
 }
 
 .header-right {
@@ -198,11 +198,14 @@
     width: 120px;
 }
 
-.custom-table td.total-col,
 .custom-table th.total-col {
     text-align: right;
     width: 120px;
     font-weight: 600;
+    color: #ddd;
+}
+
+.custom-table td.total-col {
     color: #333;
 }
 
