@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 
@@ -12,6 +12,9 @@ export class AuthService {
 
   isLoggedIn = false;
 
+  /** Emits true when the user logs in, false when they log out */
+  isLoggedIn$ = new BehaviorSubject<boolean>(false);
+
   apiURL = environment.apiUrl;
 
   constructor(private http: HttpClient) {
@@ -21,17 +24,18 @@ export class AuthService {
   }
 
   //private authToken: string | null = null;
-  private userData : any = [];
-  
+  private userData: any = [];
+
   /**
    * Restore authentication state from localStorage on page reload
    */
   private restoreAuthState(): void {
     const token = localStorage.getItem('token');
     const currentUser = localStorage.getItem('currentUser');
-    
+
     if (token) {
       this.isLoggedIn = true;
+      this.isLoggedIn$.next(true);
       // Restore user data if it exists in localStorage
       if (currentUser) {
         try {
@@ -45,41 +49,43 @@ export class AuthService {
       this.isLoggedIn = false;
     }
   }
-  
+
   setAuthToken(token: string) {
     this.isLoggedIn = true;
     localStorage.setItem('token', token);
+    this.isLoggedIn$.next(true);
   }
 
-  getAuthToken() : string | null {
+  getAuthToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  clearAuthToken() : void {
+  clearAuthToken(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     this.userData = [];
+    this.isLoggedIn$.next(false);
   }
 
-  login(userCredentials : any) : Observable<any> {
+  login(userCredentials: any): Observable<any> {
     return this.http.post(this.apiURL + '/user/login/', userCredentials)
   }
 
-  logout() : Observable<any> {
+  logout(): Observable<any> {
     const token = this.getAuthToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Token ${token}`) : new HttpHeaders();
     console.log('header que le paso para que cierre sesion ' + headers.get('Authorization'));
 
     this.clearAuthToken();
-    return this.http.post(this.apiURL + '/user/logout/', '', {headers}) 
+    return this.http.post(this.apiURL + '/user/logout/', '', { headers })
   }
 
-  getData(url: string) : Observable<any> {
+  getData(url: string): Observable<any> {
     return this.http.get(url);
   }
 
-  postData(url: string, data: any) : Observable<any> {
+  postData(url: string, data: any): Observable<any> {
     return this.http.post(url, data);
   }
 

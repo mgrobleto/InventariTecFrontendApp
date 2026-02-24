@@ -1,0 +1,48 @@
+<div class="session-card">
+
+  <!-- Icon -->
+  <div class="session-icon" aria-hidden="true">
+    <mat-icon>lock_clock</mat-icon>
+  </div>
+
+  <!-- Title & Message -->
+  <div class="session-title">¿Sigues ahí?</div>
+  <div class="session-message">
+    Tu sesión se cerrará automáticamente por inactividad en:
+  </div>
+
+  <!-- Countdown -->
+  <div class="session-countdown">
+    <span class="session-countdown-time" [class.session-countdown-danger]="remainingSeconds <= 30">
+      {{ formattedTime }}
+    </span>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="session-progress-track">
+    <div
+      class="session-progress-fill"
+      [style.width.%]="progressValue"
+      [class.session-progress-warning]="remainingSeconds <= 30">
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="session-actions">
+    <button
+      type="button"
+      class="session-btn session-btn--logout"
+      id="session-logout-btn"
+      (click)="onLogout()">
+      Cerrar sesión
+    </button>
+    <button
+      type="button"
+      class="session-btn session-btn--continue"
+      id="session-continue-btn"
+      (click)="onContinue()">
+      Continuar sesión
+    </button>
+  </div>
+
+</div>
