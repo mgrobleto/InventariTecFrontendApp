@@ -1,425 +1,359 @@
-.invoice-modal-content {
-    background-color: #f3f7fb; /* App background to contrast the paper */
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-    overflow-y: auto;
-    max-height: 90vh; /* Ensure scroll within modal */
-}
-
-.invoice-paper {
-    background: white;
-    width: 210mm; /* A4 width */
-    min-height: 297mm; /* A4 height */
-    padding: 0;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    color: #333;
-    font-family: 'Roboto', sans-serif;
+.invoice-modal {
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* For the decorations */
-    box-sizing: border-box;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    color: #001F3F;
+    width: min(920px, 92vw);
 }
 
-/* Decorations */
-.header-decoration {
-    height: 140px;
-    width: 100%;
-    /* Gradient from Blue #1E488F to Light Green #b5ffc9 */
-    background: linear-gradient(135deg, #1E488F 0%, #b5ffc9 100%);
-    clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+.invoice-header {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--glass-card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--glass-card-border);
+    box-shadow: var(--glass-card-shadow);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
 }
 
-.footer-decoration {
-    height: 200px;
-    width: 250px;
-    background: linear-gradient(135deg, #b5ffc9 0%, #1E488F 100%);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    clip-path: polygon(0 40%, 0% 100%, 100% 100%);
-    opacity: 0.9;
-    z-index: 1;
-}
-
-/* Content Padding */
-.paper-header,
-.info-details-container,
-.table-section,
-.bottom-section,
-.signatures-section {
-    padding: 0 4rem;
-    position: relative;
-    z-index: 2;
-}
-
-/* Header */
-.paper-header {
-    margin-top: 5rem; /* Space below decoration start */
+.brand {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end; /* Align bottom lines of text */
-    margin-bottom: 4rem;
+    align-items: center;
+    gap: 0.9rem;
 }
 
-.header-left {
+.brand-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    padding: 6px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid var(--glass-card-border);
+}
+
+.brand-text {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.2rem;
 }
 
-.invoice-number {
-    font-size: 1.2rem;
-    font-weight: 700;
+.brand-name {
+    font-size: 1.1rem;
+    font-weight: 800;
     letter-spacing: 1px;
-    color: #333;
+    color: #1E488F;
+}
+
+.brand-url {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.company-contact,
+.print-company-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #4b5563;
+    line-height: 1.3;
+}
+
+.invoice-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: right;
+}
+
+.invoice-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.invoice-id {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1E488F;
 }
 
 .invoice-date {
-    font-size: 1rem;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: #555;
-    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    color: #6b7280;
 }
 
-.header-right {
-    text-align: right;
+.close-button {
+    align-self: start;
+    color: #1E488F;
+    border-radius: 10px;
+    background: rgba(30, 72, 143, 0.08);
 }
 
-.document-title {
-    font-size: 3rem;
-    font-weight: 900;
-    color: #1E488F; /* App Blue */
-    margin: 0;
-    letter-spacing: 3px;
-    line-height: 1;
+.invoice-actions {
+    padding: 0 1.5rem 1.5rem;
+    gap: 0.75rem;
+
+    .btn {
+        border-radius: 12px;
+        padding: 10px 18px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid transparent;
+    }
+
+    .btn.btn-light {
+        background: #ffffff;
+        color: #1E488F;
+        border-color: rgba(30, 72, 143, 0.25);
+        box-shadow: 0 6px 14px rgba(30, 72, 143, 0.12);
+    }
+
+    .btn.btn-light:hover {
+        background: rgba(30, 72, 143, 0.08);
+    }
+
+    .btn.btn-danger {
+        background: #ef4444;
+        color: #ffffff;
+        border-color: rgba(239, 68, 68, 0.45);
+        box-shadow: 0 6px 14px rgba(239, 68, 68, 0.2);
+    }
+
+    .btn.btn-danger:hover {
+        background: #dc2626;
+    }
 }
 
-/* Info Section */
-.info-details-container {
+.invoice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.info-card {
+    background: var(--glass-card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--glass-card-border);
+    box-shadow: var(--glass-card-shadow);
+    padding: 1.25rem 1.5rem;
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
+
+    h3 {
+        margin: 0 0 1rem;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #001F3F;
+    }
+}
+
+.info-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 3rem;
+    gap: 1rem;
+    padding: 0.4rem 0;
 }
 
-.info-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.info-column.align-right {
-    text-align: right;
-    align-items: flex-end;
-}
-
-.column-label {
+.info-label {
     font-size: 0.85rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #333;
-    margin-bottom: 1rem;
-    letter-spacing: 1px;
+    color: #6b7280;
 }
 
-.name {
-    font-size: 1.3rem;
+.info-value {
     font-weight: 600;
     color: #1E488F;
-    margin-bottom: 0.5rem;
-}
-
-.company-name {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.25rem;
-    font-size: 1.1rem;
-}
-
-.details {
-    font-size: 0.95rem;
-    color: #555;
-    line-height: 1.5;
-    max-width: 300px;
-    margin-bottom: 0.25rem;
-}
-
-/* Table Section */
-.table-section {
-    margin-bottom: 3rem;
-}
-
-.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.custom-table thead tr {
-    border-bottom: 2px solid #1E488F; /* Or full background */
-}
-
-.custom-table th {
-    background-color: #1E488F;
-    color: white;
-    padding: 14px 1rem;
-    text-align: left;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
-.custom-table th:first-child {
-    border-top-left-radius: 4px;
-}
-
-.custom-table th:last-child {
-    border-top-right-radius: 4px;
     text-align: right;
 }
 
-.custom-table td {
-    padding: 1.2rem 1rem;
-    border-bottom: 1px solid #ddd;
-    color: #444;
+.section-title {
     font-size: 1rem;
+    font-weight: 700;
+    color: #001F3F;
 }
 
-.custom-table td.qty-col,
-.custom-table th.qty-col {
-    text-align: center;
-    width: 80px;
+.invoice-table {
+    background: var(--glass-card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--glass-card-border);
+    box-shadow: var(--glass-card-shadow);
+    overflow: hidden;
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .mat-mdc-header-row,
+    .mat-mdc-row {
+        background: transparent;
+    }
+
+    .mat-mdc-header-cell {
+        font-weight: 700;
+        color: #1E488F;
+        background: rgba(30, 72, 143, 0.08);
+        padding: 14px 16px;
+    }
+
+    .mat-mdc-cell {
+        padding: 14px 16px;
+        color: #001F3F;
+        border-bottom: 1px solid rgba(30, 72, 143, 0.08);
+    }
 }
 
-.custom-table td.price-col,
-.custom-table th.price-col {
-    text-align: right;
-    width: 140px;
+.products-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.75rem;
 }
 
-.custom-table td.total-col,
-.custom-table th.total-col {
-    text-align: right;
-    width: 140px;
-}
-
-.custom-table td.total-col {
-    font-weight: 600;
-    color: #333;
-}
-
-/* Bottom Section */
-.bottom-section {
+.product-pill {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 5rem;
-    margin-top: 2rem;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background: var(--glass-card-bg);
+    border: 1px solid var(--glass-card-border);
+    box-shadow: var(--glass-card-shadow);
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
 }
 
-.payment-info {
-    flex: 1;
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
-.payment-info h3 {
+.product-name {
+    font-weight: 700;
+    color: #001F3F;
+}
+
+.product-meta {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.product-total {
+    font-weight: 700;
+    color: #1E488F;
+}
+
+.empty-products {
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    background: rgba(30, 72, 143, 0.05);
+    border: 1px dashed rgba(30, 72, 143, 0.25);
+    color: #6b7280;
     font-size: 0.9rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #333;
-    margin-bottom: 1rem;
 }
 
-.payment-info p {
-    font-size: 0.95rem;
-    color: #333;
-    margin-bottom: 0.4rem;
-    font-weight: 600;
-}
-
-.payment-info p strong {
-    font-weight: 800;
-}
-
-.totals-box {
-    width: 350px;
-    background-color: #eee; /* Light grey box from image */
-    padding: 2rem;
-    padding-right: 2rem;
-}
-
-.summary-row {
+.invoice-summary {
+    margin-left: auto;
+    width: min(320px, 100%);
+    background: var(--glass-card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--glass-card-border);
+    box-shadow: var(--glass-card-shadow);
+    padding: 1.25rem 1.5rem;
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-    color: #555;
-    font-weight: 500;
+    flex-direction: column;
+    gap: 0.6rem;
+    backdrop-filter: blur(var(--glass-card-blur));
+    -webkit-backdrop-filter: blur(var(--glass-card-blur));
 }
 
+.summary-row,
 .summary-total {
     display: flex;
     justify-content: space-between;
-    margin-top: 1.5rem;
-    margin-bottom: 0;
-    font-weight: 800;
-    font-size: 1.4rem;
-    color: #333;
-    padding-top: 1rem;
+    font-size: 0.95rem;
 }
 
-/* Signatures */
-.signatures-section {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 6rem; /* Space from bottom */
+.summary-total {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1E488F;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(30, 72, 143, 0.15);
 }
 
-.signature-block {
-    width: 250px;
-    text-align: center;
-}
-
-.signature-block .line {
-    border-top: 2px solid #333;
-    margin-bottom: 0.8rem;
-}
-
-.signature-block p {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #444;
-}
-
-/* Actions (Outside Paper) */
 .invoice-actions {
-    padding: 1rem 2rem;
-    background: transparent;
-    
+    padding: 0 1.5rem 1.5rem;
+
     .btn {
-        padding: 0.8rem 1.5rem;
-        font-weight: 600;
-        border-radius: 8px;
-        font-size: 1rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        border: none;
-    }
-
-    .btn-primary {
-        background-color: #1E488F;
-        color: white;
-        box-shadow: 0 4px 6px rgba(30, 72, 143, 0.2);
-        
-        &:hover {
-            background-color: #153875;
-        }
-    }
-
-    .btn-danger {
-        margin-left: 1rem;
-        background-color: #dc3545;
-        color: white;
+        margin: 6px;
+        border-radius: 10px;
+        padding: 8px 18px;
     }
 }
 
-/* Responsive adjustments */
 @media (max-width: 900px) {
-    .invoice-paper {
-        width: 100%;
-        min-height: auto;
-    }
-    
-    .paper-header,
-    .info-details-container,
-    .bottom-section,
-    .signatures-section {
-        flex-direction: column;
-        gap: 2rem;
-        padding: 0 2rem;
-    }
-
-    .header-decoration {
-        height: 100px;
-    }
-
-    .header-right {
+    .invoice-header {
+        grid-template-columns: 1fr;
         text-align: left;
     }
-    
-    .info-column.align-right {
+
+    .invoice-meta {
         text-align: left;
-        align-items: flex-start;
     }
-    
-    .totals-box {
-        width: 100%;
-        margin-top: 2rem;
+
+    .invoice-grid {
+        grid-template-columns: 1fr;
     }
-    
-    .signatures-section {
-        padding-bottom: 4rem;
+
+    .close-button {
+        justify-self: end;
     }
 }
 
-/* Print Styles */
 @media print {
-    body, html, .cdk-overlay-container {
-        background-color: white !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        height: 100% !important;
-        width: 100% !important;
-    }
-
-    .invoice-modal-content {
-        padding: 0 !important;
-        background: white !important;
-        display: block !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        margin: 0 !important;
-        max-height: none !important;
-        overflow: visible !important;
-    }
-
-    .invoice-paper {
-        box-shadow: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        min-height: 100% !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-
     .invoice-actions,
-    mat-dialog-actions,
     .close-button {
         display: none !important;
     }
 
-    /* Ensure decorations print */
-    .header-decoration,
-    .footer-decoration {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        display: block !important;
+    .invoice-header,
+    .info-card,
+    .invoice-table,
+    .invoice-summary,
+    .invoice-grid,
+    .section-title,
+    .products-list .product-pill,
+    .summary-row,
+    .summary-total {
+        border: 1px solid #1a1a1a !important;
+        border-color: #1a1a1a !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
     }
-    
-    /* Ensure background colors print */
-    .custom-table th,
-    .totals-box {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
+
+    .invoice-table table,
+    .invoice-table th,
+    .invoice-table td {
+        border: 1px solid #1a1a1a !important;
+    }
+
+    .invoice-summary .summary-total {
+        border-width: 2px !important;
+    }
+
+    .print-company-contact {
+        color: #1a1a1a !important;
+        font-weight: 500;
     }
 }
